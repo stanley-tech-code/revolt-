@@ -1,0 +1,7833 @@
+{
+  "products": [
+    {
+      "id": "prod-1",
+      "name": "Tees Tanks 1",
+      "mainCategory": "clothing",
+      "subCategory": "tees-tanks",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality tees tanks 1 designed for ultimate comfort and style.",
+      "originalPrice": 12444,
+      "salePrice": 8710,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-2",
+      "name": "Tees Tanks 2",
+      "mainCategory": "clothing",
+      "subCategory": "tees-tanks",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality tees tanks 2 designed for ultimate comfort and style.",
+      "originalPrice": 9939,
+      "salePrice": 9939,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-3",
+      "name": "Tees Tanks 3",
+      "mainCategory": "clothing",
+      "subCategory": "tees-tanks",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality tees tanks 3 designed for ultimate comfort and style.",
+      "originalPrice": 7022,
+      "salePrice": 4915,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-4",
+      "name": "Tees Tanks 4",
+      "mainCategory": "clothing",
+      "subCategory": "tees-tanks",
+      "material": "Smooth Layers",
+      "description": "This is a high quality tees tanks 4 designed for ultimate comfort and style.",
+      "originalPrice": 5275,
+      "salePrice": 3692,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-5",
+      "name": "Tees Tanks 5",
+      "mainCategory": "clothing",
+      "subCategory": "tees-tanks",
+      "material": "Smooth Layers",
+      "description": "This is a high quality tees tanks 5 designed for ultimate comfort and style.",
+      "originalPrice": 14151,
+      "salePrice": 14151,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-3.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-6",
+      "name": "Shorts 1",
+      "mainCategory": "clothing",
+      "subCategory": "shorts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality shorts 1 designed for ultimate comfort and style.",
+      "originalPrice": 13898,
+      "salePrice": 13898,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-7",
+      "name": "Shorts 2",
+      "mainCategory": "clothing",
+      "subCategory": "shorts",
+      "material": "Woven Cotton",
+      "description": "This is a high quality shorts 2 designed for ultimate comfort and style.",
+      "originalPrice": 11149,
+      "salePrice": 7804,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-8",
+      "name": "Shorts 3",
+      "mainCategory": "clothing",
+      "subCategory": "shorts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality shorts 3 designed for ultimate comfort and style.",
+      "originalPrice": 5417,
+      "salePrice": 3791,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-9",
+      "name": "Shorts 4",
+      "mainCategory": "clothing",
+      "subCategory": "shorts",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality shorts 4 designed for ultimate comfort and style.",
+      "originalPrice": 6481,
+      "salePrice": 6481,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-2.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-10",
+      "name": "Dresses 1",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality dresses 1 designed for ultimate comfort and style.",
+      "originalPrice": 6083,
+      "salePrice": 6083,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-3.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-11",
+      "name": "Dresses 2",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality dresses 2 designed for ultimate comfort and style.",
+      "originalPrice": 10166,
+      "salePrice": 10166,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-12",
+      "name": "Dresses 3",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality dresses 3 designed for ultimate comfort and style.",
+      "originalPrice": 13018,
+      "salePrice": 13018,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-13",
+      "name": "Dresses 4",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Woven Cotton",
+      "description": "This is a high quality dresses 4 designed for ultimate comfort and style.",
+      "originalPrice": 8251,
+      "salePrice": 8251,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-14",
+      "name": "Dresses 5",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality dresses 5 designed for ultimate comfort and style.",
+      "originalPrice": 12093,
+      "salePrice": 12093,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-15",
+      "name": "Dresses 6",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality dresses 6 designed for ultimate comfort and style.",
+      "originalPrice": 7449,
+      "salePrice": 5214,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-2.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-16",
+      "name": "Dresses 7",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality dresses 7 designed for ultimate comfort and style.",
+      "originalPrice": 5750,
+      "salePrice": 4024,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/hero.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-17",
+      "name": "Dresses 8",
+      "mainCategory": "clothing",
+      "subCategory": "dresses",
+      "material": "Cotton Rib",
+      "description": "This is a high quality dresses 8 designed for ultimate comfort and style.",
+      "originalPrice": 9897,
+      "salePrice": 6927,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-18",
+      "name": "Pants 1",
+      "mainCategory": "clothing",
+      "subCategory": "pants",
+      "material": "Smooth Layers",
+      "description": "This is a high quality pants 1 designed for ultimate comfort and style.",
+      "originalPrice": 11916,
+      "salePrice": 8341,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-4.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-19",
+      "name": "Pants 2",
+      "mainCategory": "clothing",
+      "subCategory": "pants",
+      "material": "Cotton Rib",
+      "description": "This is a high quality pants 2 designed for ultimate comfort and style.",
+      "originalPrice": 8631,
+      "salePrice": 8631,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/hero.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-20",
+      "name": "Pants 3",
+      "mainCategory": "clothing",
+      "subCategory": "pants",
+      "material": "Cotton Rib",
+      "description": "This is a high quality pants 3 designed for ultimate comfort and style.",
+      "originalPrice": 13514,
+      "salePrice": 13514,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-21",
+      "name": "Pants 4",
+      "mainCategory": "clothing",
+      "subCategory": "pants",
+      "material": "Cotton Rib",
+      "description": "This is a high quality pants 4 designed for ultimate comfort and style.",
+      "originalPrice": 7918,
+      "salePrice": 5542,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-22",
+      "name": "Pants 5",
+      "mainCategory": "clothing",
+      "subCategory": "pants",
+      "material": "Cotton Rib",
+      "description": "This is a high quality pants 5 designed for ultimate comfort and style.",
+      "originalPrice": 9559,
+      "salePrice": 6691,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-1.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-23",
+      "name": "Leggings 1",
+      "mainCategory": "clothing",
+      "subCategory": "leggings",
+      "material": "Smooth Layers",
+      "description": "This is a high quality leggings 1 designed for ultimate comfort and style.",
+      "originalPrice": 5905,
+      "salePrice": 4133,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-24",
+      "name": "Leggings 2",
+      "mainCategory": "clothing",
+      "subCategory": "leggings",
+      "material": "Smooth Layers",
+      "description": "This is a high quality leggings 2 designed for ultimate comfort and style.",
+      "originalPrice": 11829,
+      "salePrice": 8280,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-25",
+      "name": "Leggings 3",
+      "mainCategory": "clothing",
+      "subCategory": "leggings",
+      "material": "Woven Cotton",
+      "description": "This is a high quality leggings 3 designed for ultimate comfort and style.",
+      "originalPrice": 11779,
+      "salePrice": 11779,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-26",
+      "name": "Leggings 4",
+      "mainCategory": "clothing",
+      "subCategory": "leggings",
+      "material": "Woven Cotton",
+      "description": "This is a high quality leggings 4 designed for ultimate comfort and style.",
+      "originalPrice": 13643,
+      "salePrice": 9550,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-2.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-27",
+      "name": "Leggings 5",
+      "mainCategory": "clothing",
+      "subCategory": "leggings",
+      "material": "Smooth Layers",
+      "description": "This is a high quality leggings 5 designed for ultimate comfort and style.",
+      "originalPrice": 6518,
+      "salePrice": 6518,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-3.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-28",
+      "name": "Sweatshirts 1",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Cotton Rib",
+      "description": "This is a high quality sweatshirts 1 designed for ultimate comfort and style.",
+      "originalPrice": 10069,
+      "salePrice": 7048,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-29",
+      "name": "Sweatshirts 2",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality sweatshirts 2 designed for ultimate comfort and style.",
+      "originalPrice": 8563,
+      "salePrice": 8563,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-30",
+      "name": "Sweatshirts 3",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality sweatshirts 3 designed for ultimate comfort and style.",
+      "originalPrice": 11709,
+      "salePrice": 8196,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-31",
+      "name": "Sweatshirts 4",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality sweatshirts 4 designed for ultimate comfort and style.",
+      "originalPrice": 6174,
+      "salePrice": 4321,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-32",
+      "name": "Sweatshirts 5",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Woven Cotton",
+      "description": "This is a high quality sweatshirts 5 designed for ultimate comfort and style.",
+      "originalPrice": 14765,
+      "salePrice": 14765,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-2.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-33",
+      "name": "Sweatshirts 6",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality sweatshirts 6 designed for ultimate comfort and style.",
+      "originalPrice": 13255,
+      "salePrice": 9278,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-34",
+      "name": "Sweatshirts 7",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Woven Cotton",
+      "description": "This is a high quality sweatshirts 7 designed for ultimate comfort and style.",
+      "originalPrice": 6361,
+      "salePrice": 6361,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-2.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-35",
+      "name": "Sweatshirts 8",
+      "mainCategory": "clothing",
+      "subCategory": "sweatshirts",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality sweatshirts 8 designed for ultimate comfort and style.",
+      "originalPrice": 8837,
+      "salePrice": 6185,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-36",
+      "name": "Tops Bodysuits 1",
+      "mainCategory": "clothing",
+      "subCategory": "tops-bodysuits",
+      "material": "Smooth Layers",
+      "description": "This is a high quality tops bodysuits 1 designed for ultimate comfort and style.",
+      "originalPrice": 9723,
+      "salePrice": 9723,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-37",
+      "name": "Tops Bodysuits 2",
+      "mainCategory": "clothing",
+      "subCategory": "tops-bodysuits",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality tops bodysuits 2 designed for ultimate comfort and style.",
+      "originalPrice": 10088,
+      "salePrice": 7061,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-3.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-38",
+      "name": "Tops Bodysuits 3",
+      "mainCategory": "clothing",
+      "subCategory": "tops-bodysuits",
+      "material": "Cotton Rib",
+      "description": "This is a high quality tops bodysuits 3 designed for ultimate comfort and style.",
+      "originalPrice": 6884,
+      "salePrice": 6884,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-39",
+      "name": "Tops Bodysuits 4",
+      "mainCategory": "clothing",
+      "subCategory": "tops-bodysuits",
+      "material": "Smooth Layers",
+      "description": "This is a high quality tops bodysuits 4 designed for ultimate comfort and style.",
+      "originalPrice": 9624,
+      "salePrice": 6736,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-40",
+      "name": "Tops Bodysuits 5",
+      "mainCategory": "clothing",
+      "subCategory": "tops-bodysuits",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality tops bodysuits 5 designed for ultimate comfort and style.",
+      "originalPrice": 11230,
+      "salePrice": 11230,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-41",
+      "name": "Pajamas 1",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Cotton Rib",
+      "description": "This is a high quality pajamas 1 designed for ultimate comfort and style.",
+      "originalPrice": 13669,
+      "salePrice": 9568,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-4.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-42",
+      "name": "Pajamas 2",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality pajamas 2 designed for ultimate comfort and style.",
+      "originalPrice": 10834,
+      "salePrice": 7583,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-43",
+      "name": "Pajamas 3",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Woven Cotton",
+      "description": "This is a high quality pajamas 3 designed for ultimate comfort and style.",
+      "originalPrice": 5056,
+      "salePrice": 5056,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-44",
+      "name": "Pajamas 4",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Cotton Rib",
+      "description": "This is a high quality pajamas 4 designed for ultimate comfort and style.",
+      "originalPrice": 7681,
+      "salePrice": 5376,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-45",
+      "name": "Pajamas 5",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Cotton Rib",
+      "description": "This is a high quality pajamas 5 designed for ultimate comfort and style.",
+      "originalPrice": 12917,
+      "salePrice": 9041,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-46",
+      "name": "Pajamas 6",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Smooth Layers",
+      "description": "This is a high quality pajamas 6 designed for ultimate comfort and style.",
+      "originalPrice": 12088,
+      "salePrice": 12088,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-47",
+      "name": "Pajamas 7",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality pajamas 7 designed for ultimate comfort and style.",
+      "originalPrice": 5139,
+      "salePrice": 5139,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-48",
+      "name": "Pajamas 8",
+      "mainCategory": "clothing",
+      "subCategory": "pajamas",
+      "material": "Woven Cotton",
+      "description": "This is a high quality pajamas 8 designed for ultimate comfort and style.",
+      "originalPrice": 11930,
+      "salePrice": 11930,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/hero-dresses.png",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-49",
+      "name": "Shapewear 1",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Woven Cotton",
+      "description": "This is a high quality shapewear 1 designed for ultimate comfort and style.",
+      "originalPrice": 10203,
+      "salePrice": 7142,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-2.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-50",
+      "name": "Shapewear 2",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Smooth Layers",
+      "description": "This is a high quality shapewear 2 designed for ultimate comfort and style.",
+      "originalPrice": 5373,
+      "salePrice": 3761,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-3.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-51",
+      "name": "Shapewear 3",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Smooth Layers",
+      "description": "This is a high quality shapewear 3 designed for ultimate comfort and style.",
+      "originalPrice": 13866,
+      "salePrice": 13866,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-52",
+      "name": "Shapewear 4",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Woven Cotton",
+      "description": "This is a high quality shapewear 4 designed for ultimate comfort and style.",
+      "originalPrice": 10207,
+      "salePrice": 10207,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-53",
+      "name": "Shapewear 5",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality shapewear 5 designed for ultimate comfort and style.",
+      "originalPrice": 12515,
+      "salePrice": 12515,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/hero-dresses.png",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-54",
+      "name": "Shapewear 6",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Cotton Rib",
+      "description": "This is a high quality shapewear 6 designed for ultimate comfort and style.",
+      "originalPrice": 11551,
+      "salePrice": 8085,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-55",
+      "name": "Shapewear 7",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality shapewear 7 designed for ultimate comfort and style.",
+      "originalPrice": 11642,
+      "salePrice": 8149,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-56",
+      "name": "Shapewear 8",
+      "mainCategory": "clothing",
+      "subCategory": "shapewear",
+      "material": "Cotton Rib",
+      "description": "This is a high quality shapewear 8 designed for ultimate comfort and style.",
+      "originalPrice": 14207,
+      "salePrice": 9944,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-4.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-57",
+      "name": "Hoodies 1",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Woven Cotton",
+      "description": "This is a high quality hoodies 1 designed for ultimate comfort and style.",
+      "originalPrice": 10928,
+      "salePrice": 7649,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-58",
+      "name": "Hoodies 2",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Smooth Layers",
+      "description": "This is a high quality hoodies 2 designed for ultimate comfort and style.",
+      "originalPrice": 13782,
+      "salePrice": 13782,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-2.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-59",
+      "name": "Hoodies 3",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Woven Cotton",
+      "description": "This is a high quality hoodies 3 designed for ultimate comfort and style.",
+      "originalPrice": 6257,
+      "salePrice": 4379,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-60",
+      "name": "Hoodies 4",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Woven Cotton",
+      "description": "This is a high quality hoodies 4 designed for ultimate comfort and style.",
+      "originalPrice": 11916,
+      "salePrice": 11916,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-61",
+      "name": "Hoodies 5",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Woven Cotton",
+      "description": "This is a high quality hoodies 5 designed for ultimate comfort and style.",
+      "originalPrice": 14726,
+      "salePrice": 10308,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-62",
+      "name": "Hoodies 6",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Smooth Layers",
+      "description": "This is a high quality hoodies 6 designed for ultimate comfort and style.",
+      "originalPrice": 14064,
+      "salePrice": 9844,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-63",
+      "name": "Hoodies 7",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Woven Cotton",
+      "description": "This is a high quality hoodies 7 designed for ultimate comfort and style.",
+      "originalPrice": 13807,
+      "salePrice": 9664,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-64",
+      "name": "Hoodies 8",
+      "mainCategory": "clothing",
+      "subCategory": "hoodies",
+      "material": "Smooth Layers",
+      "description": "This is a high quality hoodies 8 designed for ultimate comfort and style.",
+      "originalPrice": 9328,
+      "salePrice": 6529,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-65",
+      "name": "Skirts 1",
+      "mainCategory": "clothing",
+      "subCategory": "skirts",
+      "material": "Cotton Rib",
+      "description": "This is a high quality skirts 1 designed for ultimate comfort and style.",
+      "originalPrice": 12000,
+      "salePrice": 8400,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-66",
+      "name": "Skirts 2",
+      "mainCategory": "clothing",
+      "subCategory": "skirts",
+      "material": "Woven Cotton",
+      "description": "This is a high quality skirts 2 designed for ultimate comfort and style.",
+      "originalPrice": 11333,
+      "salePrice": 11333,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-67",
+      "name": "Skirts 3",
+      "mainCategory": "clothing",
+      "subCategory": "skirts",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality skirts 3 designed for ultimate comfort and style.",
+      "originalPrice": 13341,
+      "salePrice": 13341,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-68",
+      "name": "Skirts 4",
+      "mainCategory": "clothing",
+      "subCategory": "skirts",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality skirts 4 designed for ultimate comfort and style.",
+      "originalPrice": 7425,
+      "salePrice": 5197,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-69",
+      "name": "Skirts 5",
+      "mainCategory": "clothing",
+      "subCategory": "skirts",
+      "material": "Woven Cotton",
+      "description": "This is a high quality skirts 5 designed for ultimate comfort and style.",
+      "originalPrice": 7346,
+      "salePrice": 7346,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-70",
+      "name": "Skirts 6",
+      "mainCategory": "clothing",
+      "subCategory": "skirts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality skirts 6 designed for ultimate comfort and style.",
+      "originalPrice": 5717,
+      "salePrice": 5717,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/campaign-2.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-71",
+      "name": "Skirts 7",
+      "mainCategory": "clothing",
+      "subCategory": "skirts",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality skirts 7 designed for ultimate comfort and style.",
+      "originalPrice": 13568,
+      "salePrice": 9497,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-4.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-72",
+      "name": "Bikinis 1",
+      "mainCategory": "swimwear",
+      "subCategory": "bikinis",
+      "material": "Woven Cotton",
+      "description": "This is a high quality bikinis 1 designed for ultimate comfort and style.",
+      "originalPrice": 9350,
+      "salePrice": 6545,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero-dresses.png",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-73",
+      "name": "Bikinis 2",
+      "mainCategory": "swimwear",
+      "subCategory": "bikinis",
+      "material": "Cotton Rib",
+      "description": "This is a high quality bikinis 2 designed for ultimate comfort and style.",
+      "originalPrice": 10820,
+      "salePrice": 10820,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-74",
+      "name": "Bikinis 3",
+      "mainCategory": "swimwear",
+      "subCategory": "bikinis",
+      "material": "Woven Cotton",
+      "description": "This is a high quality bikinis 3 designed for ultimate comfort and style.",
+      "originalPrice": 6450,
+      "salePrice": 6450,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-3.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-75",
+      "name": "Bikinis 4",
+      "mainCategory": "swimwear",
+      "subCategory": "bikinis",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality bikinis 4 designed for ultimate comfort and style.",
+      "originalPrice": 7999,
+      "salePrice": 7999,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-76",
+      "name": "Bikinis 5",
+      "mainCategory": "swimwear",
+      "subCategory": "bikinis",
+      "material": "Cotton Rib",
+      "description": "This is a high quality bikinis 5 designed for ultimate comfort and style.",
+      "originalPrice": 12017,
+      "salePrice": 12017,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/hero.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-77",
+      "name": "Swimsuits 1",
+      "mainCategory": "swimwear",
+      "subCategory": "swimsuits",
+      "material": "Woven Cotton",
+      "description": "This is a high quality swimsuits 1 designed for ultimate comfort and style.",
+      "originalPrice": 14552,
+      "salePrice": 14552,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-78",
+      "name": "Swimsuits 2",
+      "mainCategory": "swimwear",
+      "subCategory": "swimsuits",
+      "material": "Smooth Layers",
+      "description": "This is a high quality swimsuits 2 designed for ultimate comfort and style.",
+      "originalPrice": 7202,
+      "salePrice": 5041,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-79",
+      "name": "Swimsuits 3",
+      "mainCategory": "swimwear",
+      "subCategory": "swimsuits",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality swimsuits 3 designed for ultimate comfort and style.",
+      "originalPrice": 7534,
+      "salePrice": 5273,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-80",
+      "name": "Swimsuits 4",
+      "mainCategory": "swimwear",
+      "subCategory": "swimsuits",
+      "material": "Smooth Layers",
+      "description": "This is a high quality swimsuits 4 designed for ultimate comfort and style.",
+      "originalPrice": 6393,
+      "salePrice": 6393,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-81",
+      "name": "Swimsuits 5",
+      "mainCategory": "swimwear",
+      "subCategory": "swimsuits",
+      "material": "Cotton Rib",
+      "description": "This is a high quality swimsuits 5 designed for ultimate comfort and style.",
+      "originalPrice": 11657,
+      "salePrice": 8159,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-82",
+      "name": "Swim Cover Ups 1",
+      "mainCategory": "swimwear",
+      "subCategory": "swim-cover-ups",
+      "material": "Smooth Layers",
+      "description": "This is a high quality swim cover ups 1 designed for ultimate comfort and style.",
+      "originalPrice": 13362,
+      "salePrice": 9353,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-2.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-83",
+      "name": "Swim Cover Ups 2",
+      "mainCategory": "swimwear",
+      "subCategory": "swim-cover-ups",
+      "material": "Smooth Layers",
+      "description": "This is a high quality swim cover ups 2 designed for ultimate comfort and style.",
+      "originalPrice": 12965,
+      "salePrice": 12965,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-84",
+      "name": "Swim Cover Ups 3",
+      "mainCategory": "swimwear",
+      "subCategory": "swim-cover-ups",
+      "material": "Cotton Rib",
+      "description": "This is a high quality swim cover ups 3 designed for ultimate comfort and style.",
+      "originalPrice": 6583,
+      "salePrice": 4608,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-85",
+      "name": "Swim Cover Ups 4",
+      "mainCategory": "swimwear",
+      "subCategory": "swim-cover-ups",
+      "material": "Cotton Rib",
+      "description": "This is a high quality swim cover ups 4 designed for ultimate comfort and style.",
+      "originalPrice": 14872,
+      "salePrice": 10410,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-4.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-86",
+      "name": "Swim Cover Ups 5",
+      "mainCategory": "swimwear",
+      "subCategory": "swim-cover-ups",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality swim cover ups 5 designed for ultimate comfort and style.",
+      "originalPrice": 11659,
+      "salePrice": 11659,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-87",
+      "name": "Swim Cover Ups 6",
+      "mainCategory": "swimwear",
+      "subCategory": "swim-cover-ups",
+      "material": "Smooth Layers",
+      "description": "This is a high quality swim cover ups 6 designed for ultimate comfort and style.",
+      "originalPrice": 14255,
+      "salePrice": 9978,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-2.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-88",
+      "name": "Swim Cover Ups 7",
+      "mainCategory": "swimwear",
+      "subCategory": "swim-cover-ups",
+      "material": "Cotton Rib",
+      "description": "This is a high quality swim cover ups 7 designed for ultimate comfort and style.",
+      "originalPrice": 10741,
+      "salePrice": 10741,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-89",
+      "name": "Strapless 1",
+      "mainCategory": "bras",
+      "subCategory": "strapless",
+      "material": "Woven Cotton",
+      "description": "This is a high quality strapless 1 designed for ultimate comfort and style.",
+      "originalPrice": 11649,
+      "salePrice": 8154,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-90",
+      "name": "Strapless 2",
+      "mainCategory": "bras",
+      "subCategory": "strapless",
+      "material": "Woven Cotton",
+      "description": "This is a high quality strapless 2 designed for ultimate comfort and style.",
+      "originalPrice": 10997,
+      "salePrice": 7697,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-91",
+      "name": "Strapless 3",
+      "mainCategory": "bras",
+      "subCategory": "strapless",
+      "material": "Cotton Rib",
+      "description": "This is a high quality strapless 3 designed for ultimate comfort and style.",
+      "originalPrice": 8158,
+      "salePrice": 8158,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-3.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-92",
+      "name": "Strapless 4",
+      "mainCategory": "bras",
+      "subCategory": "strapless",
+      "material": "Cotton Rib",
+      "description": "This is a high quality strapless 4 designed for ultimate comfort and style.",
+      "originalPrice": 5379,
+      "salePrice": 3765,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-93",
+      "name": "Strapless 5",
+      "mainCategory": "bras",
+      "subCategory": "strapless",
+      "material": "Smooth Layers",
+      "description": "This is a high quality strapless 5 designed for ultimate comfort and style.",
+      "originalPrice": 11896,
+      "salePrice": 11896,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-94",
+      "name": "Full Coverage 1",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Smooth Layers",
+      "description": "This is a high quality full coverage 1 designed for ultimate comfort and style.",
+      "originalPrice": 6463,
+      "salePrice": 6463,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-95",
+      "name": "Full Coverage 2",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Smooth Layers",
+      "description": "This is a high quality full coverage 2 designed for ultimate comfort and style.",
+      "originalPrice": 11403,
+      "salePrice": 7982,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-96",
+      "name": "Full Coverage 3",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Cotton Rib",
+      "description": "This is a high quality full coverage 3 designed for ultimate comfort and style.",
+      "originalPrice": 11998,
+      "salePrice": 8398,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-97",
+      "name": "Full Coverage 4",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Smooth Layers",
+      "description": "This is a high quality full coverage 4 designed for ultimate comfort and style.",
+      "originalPrice": 14564,
+      "salePrice": 14564,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-98",
+      "name": "Full Coverage 5",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Woven Cotton",
+      "description": "This is a high quality full coverage 5 designed for ultimate comfort and style.",
+      "originalPrice": 10875,
+      "salePrice": 10875,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-99",
+      "name": "Full Coverage 6",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Woven Cotton",
+      "description": "This is a high quality full coverage 6 designed for ultimate comfort and style.",
+      "originalPrice": 6824,
+      "salePrice": 6824,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-4.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-100",
+      "name": "Full Coverage 7",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality full coverage 7 designed for ultimate comfort and style.",
+      "originalPrice": 6449,
+      "salePrice": 4514,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-101",
+      "name": "Full Coverage 8",
+      "mainCategory": "bras",
+      "subCategory": "full-coverage",
+      "material": "Woven Cotton",
+      "description": "This is a high quality full coverage 8 designed for ultimate comfort and style.",
+      "originalPrice": 5667,
+      "salePrice": 5667,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-102",
+      "name": "Lined 1",
+      "mainCategory": "bras",
+      "subCategory": "lined",
+      "material": "Cotton Rib",
+      "description": "This is a high quality lined 1 designed for ultimate comfort and style.",
+      "originalPrice": 7927,
+      "salePrice": 7927,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-103",
+      "name": "Lined 2",
+      "mainCategory": "bras",
+      "subCategory": "lined",
+      "material": "Cotton Rib",
+      "description": "This is a high quality lined 2 designed for ultimate comfort and style.",
+      "originalPrice": 10240,
+      "salePrice": 7168,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-104",
+      "name": "Lined 3",
+      "mainCategory": "bras",
+      "subCategory": "lined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality lined 3 designed for ultimate comfort and style.",
+      "originalPrice": 13925,
+      "salePrice": 13925,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/hero.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-105",
+      "name": "Lined 4",
+      "mainCategory": "bras",
+      "subCategory": "lined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality lined 4 designed for ultimate comfort and style.",
+      "originalPrice": 14497,
+      "salePrice": 14497,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-106",
+      "name": "Lined 5",
+      "mainCategory": "bras",
+      "subCategory": "lined",
+      "material": "Woven Cotton",
+      "description": "This is a high quality lined 5 designed for ultimate comfort and style.",
+      "originalPrice": 14710,
+      "salePrice": 10297,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-107",
+      "name": "Lined 6",
+      "mainCategory": "bras",
+      "subCategory": "lined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality lined 6 designed for ultimate comfort and style.",
+      "originalPrice": 11398,
+      "salePrice": 7978,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-108",
+      "name": "Unlined 1",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality unlined 1 designed for ultimate comfort and style.",
+      "originalPrice": 5983,
+      "salePrice": 5983,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-109",
+      "name": "Unlined 2",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality unlined 2 designed for ultimate comfort and style.",
+      "originalPrice": 8586,
+      "salePrice": 8586,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-3.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-110",
+      "name": "Unlined 3",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality unlined 3 designed for ultimate comfort and style.",
+      "originalPrice": 7351,
+      "salePrice": 7351,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-111",
+      "name": "Unlined 4",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Smooth Layers",
+      "description": "This is a high quality unlined 4 designed for ultimate comfort and style.",
+      "originalPrice": 12713,
+      "salePrice": 8899,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-112",
+      "name": "Unlined 5",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Smooth Layers",
+      "description": "This is a high quality unlined 5 designed for ultimate comfort and style.",
+      "originalPrice": 5149,
+      "salePrice": 5149,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-113",
+      "name": "Unlined 6",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Smooth Layers",
+      "description": "This is a high quality unlined 6 designed for ultimate comfort and style.",
+      "originalPrice": 5668,
+      "salePrice": 5668,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-114",
+      "name": "Unlined 7",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Woven Cotton",
+      "description": "This is a high quality unlined 7 designed for ultimate comfort and style.",
+      "originalPrice": 12971,
+      "salePrice": 9079,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-115",
+      "name": "Unlined 8",
+      "mainCategory": "bras",
+      "subCategory": "unlined",
+      "material": "Cotton Rib",
+      "description": "This is a high quality unlined 8 designed for ultimate comfort and style.",
+      "originalPrice": 13681,
+      "salePrice": 13681,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-4.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-116",
+      "name": "T Shirt Bras 1",
+      "mainCategory": "bras",
+      "subCategory": "t-shirt-bras",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality t shirt bras 1 designed for ultimate comfort and style.",
+      "originalPrice": 12446,
+      "salePrice": 12446,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-117",
+      "name": "T Shirt Bras 2",
+      "mainCategory": "bras",
+      "subCategory": "t-shirt-bras",
+      "material": "Cotton Rib",
+      "description": "This is a high quality t shirt bras 2 designed for ultimate comfort and style.",
+      "originalPrice": 11731,
+      "salePrice": 11731,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-118",
+      "name": "T Shirt Bras 3",
+      "mainCategory": "bras",
+      "subCategory": "t-shirt-bras",
+      "material": "Smooth Layers",
+      "description": "This is a high quality t shirt bras 3 designed for ultimate comfort and style.",
+      "originalPrice": 6549,
+      "salePrice": 4584,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-119",
+      "name": "T Shirt Bras 4",
+      "mainCategory": "bras",
+      "subCategory": "t-shirt-bras",
+      "material": "Smooth Layers",
+      "description": "This is a high quality t shirt bras 4 designed for ultimate comfort and style.",
+      "originalPrice": 13978,
+      "salePrice": 9784,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-120",
+      "name": "T Shirt Bras 5",
+      "mainCategory": "bras",
+      "subCategory": "t-shirt-bras",
+      "material": "Smooth Layers",
+      "description": "This is a high quality t shirt bras 5 designed for ultimate comfort and style.",
+      "originalPrice": 11615,
+      "salePrice": 8130,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-121",
+      "name": "Push Up 1",
+      "mainCategory": "bras",
+      "subCategory": "push-up",
+      "material": "Cotton Rib",
+      "description": "This is a high quality push up 1 designed for ultimate comfort and style.",
+      "originalPrice": 12600,
+      "salePrice": 12600,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/hero.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-122",
+      "name": "Push Up 2",
+      "mainCategory": "bras",
+      "subCategory": "push-up",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality push up 2 designed for ultimate comfort and style.",
+      "originalPrice": 9953,
+      "salePrice": 9953,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-123",
+      "name": "Push Up 3",
+      "mainCategory": "bras",
+      "subCategory": "push-up",
+      "material": "Woven Cotton",
+      "description": "This is a high quality push up 3 designed for ultimate comfort and style.",
+      "originalPrice": 13049,
+      "salePrice": 9134,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-124",
+      "name": "Push Up 4",
+      "mainCategory": "bras",
+      "subCategory": "push-up",
+      "material": "Cotton Rib",
+      "description": "This is a high quality push up 4 designed for ultimate comfort and style.",
+      "originalPrice": 8420,
+      "salePrice": 5894,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-125",
+      "name": "Push Up 5",
+      "mainCategory": "bras",
+      "subCategory": "push-up",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality push up 5 designed for ultimate comfort and style.",
+      "originalPrice": 13714,
+      "salePrice": 13714,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-126",
+      "name": "Push Up 6",
+      "mainCategory": "bras",
+      "subCategory": "push-up",
+      "material": "Cotton Rib",
+      "description": "This is a high quality push up 6 designed for ultimate comfort and style.",
+      "originalPrice": 8499,
+      "salePrice": 5949,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-4.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-127",
+      "name": "Push Up 7",
+      "mainCategory": "bras",
+      "subCategory": "push-up",
+      "material": "Smooth Layers",
+      "description": "This is a high quality push up 7 designed for ultimate comfort and style.",
+      "originalPrice": 10779,
+      "salePrice": 7545,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-128",
+      "name": "Lightly Lined 1",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Woven Cotton",
+      "description": "This is a high quality lightly lined 1 designed for ultimate comfort and style.",
+      "originalPrice": 13458,
+      "salePrice": 9420,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-3.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-129",
+      "name": "Lightly Lined 2",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality lightly lined 2 designed for ultimate comfort and style.",
+      "originalPrice": 13384,
+      "salePrice": 13384,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-130",
+      "name": "Lightly Lined 3",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Woven Cotton",
+      "description": "This is a high quality lightly lined 3 designed for ultimate comfort and style.",
+      "originalPrice": 13413,
+      "salePrice": 13413,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-2.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-131",
+      "name": "Lightly Lined 4",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality lightly lined 4 designed for ultimate comfort and style.",
+      "originalPrice": 9246,
+      "salePrice": 6472,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-132",
+      "name": "Lightly Lined 5",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Woven Cotton",
+      "description": "This is a high quality lightly lined 5 designed for ultimate comfort and style.",
+      "originalPrice": 12254,
+      "salePrice": 12254,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-2.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-133",
+      "name": "Lightly Lined 6",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Smooth Layers",
+      "description": "This is a high quality lightly lined 6 designed for ultimate comfort and style.",
+      "originalPrice": 5051,
+      "salePrice": 5051,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-134",
+      "name": "Lightly Lined 7",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Smooth Layers",
+      "description": "This is a high quality lightly lined 7 designed for ultimate comfort and style.",
+      "originalPrice": 14113,
+      "salePrice": 14113,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-4.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-135",
+      "name": "Lightly Lined 8",
+      "mainCategory": "bras",
+      "subCategory": "lightly-lined",
+      "material": "Smooth Layers",
+      "description": "This is a high quality lightly lined 8 designed for ultimate comfort and style.",
+      "originalPrice": 8748,
+      "salePrice": 8748,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-136",
+      "name": "Everyday Comfort 1",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Woven Cotton",
+      "description": "This is a high quality everyday comfort 1 designed for ultimate comfort and style.",
+      "originalPrice": 11670,
+      "salePrice": 11670,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-137",
+      "name": "Everyday Comfort 2",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Woven Cotton",
+      "description": "This is a high quality everyday comfort 2 designed for ultimate comfort and style.",
+      "originalPrice": 8785,
+      "salePrice": 6149,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-138",
+      "name": "Everyday Comfort 3",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Cotton Rib",
+      "description": "This is a high quality everyday comfort 3 designed for ultimate comfort and style.",
+      "originalPrice": 12550,
+      "salePrice": 12550,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-2.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-139",
+      "name": "Everyday Comfort 4",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Cotton Rib",
+      "description": "This is a high quality everyday comfort 4 designed for ultimate comfort and style.",
+      "originalPrice": 13034,
+      "salePrice": 13034,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-140",
+      "name": "Everyday Comfort 5",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Smooth Layers",
+      "description": "This is a high quality everyday comfort 5 designed for ultimate comfort and style.",
+      "originalPrice": 7817,
+      "salePrice": 5471,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/hero.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-141",
+      "name": "Everyday Comfort 6",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Smooth Layers",
+      "description": "This is a high quality everyday comfort 6 designed for ultimate comfort and style.",
+      "originalPrice": 11167,
+      "salePrice": 7816,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-142",
+      "name": "Everyday Comfort 7",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Smooth Layers",
+      "description": "This is a high quality everyday comfort 7 designed for ultimate comfort and style.",
+      "originalPrice": 11646,
+      "salePrice": 8152,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/hero.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-143",
+      "name": "Everyday Comfort 8",
+      "mainCategory": "bras",
+      "subCategory": "everyday-comfort",
+      "material": "Smooth Layers",
+      "description": "This is a high quality everyday comfort 8 designed for ultimate comfort and style.",
+      "originalPrice": 10219,
+      "salePrice": 7153,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-4.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-144",
+      "name": "Seamless 1",
+      "mainCategory": "underwear",
+      "subCategory": "seamless",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality seamless 1 designed for ultimate comfort and style.",
+      "originalPrice": 14121,
+      "salePrice": 9884,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-145",
+      "name": "Seamless 2",
+      "mainCategory": "underwear",
+      "subCategory": "seamless",
+      "material": "Woven Cotton",
+      "description": "This is a high quality seamless 2 designed for ultimate comfort and style.",
+      "originalPrice": 10739,
+      "salePrice": 10739,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-146",
+      "name": "Seamless 3",
+      "mainCategory": "underwear",
+      "subCategory": "seamless",
+      "material": "Smooth Layers",
+      "description": "This is a high quality seamless 3 designed for ultimate comfort and style.",
+      "originalPrice": 6430,
+      "salePrice": 4501,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-147",
+      "name": "Seamless 4",
+      "mainCategory": "underwear",
+      "subCategory": "seamless",
+      "material": "Smooth Layers",
+      "description": "This is a high quality seamless 4 designed for ultimate comfort and style.",
+      "originalPrice": 13944,
+      "salePrice": 9760,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-2.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-148",
+      "name": "Seamless 5",
+      "mainCategory": "underwear",
+      "subCategory": "seamless",
+      "material": "Cotton Rib",
+      "description": "This is a high quality seamless 5 designed for ultimate comfort and style.",
+      "originalPrice": 13813,
+      "salePrice": 9669,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-4.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-149",
+      "name": "Seamless 6",
+      "mainCategory": "underwear",
+      "subCategory": "seamless",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality seamless 6 designed for ultimate comfort and style.",
+      "originalPrice": 9078,
+      "salePrice": 6354,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-3.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-150",
+      "name": "Thongs 1",
+      "mainCategory": "underwear",
+      "subCategory": "thongs",
+      "material": "Smooth Layers",
+      "description": "This is a high quality thongs 1 designed for ultimate comfort and style.",
+      "originalPrice": 12004,
+      "salePrice": 8402,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-151",
+      "name": "Thongs 2",
+      "mainCategory": "underwear",
+      "subCategory": "thongs",
+      "material": "Smooth Layers",
+      "description": "This is a high quality thongs 2 designed for ultimate comfort and style.",
+      "originalPrice": 12720,
+      "salePrice": 12720,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-152",
+      "name": "Thongs 3",
+      "mainCategory": "underwear",
+      "subCategory": "thongs",
+      "material": "Smooth Layers",
+      "description": "This is a high quality thongs 3 designed for ultimate comfort and style.",
+      "originalPrice": 13079,
+      "salePrice": 9155,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/campaign-2.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-153",
+      "name": "Thongs 4",
+      "mainCategory": "underwear",
+      "subCategory": "thongs",
+      "material": "Woven Cotton",
+      "description": "This is a high quality thongs 4 designed for ultimate comfort and style.",
+      "originalPrice": 5133,
+      "salePrice": 5133,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-154",
+      "name": "Cheeky 1",
+      "mainCategory": "underwear",
+      "subCategory": "cheeky",
+      "material": "Smooth Layers",
+      "description": "This is a high quality cheeky 1 designed for ultimate comfort and style.",
+      "originalPrice": 6153,
+      "salePrice": 4307,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-155",
+      "name": "Cheeky 2",
+      "mainCategory": "underwear",
+      "subCategory": "cheeky",
+      "material": "Woven Cotton",
+      "description": "This is a high quality cheeky 2 designed for ultimate comfort and style.",
+      "originalPrice": 7290,
+      "salePrice": 7290,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-4.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-156",
+      "name": "Cheeky 3",
+      "mainCategory": "underwear",
+      "subCategory": "cheeky",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality cheeky 3 designed for ultimate comfort and style.",
+      "originalPrice": 7010,
+      "salePrice": 4907,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-157",
+      "name": "Cheeky 4",
+      "mainCategory": "underwear",
+      "subCategory": "cheeky",
+      "material": "Smooth Layers",
+      "description": "This is a high quality cheeky 4 designed for ultimate comfort and style.",
+      "originalPrice": 14509,
+      "salePrice": 14509,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-2.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-158",
+      "name": "Cheeky 5",
+      "mainCategory": "underwear",
+      "subCategory": "cheeky",
+      "material": "Woven Cotton",
+      "description": "This is a high quality cheeky 5 designed for ultimate comfort and style.",
+      "originalPrice": 8092,
+      "salePrice": 8092,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-159",
+      "name": "Cheeky 6",
+      "mainCategory": "underwear",
+      "subCategory": "cheeky",
+      "material": "Cotton Rib",
+      "description": "This is a high quality cheeky 6 designed for ultimate comfort and style.",
+      "originalPrice": 14018,
+      "salePrice": 9812,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-160",
+      "name": "Multi Packs 1",
+      "mainCategory": "underwear",
+      "subCategory": "multi-packs",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality multi packs 1 designed for ultimate comfort and style.",
+      "originalPrice": 14556,
+      "salePrice": 10189,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/hero-dresses.png",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-161",
+      "name": "Multi Packs 2",
+      "mainCategory": "underwear",
+      "subCategory": "multi-packs",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality multi packs 2 designed for ultimate comfort and style.",
+      "originalPrice": 13765,
+      "salePrice": 9635,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-162",
+      "name": "Multi Packs 3",
+      "mainCategory": "underwear",
+      "subCategory": "multi-packs",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality multi packs 3 designed for ultimate comfort and style.",
+      "originalPrice": 7361,
+      "salePrice": 7361,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-163",
+      "name": "Multi Packs 4",
+      "mainCategory": "underwear",
+      "subCategory": "multi-packs",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality multi packs 4 designed for ultimate comfort and style.",
+      "originalPrice": 10163,
+      "salePrice": 7114,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-164",
+      "name": "Multi Packs 5",
+      "mainCategory": "underwear",
+      "subCategory": "multi-packs",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality multi packs 5 designed for ultimate comfort and style.",
+      "originalPrice": 13065,
+      "salePrice": 13065,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-165",
+      "name": "Multi Packs 6",
+      "mainCategory": "underwear",
+      "subCategory": "multi-packs",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality multi packs 6 designed for ultimate comfort and style.",
+      "originalPrice": 10534,
+      "salePrice": 10534,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/product-1.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-166",
+      "name": "Bags 1",
+      "mainCategory": "accessories",
+      "subCategory": "bags",
+      "material": "Cotton Rib",
+      "description": "This is a high quality bags 1 designed for ultimate comfort and style.",
+      "originalPrice": 9933,
+      "salePrice": 6953,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/campaign-1.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-167",
+      "name": "Bags 2",
+      "mainCategory": "accessories",
+      "subCategory": "bags",
+      "material": "Cotton Rib",
+      "description": "This is a high quality bags 2 designed for ultimate comfort and style.",
+      "originalPrice": 6026,
+      "salePrice": 6026,
+      "primaryImage": "/images/campaign-1.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-168",
+      "name": "Bags 3",
+      "mainCategory": "accessories",
+      "subCategory": "bags",
+      "material": "Woven Cotton",
+      "description": "This is a high quality bags 3 designed for ultimate comfort and style.",
+      "originalPrice": 12777,
+      "salePrice": 8943,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-169",
+      "name": "Bags 4",
+      "mainCategory": "accessories",
+      "subCategory": "bags",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality bags 4 designed for ultimate comfort and style.",
+      "originalPrice": 13191,
+      "salePrice": 9233,
+      "primaryImage": "/images/product-4.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-4.jpg",
+        "/images/campaign-1.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-170",
+      "name": "Glasses Shades 1",
+      "mainCategory": "accessories",
+      "subCategory": "glasses-shades",
+      "material": "Cotton Rib",
+      "description": "This is a high quality glasses shades 1 designed for ultimate comfort and style.",
+      "originalPrice": 12843,
+      "salePrice": 12843,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/campaign-1.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/campaign-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-171",
+      "name": "Glasses Shades 2",
+      "mainCategory": "accessories",
+      "subCategory": "glasses-shades",
+      "material": "Smooth Layers",
+      "description": "This is a high quality glasses shades 2 designed for ultimate comfort and style.",
+      "originalPrice": 13986,
+      "salePrice": 9790,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-172",
+      "name": "Glasses Shades 3",
+      "mainCategory": "accessories",
+      "subCategory": "glasses-shades",
+      "material": "Cotton Rib",
+      "description": "This is a high quality glasses shades 3 designed for ultimate comfort and style.",
+      "originalPrice": 12210,
+      "salePrice": 12210,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/hero.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/hero.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-173",
+      "name": "Glasses Shades 4",
+      "mainCategory": "accessories",
+      "subCategory": "glasses-shades",
+      "material": "Cotton Rib",
+      "description": "This is a high quality glasses shades 4 designed for ultimate comfort and style.",
+      "originalPrice": 14403,
+      "salePrice": 10082,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-174",
+      "name": "Glasses Shades 5",
+      "mainCategory": "accessories",
+      "subCategory": "glasses-shades",
+      "material": "Smooth Layers",
+      "description": "This is a high quality glasses shades 5 designed for ultimate comfort and style.",
+      "originalPrice": 8462,
+      "salePrice": 8462,
+      "primaryImage": "/images/product-3.jpg",
+      "secondaryImage": "/images/product-2.jpg",
+      "allImages": [
+        "/images/product-3.jpg",
+        "/images/product-2.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-175",
+      "name": "Belts 1",
+      "mainCategory": "accessories",
+      "subCategory": "belts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality belts 1 designed for ultimate comfort and style.",
+      "originalPrice": 10784,
+      "salePrice": 10784,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/product-4.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-176",
+      "name": "Belts 2",
+      "mainCategory": "accessories",
+      "subCategory": "belts",
+      "material": "Woven Cotton",
+      "description": "This is a high quality belts 2 designed for ultimate comfort and style.",
+      "originalPrice": 6416,
+      "salePrice": 4491,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-177",
+      "name": "Belts 3",
+      "mainCategory": "accessories",
+      "subCategory": "belts",
+      "material": "Cotton Rib",
+      "description": "This is a high quality belts 3 designed for ultimate comfort and style.",
+      "originalPrice": 10201,
+      "salePrice": 10201,
+      "primaryImage": "/images/product-2.jpg",
+      "secondaryImage": "/images/campaign-2.jpg",
+      "allImages": [
+        "/images/product-2.jpg",
+        "/images/campaign-2.jpg",
+        "/images/product-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-178",
+      "name": "Belts 4",
+      "mainCategory": "accessories",
+      "subCategory": "belts",
+      "material": "Smooth Layers",
+      "description": "This is a high quality belts 4 designed for ultimate comfort and style.",
+      "originalPrice": 6227,
+      "salePrice": 4358,
+      "primaryImage": "/images/product-1.jpg",
+      "secondaryImage": "/images/hero-dresses.png",
+      "allImages": [
+        "/images/product-1.jpg",
+        "/images/hero-dresses.png",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-179",
+      "name": "Belts 5",
+      "mainCategory": "accessories",
+      "subCategory": "belts",
+      "material": "Cotton Rib",
+      "description": "This is a high quality belts 5 designed for ultimate comfort and style.",
+      "originalPrice": 8849,
+      "salePrice": 8849,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-3.jpg",
+        "/images/hero-dresses.png"
+      ],
+      "colors": [
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-180",
+      "name": "Belts 6",
+      "mainCategory": "accessories",
+      "subCategory": "belts",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality belts 6 designed for ultimate comfort and style.",
+      "originalPrice": 13501,
+      "salePrice": 13501,
+      "primaryImage": "/images/hero.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero.jpg",
+        "/images/product-1.jpg",
+        "/images/campaign-2.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": true,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-181",
+      "name": "Perfumes 1",
+      "mainCategory": "accessories",
+      "subCategory": "perfumes",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality perfumes 1 designed for ultimate comfort and style.",
+      "originalPrice": 5362,
+      "salePrice": 3753,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-3.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-3.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-182",
+      "name": "Perfumes 2",
+      "mainCategory": "accessories",
+      "subCategory": "perfumes",
+      "material": "Cotton Rib",
+      "description": "This is a high quality perfumes 2 designed for ultimate comfort and style.",
+      "originalPrice": 12116,
+      "salePrice": 8481,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-1.jpg",
+        "/images/campaign-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Sienna",
+          "hex": "#8a2020"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": true
+    },
+    {
+      "id": "prod-183",
+      "name": "Perfumes 3",
+      "mainCategory": "accessories",
+      "subCategory": "perfumes",
+      "material": "Woven Cotton",
+      "description": "This is a high quality perfumes 3 designed for ultimate comfort and style.",
+      "originalPrice": 10527,
+      "salePrice": 10527,
+      "primaryImage": "/images/hero-dresses.png",
+      "secondaryImage": "/images/product-4.jpg",
+      "allImages": [
+        "/images/hero-dresses.png",
+        "/images/product-4.jpg",
+        "/images/product-4.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Desert",
+          "hex": "#b5a090"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-184",
+      "name": "Perfumes 4",
+      "mainCategory": "accessories",
+      "subCategory": "perfumes",
+      "material": "Seamless Jersey",
+      "description": "This is a high quality perfumes 4 designed for ultimate comfort and style.",
+      "originalPrice": 11833,
+      "salePrice": 8283,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-1.jpg",
+        "/images/hero.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        },
+        {
+          "name": "Cream",
+          "hex": "#f0ead8"
+        },
+        {
+          "name": "Onyx",
+          "hex": "#1a1a1a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": false,
+      "isNewArrival": false
+    },
+    {
+      "id": "prod-185",
+      "name": "Perfumes 5",
+      "mainCategory": "accessories",
+      "subCategory": "perfumes",
+      "material": "Cotton Rib",
+      "description": "This is a high quality perfumes 5 designed for ultimate comfort and style.",
+      "originalPrice": 6239,
+      "salePrice": 4367,
+      "primaryImage": "/images/campaign-2.jpg",
+      "secondaryImage": "/images/product-1.jpg",
+      "allImages": [
+        "/images/campaign-2.jpg",
+        "/images/product-1.jpg",
+        "/images/product-1.jpg"
+      ],
+      "colors": [
+        {
+          "name": "Cocoa",
+          "hex": "#c4967a"
+        }
+      ],
+      "sizes": [
+        "XXS",
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2X",
+        "3X"
+      ],
+      "saleLabel": "30% OFF BI-ANNUAL SALE",
+      "isBestSeller": true,
+      "isNewArrival": false
+    }
+  ],
+  "seo": {
+    "title": "REVOLT | Official Site",
+    "description": "Discover the latest in fashion and essentials."
+  },
+  "homepage": {
+    "hero": {
+      "title": "The Uniform Collection",
+      "description": "Discover our latest foundational pieces, engineered for everyday movement and comfort.",
+      "buttonText": "Shop the Collection",
+      "videoUrl": "",
+      "useVideo": false
+    },
+    "sections": [
+      {
+        "id": "sec-hero",
+        "type": "hero",
+        "active": true
+      },
+      {
+        "id": "sec-products",
+        "type": "products",
+        "active": true,
+        "title": "Most Wanted",
+        "categories": [
+          {
+            "name": "Thongs",
+            "link": "/underwear/thongs",
+            "image": "/images/product-4.jpg"
+          },
+          {
+            "name": "Pants",
+            "link": "/clothing/pants",
+            "image": "/images/product-2.jpg"
+          },
+          {
+            "name": "T-Shirt Bras",
+            "link": "/bras/t-shirt-bras",
+            "image": "/images/product-3.jpg"
+          },
+          {
+            "name": "Tees & Tanks",
+            "link": "/clothing/tees-tanks",
+            "image": "/images/product-1.jpg"
+          }
+        ]
+      },
+      {
+        "id": "sec-editorial",
+        "type": "editorial",
+        "active": true,
+        "title": "Volume 01",
+        "text": "Technical Layers for Maximum Support",
+        "image": "/images/editorial-wide.jpg"
+      },
+      {
+        "id": "sec-new-arrivals",
+        "type": "new-arrivals",
+        "active": true,
+        "title": "New Arrivals"
+      },
+      {
+        "id": "sec-curation",
+        "type": "curation",
+        "active": true,
+        "title": "Curated For You",
+        "mainItem": {
+          "title": "Bikinis",
+          "link": "/swimwear/bikinis",
+          "image": "/images/campaign-2.jpg"
+        },
+        "subItems": [
+          {
+            "title": "Glasses & Shades",
+            "link": "/accessories/glasses-shades",
+            "image": "/images/product-3.jpg"
+          },
+          {
+            "title": "Perfumes",
+            "link": "/accessories/perfumes",
+            "image": "/images/campaign-1.jpg"
+          }
+        ]
+      },
+      {
+        "id": "sec-text-block",
+        "type": "text-block",
+        "active": true,
+        "title": "Our Ethos",
+        "text": "We believe in clothing that empowers you to move with confidence. Every seam, every fabric choice, is designed with purpose."
+      }
+    ]
+  },
+  "admin": {
+    "currentUser": null,
+    "logs": []
+  },
+  "orders": []
+}

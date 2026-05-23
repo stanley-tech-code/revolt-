@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Revolt — The New Uniform</title>
+  <meta name="description" content="Revolt: engineered loungewear, shapewear and essentials. The new uniform — designed to be felt, not seen." />
+  <meta property="og:title" content="Revolt — The New Uniform" />
+  <meta property="og:description" content="Engineered loungewear and essentials. The new uniform." />
+  <meta property="og:image" content="images/hero.jpg" />
+
+  <!-- Tailwind via CDN (no build step) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-canvas: #fbfaf7;
+      --color-bone:   #f6f4ef;
+      --color-sand:   #ece7df;
+      --color-clay:   #d9d2c7;
+      --color-cocoa:  #7c6f60;
+      --color-ink:    #1f1b16;
+    }
+  </style>
+  <style>
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; background:#fbfaf7; color:#1f1b16; }
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { scrollbar-width: none; }
+    
+    /* Optional backdrop overlay when mega menu is open */
+    .mega-menu-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .group:hover .mega-menu-backdrop {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-canvas text-ink">
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="bg-ink text-canvas text-center py-2 text-[10px] md:text-[11px] font-medium tracking-[0.2em] uppercase relative z-[70]">
+    Free Shipping
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-50 bg-white border-b border-clay/40 relative">
+    
+    <!-- Mega Menu Backdrop Overlay (covers screen below header) -->
+    <div class="fixed top-[100%] left-0 w-full h-[100vh] bg-ink/40 mega-menu-backdrop z-[-1]"></div>
+
+    <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+      
+      <!-- Mobile Logo (Left) -->
+      <a href="../../index.html" target="_blank" class="md:hidden text-2xl font-semibold tracking-[-0.04em] uppercase">Revolt</a>
+
+      <!-- Desktop Left: Logo & Nav Links -->
+      <div class="hidden md:flex items-center gap-8 lg:gap-12 h-full">
+        <a href="../../index.html" target="_blank" class="text-3xl font-semibold tracking-[-0.04em] uppercase">Revolt</a>
+        <nav class="flex items-center gap-6 lg:gap-8 h-full">
+          
+          <!-- MEGA MENU: NEW IN -->
+          <div class="group h-full flex items-center">
+            <a href="../../pages/new-in/new-in.html" target="_blank" class="text-[11px] font-medium uppercase tracking-[0.18em] text-cocoa group-hover:text-ink whitespace-nowrap h-full flex items-center">New In</a>
+            <div class="absolute left-0 top-full w-full hidden group-hover:block bg-white border-b border-clay/40 shadow-sm transition-opacity duration-300">
+              <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-12 gap-8">
+                <!-- Left: Featured -->
+                <div class="col-span-3 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Featured</h4>
+                  <a href="../../pages/new-in/all-new-arrivals.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">All New Arrivals</a>
+                  <a href="../../pages/new-in/the-editorial-edit.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">The Editorial Edit</a>
+                  <a href="../../pages/new-in/trend-guide.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Trend Guide</a>
+                </div>
+                <!-- Middle: Categories -->
+                <div class="col-span-5 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Categories</h4>
+                  <div class="grid grid-cols-2 gap-y-3 gap-x-6">
+                    <a href="../../pages/new-in/all-new-arrivals.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">All New Arrivals</a>
+                    <a href="../../pages/new-in/back-in-stock.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Back in Stock</a>
+                    <a href="../../pages/new-in/coming-soon.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Coming Soon</a>
+                    <a href="../../pages/new-in/pre-order.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Pre-Order</a>
+                  </div>
+                </div>
+                <!-- Right: Promo -->
+                <div class="col-span-4 pl-10 border-l border-clay/30">
+                  <a href="../../pages/other/volume-02-preview-discover-the-next-evolution-of-our-essentials.html" target="_blank" class="group/promo block">
+                    <div class="aspect-[16/9] bg-sand mb-4 overflow-hidden">
+                      <img src="../../images/campaign-1.jpg" alt="Campaign" class="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                    </div>
+                    <h5 class="text-sm font-bold uppercase tracking-[0.1em] text-ink mb-1">Volume 02 Preview</h5>
+                    <p class="text-xs text-cocoa">Discover the next evolution of our essentials.</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- MEGA MENU: CLOTHING -->
+          <div class="group h-full flex items-center">
+            <a href="../../pages/clothing/clothing.html" target="_blank" class="text-[11px] font-medium uppercase tracking-[0.18em] text-cocoa group-hover:text-ink whitespace-nowrap h-full flex items-center">Clothing</a>
+            <div class="absolute left-0 top-full w-full hidden group-hover:block bg-white border-b border-clay/40 shadow-sm transition-opacity duration-300">
+              <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-12 gap-8">
+                <!-- Left: Featured -->
+                <div class="col-span-3 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Featured</h4>
+                  <a href="../../pages/clothing/all-clothing.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">All Clothing</a>
+                  <a href="../../pages/clothing/two-piece-matching-sets.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Two Piece & Matching Sets</a>
+                  <a href="../../pages/clothing/clothing-guide.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Clothing Guide</a>
+                </div>
+                <!-- Middle: Categories -->
+                <div class="col-span-5 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Categories</h4>
+                  <div class="grid grid-cols-2 gap-y-3 gap-x-6">
+                    <a href="../../pages/clothing/dresses.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Dresses</a>
+                    <a href="../../pages/clothing/hoodies.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Hoodies</a>
+                    <a href="../../pages/clothing/sweatshirts.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Sweatshirts</a>
+                    <a href="../../pages/clothing/leggings.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Leggings</a>
+                    <a href="../../pages/clothing/maternity.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Maternity</a>
+                    <a href="../../pages/clothing/tops-bodysuits.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Tops & Bodysuits</a>
+                    <a href="../../pages/clothing/pants.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Pants</a>
+                    <a href="../../pages/clothing/pajamas.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Pajamas</a>
+                    <a href="../../pages/clothing/shorts.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Shorts</a>
+                    <a href="../../pages/clothing/skirts.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Skirts</a>
+                    <a href="../../pages/clothing/tees-tanks.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Tees & Tanks</a>
+                  </div>
+                </div>
+                <!-- Right: Promo -->
+                <div class="col-span-4 pl-10 border-l border-clay/30">
+                  <a href="../../pages/other/the-essentials-edit-shop-the-looks-from-our-latest-campaign.html" target="_blank" class="group/promo block">
+                    <div class="aspect-[16/9] bg-sand mb-4 overflow-hidden">
+                      <img src="../../images/editorial-wide.jpg" alt="Campaign" class="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                    </div>
+                    <h5 class="text-sm font-bold uppercase tracking-[0.1em] text-ink mb-1">The Essentials Edit</h5>
+                    <p class="text-xs text-cocoa">Shop the looks from our latest campaign.</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MEGA MENU: BRAS -->
+          <div class="group h-full flex items-center">
+            <a href="../../pages/bras/bras.html" target="_blank" class="text-[11px] font-medium uppercase tracking-[0.18em] text-cocoa group-hover:text-ink whitespace-nowrap h-full flex items-center">Bras</a>
+            <div class="absolute left-0 top-full w-full hidden group-hover:block bg-white border-b border-clay/40 shadow-sm transition-opacity duration-300">
+              <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-12 gap-8">
+                <!-- Left: Featured -->
+                <div class="col-span-3 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Featured</h4>
+                  <a href="../../pages/bras/all-bras.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">All Bras</a>
+                  <a href="../../pages/bras/everyday-comfort.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Everyday Comfort</a>
+                  <a href="../../pages/bras/bra-fit-guide.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Bra Fit Guide</a>
+                </div>
+                <!-- Middle: Categories -->
+                <div class="col-span-5 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Categories</h4>
+                  <div class="grid grid-cols-2 gap-y-3 gap-x-6">
+                    <a href="../../pages/bras/t-shirt-bras.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">T-Shirt Bras</a>
+                    <a href="../../pages/bras/strapless.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Strapless</a>
+                    <a href="../../pages/bras/full-coverage.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Full Coverage</a>
+                    <a href="../../pages/clothing/maternity.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Maternity</a>
+                    <a href="../../pages/bras/lined.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Lined</a>
+                    <a href="../../pages/bras/push-up.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Push-Up</a>
+                    <a href="../../pages/bras/unlined.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Unlined</a>
+                    <a href="../../pages/bras/lightly-lined.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Lightly Lined</a>
+                  </div>
+                </div>
+                <!-- Right: Promo -->
+                <div class="col-span-4 pl-10 border-l border-clay/30">
+                  <a href="../../pages/other/second-skin-feel-engineered-for-invisible-weightless-support.html" target="_blank" class="group/promo block">
+                    <div class="aspect-[16/9] bg-sand mb-4 overflow-hidden">
+                      <img src="../../images/product-3.jpg" alt="Campaign" class="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                    </div>
+                    <h5 class="text-sm font-bold uppercase tracking-[0.1em] text-ink mb-1">Second-Skin Feel</h5>
+                    <p class="text-xs text-cocoa">Engineered for invisible, weightless support.</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MEGA MENU: UNDERWEAR -->
+          <div class="group h-full flex items-center">
+            <a href="../../pages/underwear/underwear.html" target="_blank" class="text-[11px] font-medium uppercase tracking-[0.18em] text-cocoa group-hover:text-ink whitespace-nowrap h-full flex items-center">Underwear</a>
+            <div class="absolute left-0 top-full w-full hidden group-hover:block bg-white border-b border-clay/40 shadow-sm transition-opacity duration-300">
+              <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-12 gap-8">
+                <!-- Left: Featured -->
+                <div class="col-span-3 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Featured</h4>
+                  <a href="../../pages/underwear/all-underwear.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">All Underwear</a>
+                  <a href="../../pages/underwear/multi-packs.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Multi-Packs</a>
+                  <a href="../../pages/underwear/underwear-guide.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Underwear Guide</a>
+                </div>
+                <!-- Middle: Categories -->
+                <div class="col-span-5 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Categories</h4>
+                  <div class="grid grid-cols-2 gap-y-3 gap-x-6">
+                    <a href="../../pages/underwear/thongs.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Thongs</a>
+                    <a href="../../pages/underwear/cheeky.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Cheeky</a>
+                    <a href="../../pages/clothing/maternity.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Maternity</a>
+                    <a href="../../pages/underwear/seamless.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Seamless</a>
+                  </div>
+                </div>
+                <!-- Right: Promo -->
+                <div class="col-span-4 pl-10 border-l border-clay/30">
+                  <a href="../../pages/other/seamless-collection-smooth-lines-and-ultimate-comfort-for-every-body.html" target="_blank" class="group/promo block">
+                    <div class="aspect-[16/9] bg-sand mb-4 overflow-hidden">
+                      <img src="../../images/product-2.jpg" alt="Campaign" class="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                    </div>
+                    <h5 class="text-sm font-bold uppercase tracking-[0.1em] text-ink mb-1">Seamless Collection</h5>
+                    <p class="text-xs text-cocoa">Smooth lines and ultimate comfort for every body.</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MEGA MENU: ACCESSORIES -->
+          <div class="group h-full flex items-center">
+            <a href="../../pages/accessories/accessories.html" target="_blank" class="text-[11px] font-medium uppercase tracking-[0.18em] text-cocoa group-hover:text-ink whitespace-nowrap h-full flex items-center">Accessories</a>
+            <div class="absolute left-0 top-full w-full hidden group-hover:block bg-white border-b border-clay/40 shadow-sm transition-opacity duration-300">
+              <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-12 gap-8">
+                <!-- Left: Featured -->
+                <div class="col-span-3 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Featured</h4>
+                  <a href="../../pages/accessories/all-accessories.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">All Accessories</a>
+                  <a href="../../pages/accessories/gifting.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Gifting</a>
+                  <a href="../../pages/accessories/the-travel-edit.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">The Travel Edit</a>
+                </div>
+                <!-- Middle: Categories -->
+                <div class="col-span-5 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Categories</h4>
+                  <div class="grid grid-cols-2 gap-y-3 gap-x-6">
+                    <a href="../../pages/accessories/bags.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Bags</a>
+                    <a href="../../pages/accessories/glasses-shades.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Glasses & Shades</a>
+                    <a href="../../pages/accessories/belts.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Belts</a>
+                    <a href="../../pages/accessories/perfumes.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Perfumes</a>
+                  </div>
+                </div>
+                <!-- Right: Promo -->
+                <div class="col-span-4 pl-10 border-l border-clay/30">
+                  <a href="../../pages/other/signature-scents-complete-the-uniform-with-our-new-fragrance-line.html" target="_blank" class="group/promo block">
+                    <div class="aspect-[16/9] bg-sand mb-4 overflow-hidden">
+                      <img src="../../images/campaign-2.jpg" alt="Campaign" class="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                    </div>
+                    <h5 class="text-sm font-bold uppercase tracking-[0.1em] text-ink mb-1">Signature Scents</h5>
+                    <p class="text-xs text-cocoa">Complete the uniform with our new fragrance line.</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MEGA MENU: SWIMWEAR -->
+          <div class="group h-full flex items-center">
+            <a href="../../pages/swimwear/swimwear.html" target="_blank" class="text-[11px] font-medium uppercase tracking-[0.18em] text-cocoa group-hover:text-ink whitespace-nowrap h-full flex items-center">Swimwear</a>
+            <div class="absolute left-0 top-full w-full hidden group-hover:block bg-white border-b border-clay/40 shadow-sm transition-opacity duration-300">
+              <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-12 gap-8">
+                <!-- Left: Featured -->
+                <div class="col-span-3 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Featured</h4>
+                  <a href="../../pages/swimwear/all-swimwear.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">All Swimwear</a>
+                  <a href="../../pages/swimwear/vacation-shop.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Vacation Shop</a>
+                  <a href="../../pages/swimwear/swim-fit-guide.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Swim Fit Guide</a>
+                </div>
+                <!-- Middle: Categories -->
+                <div class="col-span-5 flex flex-col gap-4">
+                  <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-ink mb-2">Categories</h4>
+                  <div class="grid grid-cols-2 gap-y-3 gap-x-6">
+                    <a href="../../pages/swimwear/bikinis.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Bikinis</a>
+                    <a href="../../pages/swimwear/swimsuits.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Swimsuits</a>
+                    <a href="../../pages/swimwear/swim-cover-ups.html" target="_blank" class="text-sm text-cocoa hover:text-ink transition-colors">Swim Cover-Ups</a>
+                  </div>
+                </div>
+                <!-- Right: Promo -->
+                <div class="col-span-4 pl-10 border-l border-clay/30">
+                  <a href="../../pages/other/the-resort-edit-minimal-silhouettes-ready-for-the-sun.html" target="_blank" class="group/promo block">
+                    <div class="aspect-[16/9] bg-sand mb-4 overflow-hidden">
+                      <img src="../../images/product-1.jpg" alt="Campaign" class="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                    </div>
+                    <h5 class="text-sm font-bold uppercase tracking-[0.1em] text-ink mb-1">The Resort Edit</h5>
+                    <p class="text-xs text-cocoa">Minimal silhouettes ready for the sun.</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+
+      <!-- Right Side: Icons + Hamburger -->
+      <div class="flex items-center gap-4 md:gap-5 text-cocoa">
+        <button aria-label="Search" class="p-1 hover:text-ink"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" stroke-linecap="round"/></svg></button>
+        <button aria-label="Account" class="p-1 hover:text-ink hidden sm:inline-flex"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
+        <button aria-label="Wishlist" class="p-1 hover:text-ink"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.8 5.6a5.5 5.5 0 0 0-9 1.7 5.5 5.5 0 0 0-9-1.7c-2.1 2.1-2.1 5.6 0 7.7l9 9 9-9c2.1-2.1 2.1-5.6 0-7.7Z"/></svg></button>
+        <button aria-label="Cart" class="p-1 hover:text-ink"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.5 12h-11L5 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></button>
+        <button id="mobile-menu-btn" aria-label="Menu" class="md:hidden p-1 text-cocoa hover:text-ink">
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div id="mobile-menu" class="fixed inset-0 z-[80] bg-white transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+    <div class="px-6 h-14 flex items-center justify-end border-b border-clay/40 shrink-0">
+      <button id="close-menu-btn" aria-label="Close Menu" class="p-1 text-cocoa hover:text-ink">
+        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-4">
+      
+      <!-- Mobile Item: New In -->
+      <div class="border-b border-clay/30 pb-4">
+        <div class="flex items-center justify-between">
+          <a href="../../pages/new-in/new-in.html" target="_blank" class="text-base font-semibold uppercase tracking-tight text-ink">New In</a>
+          <button class="p-2 -mr-2 mobile-accordion-btn" aria-label="Toggle Submenu">
+            <svg class="size-5 text-cocoa transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="hidden flex-col gap-5 pt-5 mobile-accordion-content">
+          <div class="flex flex-col gap-3 pb-4 border-b border-clay/20">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Featured</span>
+            <a href="../../pages/new-in/all-new-arrivals.html" target="_blank" class="text-xs text-cocoa hover:text-ink">All New Arrivals</a>
+            <a href="../../pages/new-in/the-editorial-edit.html" target="_blank" class="text-xs text-cocoa hover:text-ink">The Editorial Edit</a>
+            <a href="../../pages/new-in/trend-guide.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Trend Guide</a>
+          </div>
+          <div class="flex flex-col gap-3 pb-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Categories</span>
+            <a href="../../pages/new-in/all-new-arrivals.html" target="_blank" class="text-xs text-cocoa hover:text-ink">All New Arrivals</a>
+            <a href="../../pages/new-in/back-in-stock.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Back in Stock</a>
+            <a href="../../pages/new-in/coming-soon.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Coming Soon</a>
+            <a href="../../pages/new-in/pre-order.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Pre-Order</a>
+          </div>
+          <a href="../../pages/other/volume-02-preview.html" target="_blank" class="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
+            <img src="../../images/campaign-1.jpg" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
+              <span class="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Volume 02 Preview</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Item: Clothing -->
+      <div class="border-b border-clay/30 pb-4">
+        <div class="flex items-center justify-between">
+          <a href="../../pages/clothing/clothing.html" target="_blank" class="text-base font-semibold uppercase tracking-tight text-ink">Clothing</a>
+          <button class="p-2 -mr-2 mobile-accordion-btn" aria-label="Toggle Submenu">
+            <svg class="size-5 text-cocoa transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="hidden flex-col gap-5 pt-5 mobile-accordion-content">
+          <div class="flex flex-col gap-3 pb-4 border-b border-clay/20">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Featured</span>
+            <a href="../../pages/clothing/all-clothing.html" target="_blank" class="text-xs text-cocoa hover:text-ink">All Clothing</a>
+            <a href="../../pages/clothing/two-piece-matching-sets.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Two Piece & Matching Sets</a>
+            <a href="../../pages/clothing/clothing-guide.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Clothing Guide</a>
+          </div>
+          <div class="flex flex-col gap-3 pb-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Categories</span>
+            <a href="../../pages/clothing/dresses.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Dresses</a>
+            <a href="../../pages/clothing/hoodies.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Hoodies</a>
+            <a href="../../pages/clothing/sweatshirts.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Sweatshirts</a>
+            <a href="../../pages/clothing/leggings.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Leggings</a>
+            <a href="../../pages/clothing/maternity.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Maternity</a>
+            <a href="../../pages/clothing/tops-bodysuits.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Tops & Bodysuits</a>
+            <a href="../../pages/clothing/pants.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Pants</a>
+            <a href="../../pages/clothing/pajamas.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Pajamas</a>
+            <a href="../../pages/clothing/shorts.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Shorts</a>
+            <a href="../../pages/clothing/skirts.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Skirts</a>
+            <a href="../../pages/clothing/tees-tanks.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Tees & Tanks</a>
+          </div>
+          <a href="../../pages/other/the-essentials-edit.html" target="_blank" class="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
+            <img src="../../images/editorial-wide.jpg" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
+              <span class="text-canvas text-sm font-bold uppercase tracking-[0.1em]">The Essentials Edit</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Item: Bras -->
+      <div class="border-b border-clay/30 pb-4">
+        <div class="flex items-center justify-between">
+          <a href="../../pages/bras/bras.html" target="_blank" class="text-base font-semibold uppercase tracking-tight text-ink">Bras</a>
+          <button class="p-2 -mr-2 mobile-accordion-btn" aria-label="Toggle Submenu">
+            <svg class="size-5 text-cocoa transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="hidden flex-col gap-5 pt-5 mobile-accordion-content">
+          <div class="flex flex-col gap-3 pb-4 border-b border-clay/20">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Featured</span>
+            <a href="../../pages/bras/all-bras.html" target="_blank" class="text-xs text-cocoa hover:text-ink">All Bras</a>
+            <a href="../../pages/bras/everyday-comfort.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Everyday Comfort</a>
+            <a href="../../pages/bras/bra-fit-guide.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Bra Fit Guide</a>
+          </div>
+          <div class="flex flex-col gap-3 pb-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Categories</span>
+            <a href="../../pages/bras/t-shirt-bras.html" target="_blank" class="text-xs text-cocoa hover:text-ink">T-Shirt Bras</a>
+            <a href="../../pages/bras/strapless.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Strapless</a>
+            <a href="../../pages/bras/full-coverage.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Full Coverage</a>
+            <a href="../../pages/clothing/maternity.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Maternity</a>
+            <a href="../../pages/bras/lined.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Lined</a>
+            <a href="../../pages/bras/push-up.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Push-Up</a>
+            <a href="../../pages/bras/unlined.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Unlined</a>
+            <a href="../../pages/bras/lightly-lined.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Lightly Lined</a>
+          </div>
+          <a href="../../pages/other/second-skin-feel.html" target="_blank" class="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
+            <img src="../../images/product-3.jpg" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
+              <span class="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Second-Skin Feel</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Item: Underwear -->
+      <div class="border-b border-clay/30 pb-4">
+        <div class="flex items-center justify-between">
+          <a href="../../pages/underwear/underwear.html" target="_blank" class="text-base font-semibold uppercase tracking-tight text-ink">Underwear</a>
+          <button class="p-2 -mr-2 mobile-accordion-btn" aria-label="Toggle Submenu">
+            <svg class="size-5 text-cocoa transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="hidden flex-col gap-5 pt-5 mobile-accordion-content">
+          <div class="flex flex-col gap-3 pb-4 border-b border-clay/20">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Featured</span>
+            <a href="../../pages/underwear/all-underwear.html" target="_blank" class="text-xs text-cocoa hover:text-ink">All Underwear</a>
+            <a href="../../pages/underwear/multi-packs.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Multi-Packs</a>
+            <a href="../../pages/underwear/underwear-guide.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Underwear Guide</a>
+          </div>
+          <div class="flex flex-col gap-3 pb-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Categories</span>
+            <a href="../../pages/underwear/thongs.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Thongs</a>
+            <a href="../../pages/underwear/cheeky.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Cheeky</a>
+            <a href="../../pages/clothing/maternity.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Maternity</a>
+            <a href="../../pages/underwear/seamless.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Seamless</a>
+          </div>
+          <a href="../../pages/other/seamless-collection.html" target="_blank" class="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
+            <img src="../../images/product-2.jpg" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
+              <span class="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Seamless Collection</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Item: Accessories -->
+      <div class="border-b border-clay/30 pb-4">
+        <div class="flex items-center justify-between">
+          <a href="../../pages/accessories/accessories.html" target="_blank" class="text-base font-semibold uppercase tracking-tight text-ink">Accessories</a>
+          <button class="p-2 -mr-2 mobile-accordion-btn" aria-label="Toggle Submenu">
+            <svg class="size-5 text-cocoa transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="hidden flex-col gap-5 pt-5 mobile-accordion-content">
+          <div class="flex flex-col gap-3 pb-4 border-b border-clay/20">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Featured</span>
+            <a href="../../pages/accessories/all-accessories.html" target="_blank" class="text-xs text-cocoa hover:text-ink">All Accessories</a>
+            <a href="../../pages/accessories/gifting.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Gifting</a>
+            <a href="../../pages/accessories/the-travel-edit.html" target="_blank" class="text-xs text-cocoa hover:text-ink">The Travel Edit</a>
+          </div>
+          <div class="flex flex-col gap-3 pb-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Categories</span>
+            <a href="../../pages/accessories/bags.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Bags</a>
+            <a href="../../pages/accessories/glasses-shades.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Glasses & Shades</a>
+            <a href="../../pages/accessories/belts.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Belts</a>
+            <a href="../../pages/accessories/perfumes.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Perfumes</a>
+          </div>
+          <a href="../../pages/other/signature-scents.html" target="_blank" class="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
+            <img src="../../images/campaign-2.jpg" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
+              <span class="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Signature Scents</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Item: Swimwear -->
+      <div class="border-b border-clay/30 pb-4">
+        <div class="flex items-center justify-between">
+          <a href="../../pages/swimwear/swimwear.html" target="_blank" class="text-base font-semibold uppercase tracking-tight text-ink">Swimwear</a>
+          <button class="p-2 -mr-2 mobile-accordion-btn" aria-label="Toggle Submenu">
+            <svg class="size-5 text-cocoa transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="hidden flex-col gap-5 pt-5 mobile-accordion-content">
+          <div class="flex flex-col gap-3 pb-4 border-b border-clay/20">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Featured</span>
+            <a href="../../pages/swimwear/all-swimwear.html" target="_blank" class="text-xs text-cocoa hover:text-ink">All Swimwear</a>
+            <a href="../../pages/swimwear/vacation-shop.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Vacation Shop</a>
+            <a href="../../pages/swimwear/swim-fit-guide.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Swim Fit Guide</a>
+          </div>
+          <div class="flex flex-col gap-3 pb-4">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-ink">Categories</span>
+            <a href="../../pages/swimwear/bikinis.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Bikinis</a>
+            <a href="../../pages/swimwear/swimsuits.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Swimsuits</a>
+            <a href="../../pages/swimwear/swim-cover-ups.html" target="_blank" class="text-xs text-cocoa hover:text-ink">Swim Cover-Ups</a>
+          </div>
+          <a href="../../pages/other/the-resort-edit.html" target="_blank" class="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
+            <img src="../../images/product-1.jpg" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
+              <span class="text-canvas text-sm font-bold uppercase tracking-[0.1em]">The Resort Edit</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <hr class="border-clay/40 my-2">
+      <a href="../../pages/components/account.html" target="_blank" class="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink">Account</a>
+      <a href="../../pages/components/wishlist.html" target="_blank" class="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink mb-6">Wishlist</a>
+      
+      <!-- Social Icons -->
+      <div class="flex items-center gap-4 text-cocoa pb-4">
+        <a href="../../pages/components/instagram.html" target="_blank" aria-label="Instagram" class="hover:text-ink">
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        </a>
+        <a href="../../pages/components/facebook.html" target="_blank" aria-label="Facebook" class="hover:text-ink">
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="../../pages/components/tiktok.html" target="_blank" aria-label="TikTok" class="hover:text-ink">
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v3a8 8 0 0 1-5-1z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="py-32 bg-canvas min-h-[60vh] flex items-center justify-center">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-5xl font-semibold uppercase tracking-tight text-ink mb-4">Signature Scents Complete The Uniform With Our New Fragrance Line</h1>
+        <p class="text-cocoa">This is a placeholder page for Signature Scents Complete The Uniform With Our New Fragrance Line. Edit this file to add content.</p>
+        <a href="../../index.html" class="inline-block mt-8 text-xs font-bold uppercase tracking-[0.2em] border-b border-ink pb-1 hover:text-cocoa transition-colors">Return Home</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER + NEWSLETTER -->
+  <footer class="bg-ink text-canvas pt-20 pb-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-16 mb-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+          <div class="space-y-4">
+            <h5 class="text-[10px] font-bold uppercase tracking-[0.25em] text-canvas/50">Shop</h5>
+            <ul class="space-y-3 text-xs">
+              <li><a href="../../pages/new-in/new-in.html" target="_blank" class="hover:text-clay">New In</a></li>
+              <li><a href="../../pages/clothing/clothing.html" target="_blank" class="hover:text-clay">Clothing</a></li>
+              <li><a href="../../pages/clothing/shapewear.html" target="_blank" class="hover:text-clay">Shapewear</a></li>
+              <li><a href="../../pages/accessories/accessories.html" target="_blank" class="hover:text-clay">Accessories</a></li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h5 class="text-[10px] font-bold uppercase tracking-[0.25em] text-canvas/50">Help</h5>
+            <ul class="space-y-3 text-xs">
+              <li><a href="../../pages/help/order-tracking.html" target="_blank" class="hover:text-clay">Order Tracking</a></li>
+              <li><a href="../../pages/help/returns.html" target="_blank" class="hover:text-clay">Returns</a></li>
+              <li><a href="../../pages/help/size-guide.html" target="_blank" class="hover:text-clay">Size Guide</a></li>
+              <li><a href="../../pages/help/contact.html" target="_blank" class="hover:text-clay">Contact</a></li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h5 class="text-[10px] font-bold uppercase tracking-[0.25em] text-canvas/50">About</h5>
+            <ul class="space-y-3 text-xs">
+              <li><a href="../../pages/about/our-story.html" target="_blank" class="hover:text-clay">Our Story</a></li>
+              <li><a href="../../pages/about/sustainability.html" target="_blank" class="hover:text-clay">Sustainability</a></li>
+              <li><a href="../../pages/about/press.html" target="_blank" class="hover:text-clay">Press</a></li>
+              <li><a href="../../pages/about/careers.html" target="_blank" class="hover:text-clay">Careers</a></li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h5 class="text-[10px] font-bold uppercase tracking-[0.25em] text-canvas/50">Social</h5>
+            <ul class="space-y-3 text-xs">
+              <li><a href="../../pages/components/instagram.html" target="_blank" class="hover:text-clay">Instagram</a></li>
+              <li><a href="../../pages/components/tiktok.html" target="_blank" class="hover:text-clay">TikTok</a></li>
+              <li><a href="../../pages/components/pinterest.html" target="_blank" class="hover:text-clay">Pinterest</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lg:pl-12 lg:border-l border-canvas/15">
+          <h3 class="text-2xl md:text-3xl font-semibold uppercase tracking-tight mb-4">Join Revolt</h3>
+          <p class="text-sm text-canvas/70 max-w-md mb-6">Early access to drops, members-only releases, and editorial updates — straight to your inbox.</p>
+          <form class="flex gap-2 border-b border-canvas/30 pb-2 max-w-md" onsubmit="event.preventDefault();">
+            <input type="email" placeholder="Email address" class="bg-transparent border-none text-sm flex-1 outline-none placeholder:text-canvas/40 text-canvas" />
+            <button class="text-xs font-bold uppercase tracking-[0.25em] hover:text-clay">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-canvas/10 gap-4">
+        <span class="text-2xl font-semibold uppercase tracking-[-0.04em]">Revolt</span>
+        <p class="text-[10px] uppercase tracking-[0.25em] text-canvas/50">© 2026 Revolt Studio. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+  <script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('translate-x-full');
+      document.body.classList.add('overflow-hidden');
+    });
+
+    closeMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('translate-x-full');
+      document.body.classList.remove('overflow-hidden');
+    });
+
+    // Mobile Accordion Logic
+    const accordionBtns = document.querySelectorAll('.mobile-accordion-btn');
+    accordionBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // The submenu is the next sibling
+        const content = btn.parentElement.nextElementSibling;
+        const icon = btn.querySelector('svg');
+        content.classList.toggle('hidden');
+        content.classList.toggle('flex');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+</html>
