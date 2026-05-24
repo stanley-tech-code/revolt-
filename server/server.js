@@ -581,17 +581,8 @@ app.put('/api/seo', verifyToken, async (req, res) => {
   }
 });
 
-// --- REAL STATIC MEDIA ASSETS FILE UPLOADS ---
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, UPLOADS_DIR);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const basename = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9]/g, '_');
-    cb(null, `${Date.now()}-${basename}${ext}`);
-  }
-});
+// --- REAL CLOUD MEDIA ASSETS FILE UPLOADS (Supabase Storage) ---
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
@@ -612,9 +603,32 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
     return res.status(400).json({ success: false, error: 'Please choose a file to upload.' });
   }
 
-  const assetUrl = `/uploads/${req.file.filename}`;
-  await addLog(req.user.username, `Uploaded raw static asset to media storage: ${req.file.filename}`);
-  return res.json({ success: true, url: assetUrl });
+  try {
+    const ext = path.extname(req.file.originalname);
+    const basename = path.basename(req.file.originalname, ext).replace(/[^a-zA-Z0-9]/g, '_');
+    const filename = `${Date.now()}-${basename}${ext}`;
+
+    const { data, error } = await supabase.storage
+      .from('uploads')
+      .upload(filename, req.file.buffer, {
+        contentType: req.file.mimetype,
+        upsert: false
+      });
+
+    if (error) {
+      console.error('Supabase upload error:', error);
+      return res.status(500).json({ success: false, error: 'Cloud storage upload failed. Verify the "uploads" bucket exists in Supabase and is Public.' });
+    }
+
+    const { data: publicUrlData } = supabase.storage.from('uploads').getPublicUrl(filename);
+    const assetUrl = publicUrlData.publicUrl;
+
+    await addLog(req.user.username, `Uploaded raw static asset to cloud storage: ${filename}`);
+    return res.json({ success: true, url: assetUrl });
+  } catch (err) {
+    console.error('Upload exception:', err);
+    return res.status(500).json({ success: false, error: 'An unexpected error occurred during upload.' });
+  }
 });
 
 // --- AUDIT ACTIVITY LOG TIMELINE ---

@@ -36,6 +36,7 @@ CREATE TABLE public.products (
   "isBestSeller" boolean DEFAULT false,
   "isNewArrival" boolean DEFAULT false,
   stock integer DEFAULT 0,
+  status text DEFAULT 'Active'::text,
   conversions integer DEFAULT 0,
   revenue numeric DEFAULT 0.0,
   createdAt timestamp with time zone DEFAULT timezone('utc'::text, now())
