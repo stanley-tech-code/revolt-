@@ -8,12 +8,12 @@ export default function ProductEditor({ product, onClose }) {
 
   // Define Category Hierarchy
   const CATEGORY_MAP = {
-    'new-in': ['latest-drops', 'trending', 'back-in-stock'],
-    clothing: ['dresses', 'tops', 'bottoms', 'sets', 'hoodies', 'jackets'],
-    bras: ['plunge', 'balconette', 'push-up', 'bralette', 'sports-bras'],
-    underwear: ['thongs', 'briefs', 'boy-shorts', 'high-waisted', 'multipacks'],
-    accessories: ['bags', 'jewelry', 'sunglasses', 'hats'],
-    swimwear: ['bikinis', 'one-pieces', 'cover-ups', 'beachwear']
+    'new-in': ['all-new-arrivals', 'back-in-stock', 'coming-soon', 'pre-order'],
+    clothing: ['dresses', 'hoodies', 'sweatshirts', 'leggings', 'maternity', 'tops-bodysuits', 'pants', 'pajamas', 'shorts', 'skirts', 'tees-tanks'],
+    bras: ['t-shirt-bras', 'strapless', 'full-coverage', 'maternity', 'lined', 'push-up', 'unlined', 'lightly-lined'],
+    underwear: ['thongs', 'cheeky', 'maternity', 'seamless'],
+    accessories: ['bags', 'glasses-shades', 'belts', 'perfumes'],
+    swimwear: ['bikinis', 'swimsuits', 'swim-cover-ups']
   };
 
   // Form State
