@@ -15,10 +15,14 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const JWT_SECRET = 'REVOLT_ELITE_SECRET_JWT_KEY_992';
 
-// Ensure public upload directories exist
-const UPLOADS_DIR = path.join(__dirname, '../public/uploads');
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+// Ensure public upload directories exist (Local dev only)
+const UPLOADS_DIR = process.env.VERCEL ? '/tmp/uploads' : path.join(__dirname, '../public/uploads');
+try {
+  if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('Could not create uploads directory (expected on Vercel serverless):', e.message);
 }
 
 app.use(cors());
@@ -437,6 +441,72 @@ app.post('/api/orders', async (req, res) => {
     return res.status(500).json({ success: false, error: 'Failed to create order.' });
   }
 });
+// --- NEW E-COMMERCE CHECKOUT ---
+app.post('/api/checkout/create-order', verifyToken, async (req, res) => {
+  if (req.user.role !== 'client') return res.status(403).json({ success: false, error: 'Access denied.' });
+
+  const { items, subtotal, tax, deliveryFee, total, paymentMethod, deliveryInfo } = req.body;
+  if (!items || items.length === 0) return res.status(400).json({ success: false, error: 'Cart is empty.' });
+  
+  try {
+    // 1. Create order
+    const { data: order, error: orderError } = await supabase.from('orders').insert([{
+      userId: req.user.id,
+      items,
+      subtotal,
+      tax,
+      deliveryFee,
+      total,
+      status: 'pending',
+      paymentMethod,
+      deliveryInfo,
+      tracking: ''
+    }]).select().single();
+
+    if (orderError) throw orderError;
+
+    // 2. Deduct inventory
+    for (const item of items) {
+      // Find the product
+      const { data: product } = await supabase.from('products').select('stock, conversions, revenue, salePrice, originalPrice').eq('id', item.id).single();
+      if (product) {
+        const remainingStock = Math.max(0, product.stock - (item.quantity || 1));
+        const price = product.salePrice || product.originalPrice || 0;
+        await supabase.from('products').update({
+          stock: remainingStock,
+          conversions: (product.conversions || 0) + (item.quantity || 1),
+          revenue: Number(product.revenue || 0) + (price * (item.quantity || 1))
+        }).eq('id', item.id);
+      }
+    }
+
+    // 3. Clear user cart
+    await supabase.from('users').update({ cart: [] }).eq('id', req.user.id);
+
+    await addLog(req.user.email, `Created new order #${order.id} via Checkout`);
+    return res.json({ success: true, order });
+  } catch(err) {
+    console.error(err);
+    return res.status(500).json({ success: false, error: 'Failed to complete order.' });
+  }
+});
+
+app.get('/api/checkout/orders', verifyToken, async (req, res) => {
+  if (req.user.role !== 'client') return res.status(403).json({ success: false, error: 'Access denied.' });
+  
+  try {
+    const { data: orders, error } = await supabase.from('orders')
+      .select('*')
+      .eq('userId', req.user.id)
+      .order('createdAt', { ascending: false });
+      
+    if (error) throw error;
+    return res.json({ success: true, orders });
+  } catch(err) {
+    console.error(err);
+    return res.status(500).json({ success: false, error: 'Failed to fetch user orders.' });
+  }
+});
 
 app.put('/api/orders/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
@@ -559,6 +629,10 @@ app.get('/api/logs', verifyToken, async (req, res) => {
 });
 
 // Startup check
-app.listen(PORT, () => {
-  console.log(`[REVOLT BACKEND] Real production Express + Supabase API server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[REVOLT BACKEND] Real production Express + Supabase API server running on port ${PORT}`);
+  });
+}
+
+export default app;

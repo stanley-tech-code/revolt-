@@ -30,6 +30,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import Checkout from './pages/Checkout';
 
 function Layout({ children }) {
   const { db } = useCms();
@@ -96,6 +97,13 @@ function App() {
               <Route path="/components/wishlist" element={
                 <ProtectedRoute>
                   <Wishlist />
+                </ProtectedRoute>
+              } />
+
+              {/* CHECKOUT PAGE */}
+              <Route path="/checkout" element={
+                <ProtectedRoute>
+                  <Checkout />
                 </ProtectedRoute>
               } />
 

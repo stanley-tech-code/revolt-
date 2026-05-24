@@ -42,15 +42,20 @@ CREATE TABLE public.products (
 );
 
 -- 3. ORDERS TABLE
-CREATE TABLE IF NOT EXISTS public.orders (
+DROP TABLE IF EXISTS public.orders CASCADE;
+CREATE TABLE public.orders (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-  customer text NOT NULL,
-  items text NOT NULL,
+  "userId" uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  items jsonb NOT NULL,
   total numeric NOT NULL,
-  status text DEFAULT 'Pending'::text,
-  tracking text DEFAULT ''::text,
-  refundStatus text DEFAULT ''::text,
-  date timestamp with time zone DEFAULT timezone('utc'::text, now())
+  subtotal numeric NOT NULL,
+  tax numeric DEFAULT 0,
+  "deliveryFee" numeric DEFAULT 0,
+  status text DEFAULT 'pending'::text,
+  "paymentMethod" text NOT NULL,
+  "deliveryInfo" jsonb NOT NULL,
+  "tracking" text DEFAULT ''::text,
+  "createdAt" timestamp with time zone DEFAULT timezone('utc'::text, now())
 );
 
 -- 4. LOGS TABLE

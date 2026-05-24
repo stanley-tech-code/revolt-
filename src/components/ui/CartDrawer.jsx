@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../context/StoreContext';
 
 export default function CartDrawer() {
   const { isCartOpen, closeCart, cartItems, removeFromCart, updateQuantity, getCartTotal } = useStore();
+  const navigate = useNavigate();
 
   if (!isCartOpen) return null;
 
@@ -62,7 +64,7 @@ export default function CartDrawer() {
               <span>Ksh {getCartTotal().toLocaleString()}</span>
             </div>
             <p className="text-[11px] text-gray-500">Shipping & taxes calculated at checkout</p>
-            <button className="w-full bg-black text-white py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-gray-800 transition-colors" onClick={() => { alert('Checkout functionality is coming soon!'); closeCart(); }}>
+            <button className="w-full bg-black text-white py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-gray-800 transition-colors" onClick={() => { closeCart(); navigate('/checkout'); }}>
               Checkout
             </button>
           </div>
