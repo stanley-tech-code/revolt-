@@ -5,9 +5,9 @@ export default function Footer() {
   return (
     <footer className="bg-canvas text-[#000000] pt-12 md:pt-16 pb-8 border-t border-clay/30">
       <div className="container-standard">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-12 md:mb-16">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-20 mb-12 md:mb-16">
           {/* Footer Links */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 order-2 lg:order-1">
             {/* Shop */}
             <div className="space-y-4">
               <h5 className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#000000]">Shop</h5>
@@ -43,7 +43,7 @@ export default function Footer() {
           </div>
 
           {/* Newsletter */}
-          <div className="lg:pl-16 lg:border-l border-clay/20">
+          <div className="lg:pl-16 lg:border-l border-clay/20 order-1 lg:order-2 mb-4 lg:mb-0">
             <h3 className="text-xl md:text-2xl font-semibold uppercase tracking-tight mb-4 text-[#000000]">Join Revolt</h3>
             <p className="text-sm text-[#000000] max-w-sm mb-6 leading-relaxed">Early access to drops, members-only releases, and editorial updates.</p>
             <form className="flex gap-4 border-b border-[#000000]/30 pb-2 max-w-sm focus-within:border-[#000000] transition-colors" onSubmit={(e) => e.preventDefault()}>
