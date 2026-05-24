@@ -54,8 +54,21 @@ export function CmsProvider({ children }) {
       let logs = [];
       let currentUser = null;
 
-      // Admin authentication and private routes deactivated for public storefront polish
-      const token = null;
+      // Admin authentication
+      const token = localStorage.getItem('REVOLT_ADMIN_JWT_TOKEN');
+      if (token) {
+        try {
+          const authRes = await fetch('/api/auth/me', { headers: { 'Authorization': `Bearer ${token}` } });
+          const authData = await authRes.json();
+          if (authData.success) {
+            currentUser = authData.user;
+          } else {
+            localStorage.removeItem('REVOLT_ADMIN_JWT_TOKEN');
+          }
+        } catch (e) {
+          console.error("Failed to verify admin token");
+        }
+      }
 
       const freshDb = {
         homepage: {

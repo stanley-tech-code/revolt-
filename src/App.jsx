@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import AnnouncementBar from './components/ui/AnnouncementBar';
 import Navbar from './components/layout/Navbar';
 import MobileMenu from './components/layout/MobileMenu';
@@ -9,6 +9,12 @@ import { useCms } from './context/CmsContext';
 import { StoreProvider } from './context/StoreContext';
 import CartDrawer from './components/ui/CartDrawer';
 import SearchModal from './components/ui/SearchModal';
+import { Outlet } from 'react-router-dom';
+
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 
 import OurStory from './pages/about/OurStory';
 import Sustainability from './pages/about/Sustainability';
@@ -32,7 +38,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Checkout from './pages/Checkout';
 
-function Layout({ children }) {
+function ClientLayout() {
   const { db } = useCms();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   
@@ -56,7 +62,7 @@ function Layout({ children }) {
       <CartDrawer />
       <SearchModal />
       <div className={`flex-1 ${isTransparentPage ? '' : 'pt-[88px] md:pt-[108px]'}`}>
-        {children}
+        <Outlet />
       </div>
       <Footer />
     </div>
@@ -68,8 +74,25 @@ function App() {
     <AuthProvider>
       <StoreProvider>
         <Router>
-          <Layout>
-            <Routes>
+          <Routes>
+            {/* ADMIN ROUTES */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            
+            <Route path="/admin" element={
+              <AdminProtectedRoute>
+                <AdminLayout />
+              </AdminProtectedRoute>
+            }>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              {/* Placeholders for future admin sections */}
+              <Route path="products" element={<div className="p-4">Products Module Coming Soon</div>} />
+              <Route path="orders" element={<div className="p-4">Orders Module Coming Soon</div>} />
+              <Route path="settings" element={<div className="p-4">Settings Module Coming Soon</div>} />
+            </Route>
+
+            {/* CLIENT STOREFRONT ROUTES */}
+            <Route element={<ClientLayout />}>
               <Route path="/" element={<Home />} />
               
               {/* AUTH PAGES */}
@@ -93,14 +116,12 @@ function App() {
                 </ProtectedRoute>
               } />
               
-              {/* We will migrate Wishlist into the account dashboard later, or just protect it */}
               <Route path="/components/wishlist" element={
                 <ProtectedRoute>
                   <Wishlist />
                 </ProtectedRoute>
               } />
 
-              {/* CHECKOUT PAGE */}
               <Route path="/checkout" element={
                 <ProtectedRoute>
                   <Checkout />
@@ -111,8 +132,8 @@ function App() {
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/:mainCategory/:subCategory" element={<CollectionPage />} />
               <Route path="/:mainCategory" element={<CollectionPage />} />
-            </Routes>
-          </Layout>
+            </Route>
+          </Routes>
         </Router>
       </StoreProvider>
     </AuthProvider>
