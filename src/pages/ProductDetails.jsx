@@ -6,11 +6,11 @@ import ProductCard from '../components/ui/ProductCard';
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const { db } = useCms();
+  const { db, isLoading } = useCms();
   const { addToCart, toggleWishlist, wishlist } = useStore();
 
-  const product = db.products.find(p => p.id === id);
-  const relatedProducts = db.products.filter(p => p.mainCategory === product?.mainCategory && p.id !== id).slice(0, 3);
+  const product = db.products?.find(p => p.id === id);
+  const relatedProducts = db.products?.filter(p => p.mainCategory === product?.mainCategory && p.id !== id).slice(0, 3) || [];
 
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState(() => {
@@ -31,8 +31,16 @@ export default function ProductDetails() {
     }
   }, [id, product]);
 
+  if (isLoading) {
+    return (
+      <div className="py-32 flex justify-center items-center">
+        <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   if (!product) {
-    return <div className="py-32 text-center">Product not found.</div>;
+    return <div className="py-32 text-center text-xl uppercase tracking-widest font-bold">Product not found.</div>;
   }
 
   const images = product.allImages && product.allImages.length > 0 ? product.allImages : [product.primaryImage];

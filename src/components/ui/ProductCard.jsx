@@ -47,14 +47,19 @@ export default function ProductCard({ product }) {
       <div className="product-info flex flex-col gap-1 px-4 pb-4 pt-1">
         {product.colors && product.colors.length > 0 && (
           <div className="flex gap-1.5 mb-1">
-            {product.colors.map((color, idx) => (
-              <div 
-                key={idx} 
-                className={`w-3.5 h-3.5 rounded-full border border-[#ddd] ${idx === 0 ? 'ring-1 ring-offset-1 ring-black' : ''}`} 
-                style={{ backgroundColor: color.hex }}
-                title={color.name}
-              ></div>
-            ))}
+            {product.colors.map((color, idx) => {
+              const colorName = typeof color === 'string' ? color : color.name;
+              const colorHex = typeof color === 'string' ? color.toLowerCase().replace(' ', '') : color.hex;
+              
+              return (
+                <div 
+                  key={idx} 
+                  className={`w-3.5 h-3.5 rounded-full border border-[#ddd] ${idx === 0 ? 'ring-1 ring-offset-1 ring-black' : ''}`} 
+                  style={{ backgroundColor: colorHex }}
+                  title={colorName}
+                ></div>
+              );
+            })}
           </div>
         )}
         
