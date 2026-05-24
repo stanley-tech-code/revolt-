@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container-standard">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-20 mb-12 md:mb-16">
           {/* Footer Links */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 order-2 lg:order-1">
+          <div className="grid grid-cols-3 gap-4 md:gap-8 order-2 lg:order-1">
             {/* Shop */}
             <div className="space-y-4">
               <h5 className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#000000]">Shop</h5>
