@@ -21,7 +21,7 @@ export default function SearchModal() {
 
   const handleProductClick = (id) => {
     closeSearch();
-    navigate(`/product/1`); // Using static /product/1 for demo, usually \`/product/\${id}\`
+    navigate(`/product/${id}`);
   };
 
   if (!isSearchOpen) return null;

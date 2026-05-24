@@ -13,13 +13,19 @@ export default function ProductDetails() {
   const relatedProducts = db.products.filter(p => p.mainCategory === product?.mainCategory && p.id !== id).slice(0, 3);
 
   const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name || '');
+  const [selectedColor, setSelectedColor] = useState(() => {
+    if (!product?.colors || product.colors.length === 0) return '';
+    return typeof product.colors[0] === 'string' ? product.colors[0] : product.colors[0].name;
+  });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     if (product) {
-      setSelectedColor(product.colors?.[0]?.name || '');
+      const defaultColor = product.colors && product.colors.length > 0 
+        ? (typeof product.colors[0] === 'string' ? product.colors[0] : product.colors[0].name)
+        : '';
+      setSelectedColor(defaultColor);
       setCurrentImageIndex(0);
       setSelectedSize('');
     }
@@ -387,15 +393,20 @@ export default function ProductDetails() {
             <>
               <div className="section-label">Color &nbsp; <span>{selectedColor}</span></div>
               <div className="color-swatches">
-                {product.colors.map(color => (
-                  <div 
-                    key={color.name}
-                    className={`swatch ${selectedColor === color.name ? 'active' : ''}`} 
-                    style={{ backgroundColor: color.hex }}
-                    title={color.name} 
-                    onClick={() => setSelectedColor(color.name)}
-                  ></div>
-                ))}
+                {product.colors.map((color) => {
+                  const colorName = typeof color === 'string' ? color : color.name;
+                  const colorHex = typeof color === 'string' ? color.toLowerCase().replace(' ', '') : color.hex;
+                  
+                  return (
+                    <div 
+                      key={colorName}
+                      className={`swatch ${selectedColor === colorName ? 'active' : ''}`} 
+                      style={{ backgroundColor: colorHex }}
+                      title={colorName} 
+                      onClick={() => setSelectedColor(colorName)}
+                    ></div>
+                  );
+                })}
               </div>
               <hr className="divider" />
             </>
