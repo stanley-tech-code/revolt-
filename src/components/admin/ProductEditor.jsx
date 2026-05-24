@@ -6,6 +6,13 @@ export default function ProductEditor({ product, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Define Category Hierarchy
+  const CATEGORY_MAP = {
+    clothing: ['dresses', 'tops', 'bottoms', 'sets', 'hoodies'],
+    swimwear: ['bikinis', 'one-pieces', 'cover-ups'],
+    accessories: ['bags', 'jewelry', 'sunglasses']
+  };
+
   // Form State
   const [formData, setFormData] = useState({
     name: product?.name || '',
@@ -26,10 +33,20 @@ export default function ProductEditor({ product, onClose }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      };
+      
+      // If main category changes, reset the sub category to the first available option
+      if (name === 'mainCategory') {
+        newData.subCategory = CATEGORY_MAP[value]?.[0] || '';
+      }
+      
+      return newData;
+    });
   };
 
   const handleImageUpload = async (e) => {
@@ -158,15 +175,19 @@ export default function ProductEditor({ product, onClose }) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-[0.1em] mb-2">Main Category</label>
-                  <select name="mainCategory" value={formData.mainCategory} onChange={handleChange} className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm focus:border-[#000000] outline-none">
-                    <option value="clothing">Clothing</option>
-                    <option value="accessories">Accessories</option>
-                    <option value="new-in">New In</option>
+                  <select name="mainCategory" value={formData.mainCategory} onChange={handleChange} className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm focus:border-[#000000] outline-none capitalize">
+                    {Object.keys(CATEGORY_MAP).map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-[0.1em] mb-2">Sub Category</label>
-                  <input name="subCategory" value={formData.subCategory} onChange={handleChange} type="text" placeholder="e.g. Hoodies" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm focus:border-[#000000] outline-none" />
+                  <select name="subCategory" value={formData.subCategory} onChange={handleChange} className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm focus:border-[#000000] outline-none capitalize">
+                    {CATEGORY_MAP[formData.mainCategory]?.map(sub => (
+                      <option key={sub} value={sub}>{sub.replace('-', ' ')}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
