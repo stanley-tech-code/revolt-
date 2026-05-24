@@ -8,9 +8,12 @@ export default function ProductEditor({ product, onClose }) {
 
   // Define Category Hierarchy
   const CATEGORY_MAP = {
-    clothing: ['dresses', 'tops', 'bottoms', 'sets', 'hoodies'],
-    swimwear: ['bikinis', 'one-pieces', 'cover-ups'],
-    accessories: ['bags', 'jewelry', 'sunglasses']
+    'new-in': ['latest-drops', 'trending', 'back-in-stock'],
+    clothing: ['dresses', 'tops', 'bottoms', 'sets', 'hoodies', 'jackets'],
+    bras: ['plunge', 'balconette', 'push-up', 'bralette', 'sports-bras'],
+    underwear: ['thongs', 'briefs', 'boy-shorts', 'high-waisted', 'multipacks'],
+    accessories: ['bags', 'jewelry', 'sunglasses', 'hats'],
+    swimwear: ['bikinis', 'one-pieces', 'cover-ups', 'beachwear']
   };
 
   // Form State
