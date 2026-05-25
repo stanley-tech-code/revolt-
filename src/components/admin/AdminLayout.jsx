@@ -16,6 +16,7 @@ export default function AdminLayout() {
 
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', roles: ['Super Admin', 'Editor'] },
+    { name: 'Analytics', path: '/admin/analytics', roles: ['Super Admin', 'Editor'] },
     { name: 'Products', path: '/admin/products', roles: ['Super Admin', 'Editor'] },
     { name: 'Orders', path: '/admin/orders', roles: ['Super Admin', 'Editor'] },
     { name: 'Customers', path: '/admin/customers', roles: ['Super Admin', 'Editor'] },

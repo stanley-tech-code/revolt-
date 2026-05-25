@@ -641,6 +641,51 @@ app.put('/api/seo', verifyToken, async (req, res) => {
   }
 });
 
+// --- ANALYTICS AND TRAFFIC ---
+app.post('/api/track-visit', async (req, res) => {
+  const today = new Date().toISOString().split('T')[0];
+  try {
+    const { data: trafficDoc } = await supabase.from('cms').select('data').eq('type', 'traffic').single();
+    let traffic = trafficDoc?.data || {};
+    traffic[today] = (traffic[today] || 0) + 1;
+    await supabase.from('cms').upsert({ type: 'traffic', data: traffic });
+    return res.json({ success: true });
+  } catch(err) {
+    return res.status(500).json({ success: false });
+  }
+});
+
+app.get('/api/analytics', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin' && req.user.role !== 'Editor') {
+    return res.status(403).json({ success: false });
+  }
+  try {
+    const [{ data: orders }, { data: products }, { data: trafficDoc }] = await Promise.all([
+      supabase.from('orders').select('total, items'),
+      supabase.from('products').select('id'),
+      supabase.from('cms').select('data').eq('type', 'traffic').single()
+    ]);
+    const totalSales = (orders || []).reduce((acc, curr) => acc + (Number(curr.total) || 0), 0);
+    const totalItemsSold = (orders || []).reduce((acc, order) => {
+      if (order.items && Array.isArray(order.items)) {
+        return acc + order.items.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      }
+      return acc;
+    }, 0);
+    
+    return res.json({
+      success: true,
+      totalSales,
+      totalOrders: (orders || []).length,
+      totalItemsSold,
+      productsCount: (products || []).length,
+      traffic: trafficDoc?.data || {}
+    });
+  } catch(err) {
+    return res.status(500).json({ success: false });
+  }
+});
+
 // --- REAL CLOUD MEDIA ASSETS FILE UPLOADS (Supabase Storage) ---
 const storage = multer.memoryStorage();
 

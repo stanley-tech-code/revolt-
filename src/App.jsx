@@ -19,6 +19,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
+import AdminAnalytics from './pages/admin/AdminAnalytics';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 
 import OurStory from './pages/about/OurStory';
@@ -55,6 +56,7 @@ function ClientLayout() {
     setMobileMenuOpen(false);
     window.scrollTo(0, 0);
     document.title = db.seo.title;
+    fetch('/api/track-visit', { method: 'POST' }).catch(() => {});
   }, [location.pathname, db.seo.title]);
 
   return (
@@ -95,6 +97,7 @@ function App() {
               <Route path="customers" element={<AdminCustomers />} />
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="settings" element={<div className="p-4">Settings Module Coming Soon</div>} />
             </Route>
 
