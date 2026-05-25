@@ -15,6 +15,7 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
+import AdminOrders from './pages/admin/AdminOrders';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 
 import OurStory from './pages/about/OurStory';
@@ -87,8 +88,7 @@ function App() {
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="products" element={<AdminProducts />} />
-              {/* Placeholders for future admin sections */}
-              <Route path="orders" element={<div className="p-4">Orders Module Coming Soon</div>} />
+              <Route path="orders" element={<AdminOrders />} />
               <Route path="settings" element={<div className="p-4">Settings Module Coming Soon</div>} />
             </Route>
 

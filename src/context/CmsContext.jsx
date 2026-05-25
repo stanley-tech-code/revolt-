@@ -62,6 +62,17 @@ export function CmsProvider({ children }) {
           const authData = await authRes.json();
           if (authData.success) {
             currentUser = authData.user;
+            
+            // Fetch real-time orders if admin is authenticated
+            try {
+              const ordersRes = await fetch('/api/orders', { headers: { 'Authorization': `Bearer ${token}` } });
+              const ordersData = await ordersRes.json();
+              if (ordersData.success) {
+                orders = ordersData.orders;
+              }
+            } catch (err) {
+              console.error("Failed to fetch orders", err);
+            }
           } else {
             localStorage.removeItem('REVOLT_ADMIN_JWT_TOKEN');
           }
@@ -376,6 +387,49 @@ export function CmsProvider({ children }) {
     } catch (err) {
       return { success: false, error: 'Database restoration failed.' };
     }
+  };
+
+  // --- ORDERS MANAGEMENT ---
+  const updateOrderStatus = async (id, status) => {
+    try {
+      const res = await fetch(`/api/orders/${id}`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify({ status })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification(`Order #${id} status updated to ${status}.`);
+        await fetchDatabase();
+        return true;
+      } else {
+        setErrorNotification(data.error || 'Failed to update order status.');
+      }
+    } catch (err) {
+      setErrorNotification('Failed to update order status.');
+    }
+    return false;
+  };
+
+  const processRefund = async (id, action) => {
+    try {
+      const res = await fetch(`/api/orders/${id}/refund`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ action })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification(`Refund for Order #${id} ${action === 'approve' ? 'approve' : 'reject'}.`);
+        await fetchDatabase();
+        return true;
+      } else {
+        setErrorNotification(data.error || 'Failed to process refund.');
+      }
+    } catch (err) {
+      setErrorNotification('Failed to process refund.');
+    }
+    return false;
   };
 
   return (
