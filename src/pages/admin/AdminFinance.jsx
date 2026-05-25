@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useCms } from '../../context/CmsContext';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 export default function AdminFinance() {
   const { db } = useCms();
@@ -146,7 +146,7 @@ export default function AdminFinance() {
       tableRows.push(rowData);
     });
 
-    doc.autoTable({
+    autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
       startY: 55,
