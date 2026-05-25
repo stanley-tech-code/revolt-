@@ -65,7 +65,7 @@ export function CmsProvider({ children }) {
             
             // Fetch real-time orders if admin is authenticated
             try {
-              const ordersRes = await fetch('/api/orders', { headers: { 'Authorization': `Bearer ${token}` } });
+              const ordersRes = await fetch(`/api/orders?t=${Date.now()}`, { headers: { 'Authorization': `Bearer ${token}` } });
               const ordersData = await ordersRes.json();
               if (ordersData.success) {
                 orders = ordersData.orders;

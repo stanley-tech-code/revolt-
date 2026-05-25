@@ -11,7 +11,7 @@ export default function AdminOrders() {
 
   const filteredOrders = filterStatus === 'All' 
     ? orders 
-    : orders.filter(o => o.status === filterStatus);
+    : orders.filter(o => o.status?.toLowerCase() === filterStatus.toLowerCase());
 
   const handleStatusChange = async (e, orderId) => {
     const newStatus = e.target.value;
