@@ -472,7 +472,9 @@ export function CmsProvider({ children }) {
       deleteProduct,
       uploadFile,
       backupDatabase,
-      restoreDatabase
+      restoreDatabase,
+      updateOrderStatus,
+      processRefund
     }}>
       {children}
 
