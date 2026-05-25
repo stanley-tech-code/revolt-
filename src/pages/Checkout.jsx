@@ -81,7 +81,7 @@ export default function Checkout() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('revolt_token')}`
+          'Authorization': `Bearer ${localStorage.getItem('revolt_client_token')}`
         },
         body: JSON.stringify({
           items: cartItems,
