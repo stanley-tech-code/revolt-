@@ -15,13 +15,6 @@ export default function AdminOrders() {
 
   const handleStatusChange = async (e, orderId) => {
     const newStatus = e.target.value;
-    // Optimistic UI update: Find the order in db.orders and mutate it locally first so the UI snaps instantly
-    if (db && db.orders) {
-      const orderIndex = db.orders.findIndex(o => o.id === orderId);
-      if (orderIndex > -1) {
-        db.orders[orderIndex].status = newStatus;
-      }
-    }
     await updateOrderStatus(orderId, newStatus);
   };
 

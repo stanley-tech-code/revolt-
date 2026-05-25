@@ -389,8 +389,20 @@ export function CmsProvider({ children }) {
     }
   };
 
-  // --- ORDERS MANAGEMENT ---
   const updateOrderStatus = async (id, status) => {
+    // Optimistic UI update (Proper React state update)
+    setDb(prev => {
+      const newDb = { ...prev };
+      if (newDb.orders) {
+        const orderIndex = newDb.orders.findIndex(o => o.id === id);
+        if (orderIndex > -1) {
+          newDb.orders = [...newDb.orders];
+          newDb.orders[orderIndex] = { ...newDb.orders[orderIndex], status };
+        }
+      }
+      return newDb;
+    });
+
     try {
       const res = await fetch(`/api/orders/${id}`, {
         method: 'PUT',
@@ -404,9 +416,11 @@ export function CmsProvider({ children }) {
         return true;
       } else {
         setErrorNotification(data.error || 'Failed to update order status.');
+        await fetchDatabase(); // Revert to true server state
       }
     } catch (err) {
       setErrorNotification('Failed to update order status.');
+      await fetchDatabase(); // Revert to true server state
     }
     return false;
   };
