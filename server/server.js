@@ -676,6 +676,9 @@ app.get('/api/customers', verifyToken, async (req, res) => {
   try {
     const { data: customers, error } = await supabase.from('users').select('id, fullName, email, phone, dateOfBirth, gender, role, addresses, createdAt').in('role', ['client', 'suspended']).order('createdAt', { ascending: false });
     if (error) throw error;
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     return res.json({ success: true, customers });
   } catch(err) {
     return res.status(500).json({ success: false, error: 'Failed to fetch customers.' });
