@@ -674,7 +674,7 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
 app.get('/api/customers', verifyToken, async (req, res) => {
   if (req.user.role !== 'Super Admin' && req.user.role !== 'Editor') return res.status(403).json({ success: false, error: 'Access denied.' });
   try {
-    const { data: customers, error } = await supabase.from('users').select('id, fullName, email, phone, dateOfBirth, gender, role, addresses, createdAt').in('role', ['client', 'suspended']).order('createdAt', { ascending: false });
+    const { data: customers, error } = await supabase.from('users').select('id, fullName, email, phone, dateOfBirth, gender, role, addresses, createdat').in('role', ['client', 'suspended']).order('createdat', { ascending: false });
     if (error) throw error;
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');

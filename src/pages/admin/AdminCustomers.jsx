@@ -120,7 +120,7 @@ export default function AdminCustomers() {
                         {customer.phone && <p className="text-[10px] text-[#000000]/50 mt-1">{customer.phone}</p>}
                       </td>
                       <td className="py-4 px-6 text-sm">
-                        {new Date(customer.createdAt).toLocaleDateString()}
+                        {new Date(customer.createdat || customer.createdAt).toLocaleDateString()}
                       </td>
                       <td className="py-4 px-6 text-sm text-right font-medium">
                         {metrics?.orderCount || 0}
@@ -167,7 +167,7 @@ export default function AdminCustomers() {
                   <span className={`inline-block px-2 py-1 text-[9px] font-bold uppercase tracking-wider ${selectedCustomer.role === 'client' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                     {selectedCustomer.role === 'client' ? 'Active' : 'Suspended'}
                   </span>
-                  <span className="text-[10px] text-[#000000]/40 uppercase tracking-wider">Joined {new Date(selectedCustomer.createdAt).toLocaleDateString()}</span>
+                  <span className="text-[10px] text-[#000000]/40 uppercase tracking-wider">Joined {new Date(selectedCustomer.createdat || selectedCustomer.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
 
