@@ -21,6 +21,7 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState('card'); // card, mpesa, airtel
   const [mpesaPhone, setMpesaPhone] = useState(currentUser?.phone || '');
   const [airtelPhone, setAirtelPhone] = useState(currentUser?.phone || '');
+  const [showMpesaPrompt, setShowMpesaPrompt] = useState(false);
   
   const subtotal = getCartTotal();
   const tax = subtotal * 0.16; // 16% VAT
@@ -52,8 +53,21 @@ export default function Checkout() {
     window.scrollTo(0, 0);
   };
 
-  const handlePlaceOrder = async () => {
+  const triggerPayment = () => {
     if (!currentUser) return;
+    if (paymentMethod === 'mpesa') {
+      if (!mpesaPhone) {
+        setError('Please enter your M-Pesa phone number.');
+        return;
+      }
+      setShowMpesaPrompt(true);
+    } else {
+      processActualOrder();
+    }
+  };
+
+  const processActualOrder = async () => {
+    setShowMpesaPrompt(false);
     setLoading(true);
     setError(null);
 
@@ -325,7 +339,7 @@ export default function Checkout() {
                 Back to Delivery
               </button>
               <button 
-                onClick={handlePlaceOrder}
+                onClick={triggerPayment}
                 disabled={loading}
                 className="bg-black text-white px-10 py-4 text-[12px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-transform active:scale-95 flex items-center gap-2"
               >
@@ -382,6 +396,41 @@ export default function Checkout() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* M-PESA STK PUSH SIMULATION MODAL */}
+      {showMpesaPrompt && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+          <div className="bg-white w-full max-w-sm rounded-lg shadow-2xl overflow-hidden animate-fade-in relative">
+            <div className="bg-[#4CAF50] text-white text-center py-4 relative">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/1200px-M-PESA_LOGO-01.svg.png" alt="M-Pesa" className="h-8 mx-auto brightness-0 invert" />
+            </div>
+            <div className="p-6 text-center">
+              <p className="text-sm font-semibold mb-2 text-gray-800">Safaricom</p>
+              <p className="text-sm mb-6 text-gray-600">Do you want to pay Ksh {total.toLocaleString()} to REVOLT STORE? Enter M-PESA PIN</p>
+              <input 
+                type="password" 
+                maxLength="4"
+                placeholder="PIN" 
+                className="w-32 mx-auto text-center border-b-2 border-gray-300 text-2xl tracking-[0.5em] focus:outline-none focus:border-[#4CAF50] mb-8 py-2 block" 
+              />
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => setShowMpesaPrompt(false)}
+                  className="flex-1 py-3 text-sm font-bold uppercase tracking-wider text-gray-500 hover:bg-gray-100 transition-colors rounded"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={processActualOrder}
+                  className="flex-1 py-3 text-sm font-bold uppercase tracking-wider bg-[#4CAF50] text-white hover:bg-[#43a047] transition-colors rounded shadow-lg shadow-green-200"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
