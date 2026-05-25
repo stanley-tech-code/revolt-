@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useCms } from '../../context/CmsContext';
 
 export default function ProductEditor({ product, onClose }) {
   const { createProduct, updateProduct, uploadFile } = useCms();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [uploadingIdx, setUploadingIdx] = useState(null);
+  const fileInputRef = useRef(null);
 
   // Define Category Hierarchy
   const CATEGORY_MAP = {
@@ -14,6 +16,17 @@ export default function ProductEditor({ product, onClose }) {
     underwear: ['thongs', 'cheeky', 'maternity', 'seamless'],
     accessories: ['bags', 'glasses-shades', 'belts', 'perfumes'],
     swimwear: ['bikinis', 'swimsuits', 'swim-cover-ups']
+  };
+
+  // Build initial images array from existing product data
+  const buildInitialImages = () => {
+    if (product?.images && Array.isArray(product.images) && product.images.length > 0) {
+      return product.images;
+    }
+    if (product?.primaryImage) {
+      return [product.primaryImage];
+    }
+    return [];
   };
 
   // Form State
@@ -29,39 +42,77 @@ export default function ProductEditor({ product, onClose }) {
     material: product?.material || '',
     isNewArrival: product?.isNewArrival || false,
     isBestSeller: product?.isBestSeller || false,
-    primaryImage: product?.primaryImage || '',
     colors: product?.colors ? product.colors.join(', ') : '',
     sizes: product?.sizes ? product.sizes.join(', ') : ''
   });
 
+  const [images, setImages] = useState(buildInitialImages()); // array of URL strings
+  const [urlInput, setUrlInput] = useState('');
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    
     setFormData(prev => {
       const newData = {
         ...prev,
         [name]: type === 'checkbox' ? checked : value
       };
-      
-      // If main category changes, reset the sub category to the first available option
       if (name === 'mainCategory') {
         newData.subCategory = CATEGORY_MAP[value]?.[0] || '';
       }
-      
       return newData;
     });
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // Upload one or multiple files
+  const handleFileUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
 
-    const res = await uploadFile(file);
-    if (res.success) {
-      setFormData(prev => ({ ...prev, primaryImage: res.url }));
-    } else {
-      setErrorMsg(res.error || 'Failed to upload image.');
+    for (let i = 0; i < files.length; i++) {
+      setUploadingIdx(images.length + i);
+      const res = await uploadFile(files[i]);
+      if (res.success) {
+        setImages(prev => [...prev, res.url]);
+      } else {
+        setErrorMsg(res.error || 'Failed to upload one or more images.');
+      }
     }
+    setUploadingIdx(null);
+    // Reset file input so same file can be re-selected
+    e.target.value = '';
+  };
+
+  // Add image from URL input
+  const handleAddUrl = () => {
+    const trimmed = urlInput.trim();
+    if (!trimmed) return;
+    setImages(prev => [...prev, trimmed]);
+    setUrlInput('');
+  };
+
+  // Remove an image by index
+  const handleRemoveImage = (idx) => {
+    setImages(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  // Move image left (decrease index) — makes it "more primary"
+  const handleMoveLeft = (idx) => {
+    if (idx === 0) return;
+    setImages(prev => {
+      const next = [...prev];
+      [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+      return next;
+    });
+  };
+
+  // Move image right (increase index)
+  const handleMoveRight = (idx) => {
+    setImages(prev => {
+      if (idx === prev.length - 1) return prev;
+      const next = [...prev];
+      [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+      return next;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -69,14 +120,15 @@ export default function ProductEditor({ product, onClose }) {
     setIsSubmitting(true);
     setErrorMsg('');
 
-    // Prepare data
     const payload = {
       ...formData,
       originalPrice: Number(formData.originalPrice),
       salePrice: Number(formData.salePrice),
       stock: Number(formData.stock),
       colors: formData.colors.split(',').map(c => c.trim()).filter(Boolean),
-      sizes: formData.sizes.split(',').map(s => s.trim()).filter(Boolean)
+      sizes: formData.sizes.split(',').map(s => s.trim()).filter(Boolean),
+      images,                      // full array stored
+      primaryImage: images[0] || '' // first image is always the primary
     };
 
     let success = false;
@@ -97,7 +149,7 @@ export default function ProductEditor({ product, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 md:p-8 backdrop-blur-sm animate-fade-in">
       <div className="bg-white w-full max-w-4xl h-full md:h-auto max-h-full flex flex-col shadow-2xl">
-        
+
         {/* HEADER */}
         <div className="flex justify-between items-center p-6 border-b border-[#000000]/10">
           <h2 className="text-xl font-bold uppercase tracking-tight text-[#000000]">
@@ -115,8 +167,8 @@ export default function ProductEditor({ product, onClose }) {
           )}
 
           <form id="productForm" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            {/* LEFT COLUMN: Basic Info & Image */}
+
+            {/* LEFT COLUMN: Basic Info & Images */}
             <div className="space-y-6">
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-[0.1em] mb-2">Product Name <span className="text-red-500">*</span></label>
@@ -134,20 +186,108 @@ export default function ProductEditor({ product, onClose }) {
                 </div>
               </div>
 
+              {/* ── MULTI-IMAGE SECTION ── */}
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-[0.1em] mb-2">Primary Image</label>
-                <div className="flex gap-4 items-end">
-                  <div className="w-24 h-24 bg-gray-100 border border-[#000000]/20 shrink-0">
-                    {formData.primaryImage ? (
-                      <img src={formData.primaryImage} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-[#000000]/30 text-xs">No Img</div>
+                <label className="block text-[10px] font-bold uppercase tracking-[0.1em] mb-3">
+                  Product Images
+                  <span className="ml-2 text-[#000000]/40 normal-case font-normal">(first image = primary)</span>
+                </label>
+
+                {/* Image Grid */}
+                {images.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2 mb-3">
+                    {images.map((url, idx) => (
+                      <div key={idx} className="relative group border border-[#000000]/10 bg-[#f9f9f9] aspect-square overflow-hidden">
+                        {/* Primary badge */}
+                        {idx === 0 && (
+                          <span className="absolute top-1 left-1 z-10 bg-black text-white text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5">
+                            Primary
+                          </span>
+                        )}
+
+                        <img src={url} alt={`Product image ${idx + 1}`} className="w-full h-full object-cover" />
+
+                        {/* Overlay controls */}
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => handleMoveLeft(idx)}
+                            disabled={idx === 0}
+                            title="Move left"
+                            className="bg-white/90 hover:bg-white text-black text-xs w-7 h-7 flex items-center justify-center disabled:opacity-30 transition-colors"
+                          >
+                            ←
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(idx)}
+                            title="Remove image"
+                            className="bg-red-500 hover:bg-red-600 text-white text-xs w-7 h-7 flex items-center justify-center transition-colors"
+                          >
+                            ✕
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleMoveRight(idx)}
+                            disabled={idx === images.length - 1}
+                            title="Move right"
+                            className="bg-white/90 hover:bg-white text-black text-xs w-7 h-7 flex items-center justify-center disabled:opacity-30 transition-colors"
+                          >
+                            →
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Upload placeholder while uploading */}
+                    {uploadingIdx !== null && (
+                      <div className="border border-dashed border-[#000000]/20 bg-[#f9f9f9] aspect-square flex items-center justify-center">
+                        <span className="text-[10px] text-[#000000]/40 animate-pulse">Uploading…</span>
+                      </div>
                     )}
                   </div>
-                  <div className="flex-1 space-y-2">
-                    <input name="primaryImage" value={formData.primaryImage} onChange={handleChange} type="text" placeholder="Image URL (or upload below)" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm focus:border-[#000000] outline-none" />
-                    <input type="file" accept="image/*" onChange={handleImageUpload} className="text-xs" />
+                )}
+
+                {/* Upload Button */}
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full border border-dashed border-[#000000]/30 bg-[#f9f9f9] hover:bg-[#f0f0f0] text-[10px] font-bold uppercase tracking-[0.15em] text-[#000000]/60 hover:text-[#000000] py-3 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span className="text-base leading-none">＋</span>
+                    Upload Images
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+
+                  {/* URL input row */}
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={urlInput}
+                      onChange={e => setUrlInput(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), handleAddUrl())}
+                      placeholder="Or paste an image URL…"
+                      className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-3 py-2 text-xs focus:border-[#000000] outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddUrl}
+                      className="bg-[#000000] text-white text-[10px] font-bold uppercase tracking-[0.1em] px-4 py-2 hover:bg-[#000000]/80 transition-colors"
+                    >
+                      Add
+                    </button>
                   </div>
+                  <p className="text-[10px] text-[#000000]/40">
+                    Hover over an image to reorder or remove it. First image will be shown as the primary thumbnail.
+                  </p>
                 </div>
               </div>
 
@@ -159,7 +299,7 @@ export default function ProductEditor({ product, onClose }) {
 
             {/* RIGHT COLUMN: Categorization & Variants */}
             <div className="space-y-6">
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-[0.1em] mb-2">Stock Level <span className="text-red-500">*</span></label>
