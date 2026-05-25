@@ -421,6 +421,9 @@ app.get('/api/orders', verifyToken, async (req, res) => {
   try {
     const { data: orders, error } = await supabase.from('orders').select('*').order('createdAt', { ascending: false });
     if (error) throw error;
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     return res.json({ success: true, orders });
   } catch(err) {
     return res.status(500).json({ success: false, error: 'Failed to fetch orders.' });
