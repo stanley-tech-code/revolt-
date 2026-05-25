@@ -15,6 +15,7 @@ export default function AdminOrders() {
 
   const handleStatusChange = async (e, orderId) => {
     const newStatus = e.target.value;
+    alert(`Attempting to update order ${orderId} to status: ${newStatus}`);
     await updateOrderStatus(orderId, newStatus);
   };
 
