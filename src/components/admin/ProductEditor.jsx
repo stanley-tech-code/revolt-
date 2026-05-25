@@ -65,7 +65,7 @@ export default function ProductEditor({ product, onClose }) {
 
   // Compress and convert image file to base64 using Canvas
   // This avoids ALL Supabase storage / permission issues
-  const compressToBase64 = (file, maxWidth = 1200, quality = 0.82) => {
+  const compressToBase64 = (file, maxWidth = 900, quality = 0.78) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onerror = () => reject(new Error('Failed to read file'));
