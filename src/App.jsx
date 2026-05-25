@@ -19,8 +19,9 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
-import AdminAnalytics from './pages/admin/AdminAnalytics';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
+
+const AdminAnalytics = React.lazy(() => import('./pages/admin/AdminAnalytics'));
 
 import OurStory from './pages/about/OurStory';
 import Sustainability from './pages/about/Sustainability';
@@ -99,7 +100,7 @@ function App() {
               <Route path="customers" element={<AdminCustomers />} />
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
-              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="analytics" element={<React.Suspense fallback={<div className="p-10 text-center animate-pulse font-bold">Loading Analytics...</div>}><AdminAnalytics /></React.Suspense>} />
               <Route path="settings" element={<div className="p-4">Settings Module Coming Soon</div>} />
             </Route>
 
