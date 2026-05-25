@@ -54,7 +54,7 @@ export default function AdminDashboard() {
 
       {/* QUICK ACTIONS / INFO */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
-        <div className="bg-white border border-[#000000]/10 p-8 shadow-sm">
+        <div className="bg-white border border-[#000000]/10 p-4 md:p-8 shadow-sm">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-4">Recent Activity</h3>
           <div className="text-sm text-[#000000]/60 space-y-4">
             {db.admin.logs && db.admin.logs.length > 0 ? (
@@ -70,7 +70,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#000000]/10 p-8 shadow-sm">
+        <div className="bg-white border border-[#000000]/10 p-4 md:p-8 shadow-sm">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-4">System Status</h3>
           <ul className="space-y-4 text-sm">
             <li className="flex justify-between items-center">

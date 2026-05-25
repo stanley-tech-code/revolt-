@@ -32,7 +32,7 @@ export default function AdminOrders() {
 
   return (
     <div className="space-y-8 animate-fade-in print-container">
-      <div className="flex justify-between items-end no-print">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 no-print">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-[#000000]">Orders Management</h1>
           <p className="text-sm text-[#000000]/60 mt-2">View and process incoming customer orders.</p>
@@ -55,8 +55,8 @@ export default function AdminOrders() {
         </div>
       </div>
 
-      <div className="bg-white border border-[#000000]/10 overflow-hidden no-print">
-        <table className="w-full text-left border-collapse">
+      <div className="bg-white border border-[#000000]/10 overflow-x-auto no-print">
+        <table className="w-full text-left border-collapse whitespace-nowrap">
           <thead>
             <tr className="border-b border-[#000000]/10 bg-[#f9f9f9]">
               <th className="py-4 px-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/60">Order ID</th>

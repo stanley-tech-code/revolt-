@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useCms } from '../../context/CmsContext';
 
 export default function AdminLayout() {
   const { db, logoutAdmin, successNotification, errorNotification } = useCms();
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const currentUser = db?.admin?.currentUser;
 
@@ -36,13 +37,25 @@ export default function AdminLayout() {
           </div>
         )}
       </div>
-      <aside className="w-full md:w-64 bg-white border-r border-[#000000]/10 flex flex-col hidden md:flex">
-        <div className="p-8 border-b border-[#000000]/10">
-          <h1 className="text-2xl font-bold tracking-tight uppercase">Revolt <span className="text-[10px] bg-red-600 text-white px-1 py-0.5 rounded ml-2 align-top">v2.1</span></h1>
-          <p className="text-[9px] tracking-[0.2em] uppercase text-[#000000]/50 mt-1">Workspace</p>
+      {/* MOBILE DRAWER OVERLAY */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-[998] md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* SIDEBAR (Desktop Fixed, Mobile Sliding) */}
+      <aside className={`fixed inset-y-0 left-0 z-[999] w-64 bg-white border-r border-[#000000]/10 flex flex-col transform transition-transform duration-300 md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-8 border-b border-[#000000]/10 flex justify-between items-center">
+          <div>
+            <h1 className="text-xl font-bold tracking-tight uppercase">Revolt <span className="text-[10px] bg-red-600 text-white px-1 py-0.5 rounded ml-1 align-top">v2.1</span></h1>
+            <p className="text-[9px] tracking-[0.2em] uppercase text-[#000000]/50 mt-1">Workspace</p>
+          </div>
+          <button className="md:hidden text-2xl" onClick={() => setIsMobileMenuOpen(false)}>&times;</button>
         </div>
 
-        <nav className="flex-1 py-6 px-4 space-y-2">
+        <nav className="flex-1 py-6 px-4 space-y-2 overflow-y-auto">
           {navItems.map((item) => {
             if (!item.roles.includes(currentUser?.role)) return null;
 
@@ -50,6 +63,7 @@ export default function AdminLayout() {
               <NavLink
                 key={item.name}
                 to={item.path}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
                   `block px-4 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${
                     isActive 
@@ -78,11 +92,24 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* MOBILE HEADER (Visible only on small screens) */}
-      <header className="md:hidden bg-white border-b border-[#000000]/10 p-4 flex justify-between items-center">
-        <h1 className="text-lg font-bold tracking-tight uppercase">Revolt Admin</h1>
-        <button onClick={handleLogout} className="text-[10px] font-bold uppercase text-red-600">Sign Out</button>
-      </header>
+      {/* MAIN CONTENT WRAPPER */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* MOBILE HEADER (Visible only on small screens) */}
+        <header className="md:hidden bg-white border-b border-[#000000]/10 p-4 flex justify-between items-center sticky top-0 z-50">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setIsMobileMenuOpen(true)} className="p-1">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+            <h1 className="text-lg font-bold tracking-tight uppercase">Revolt Admin</h1>
+          </div>
+          <div className="w-8 h-8 bg-[#000000]/10 rounded-full flex items-center justify-center text-xs font-bold">
+            {currentUser?.username?.charAt(0).toUpperCase() || 'A'}
+          </div>
+        </header>
       
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 overflow-y-auto">
@@ -103,7 +130,7 @@ export default function AdminLayout() {
           <Outlet />
         </div>
       </main>
-
+      </div>
     </div>
   );
 }

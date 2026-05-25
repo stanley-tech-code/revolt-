@@ -76,13 +76,13 @@ export default function AdminCustomers() {
   };
 
   return (
-    <div className="p-8 pb-32 max-w-7xl mx-auto animate-fade-in">
-      <div className="flex justify-between items-end border-b border-[#000000]/10 pb-6 mb-8">
+    <div className="p-4 md:p-8 pb-32 max-w-7xl mx-auto animate-fade-in">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-[#000000]/10 pb-6 mb-8">
         <div>
           <h1 className="text-3xl font-bold uppercase tracking-tight">Customers</h1>
           <p className="text-xs tracking-[0.2em] uppercase text-[#000000]/50 mt-2">Manage Registered Clients</p>
         </div>
-        <div className="text-right">
+        <div className="text-left sm:text-right">
           <p className="text-sm font-bold">{customers.length}</p>
           <p className="text-[10px] uppercase tracking-wider text-[#000000]/50">Total Clients</p>
         </div>
