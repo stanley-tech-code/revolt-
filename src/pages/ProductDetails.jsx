@@ -107,9 +107,6 @@ export default function ProductDetails() {
         .wishlist-btn-main svg {
           width: 22px;
           height: 22px;
-          stroke: #1a1a1a;
-          fill: none;
-          stroke-width: 1.5;
         }
         .nav-arrow {
           position: absolute;
