@@ -177,6 +177,10 @@ app.post('/api/auth/client-login', async (req, res) => {
       return res.status(401).json({ success: false, error: 'Invalid email or password.' });
     }
 
+    if (user.role === 'suspended') {
+      return res.status(403).json({ success: false, error: 'Your account has been suspended. Please contact support.' });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     
     if (!isMatch) {
@@ -663,6 +667,55 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
   } catch (err) {
     console.error('Upload exception:', err);
     return res.status(500).json({ success: false, error: 'An unexpected error occurred during upload.' });
+  }
+});
+
+// --- CUSTOMER MANAGEMENT ---
+app.get('/api/customers', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin' && req.user.role !== 'Editor') return res.status(403).json({ success: false, error: 'Access denied.' });
+  try {
+    const { data: customers, error } = await supabase.from('users').select('id, fullName, email, phone, dateOfBirth, gender, role, addresses, createdAt').in('role', ['client', 'suspended']).order('createdAt', { ascending: false });
+    if (error) throw error;
+    return res.json({ success: true, customers });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch customers.' });
+  }
+});
+
+app.put('/api/customers/:id/status', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin' && req.user.role !== 'Editor') return res.status(403).json({ success: false, error: 'Access denied.' });
+  const { id } = req.params;
+  const { status } = req.body; // 'client' or 'suspended'
+  try {
+    const { data: updated, error } = await supabase.from('users').update({ role: status }).eq('id', id).select('id, fullName, email, phone, dateOfBirth, gender, role, addresses, createdAt').single();
+    if (error || !updated) return res.status(404).json({ success: false, error: 'Customer not found.' });
+    await addLog(req.user.username, `${status === 'suspended' ? 'Suspended' : 'Reactivated'} customer account: ${updated.email}`);
+    return res.json({ success: true, customer: updated });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to update customer status.' });
+  }
+});
+
+app.delete('/api/customers/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied. Super Admin required.' });
+  const { id } = req.params;
+  try {
+    // Option A: Anonymize to preserve order history
+    const { data: updated, error } = await supabase.from('users').update({
+      fullName: 'Deleted User',
+      email: `deleted_${Date.now()}@revolt.com`,
+      phone: '',
+      dateOfBirth: '',
+      gender: '',
+      addresses: [],
+      password: '',
+      role: 'deleted'
+    }).eq('id', id).select('email').single();
+    if (error || !updated) return res.status(404).json({ success: false, error: 'Customer not found.' });
+    await addLog(req.user.username, `Anonymized/Deleted customer account ID: ${id}`);
+    return res.json({ success: true });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to delete customer.' });
   }
 });
 

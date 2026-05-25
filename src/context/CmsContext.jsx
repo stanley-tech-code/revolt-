@@ -11,6 +11,7 @@ export function CmsProvider({ children }) {
     },
     products: [],
     orders: [],
+    customers: [],
     seo: { title: 'REVOLT — Refined Luxury Essentials', description: '', googleAnalyticsId: '', facebookPixelId: '', promoBannerActive: true, promoBannerText: '' },
     admin: { currentUser: null, logs: [] }
   });
@@ -51,6 +52,7 @@ export function CmsProvider({ children }) {
       const seoData = await seoRes.json();
 
       let orders = [];
+      let customers = [];
       let logs = [];
       let currentUser = null;
 
@@ -73,6 +75,19 @@ export function CmsProvider({ children }) {
             } catch (err) {
               console.error("Failed to fetch orders", err);
             }
+
+            // Fetch real-time customers if admin is authenticated
+            if (currentUser.role === 'Super Admin' || currentUser.role === 'Editor') {
+              try {
+                const custRes = await fetch(`/api/customers?t=${Date.now()}`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const custData = await custRes.json();
+                if (custData.success) {
+                  customers = custData.customers;
+                }
+              } catch (err) {
+                console.error("Failed to fetch customers", err);
+              }
+            }
           } else {
             localStorage.removeItem('REVOLT_ADMIN_JWT_TOKEN');
           }
@@ -89,6 +104,7 @@ export function CmsProvider({ children }) {
         products: prodData.products || db.products,
         seo: seoData.seo || db.seo,
         orders,
+        customers,
         admin: {
           currentUser,
           logs
@@ -449,6 +465,73 @@ export function CmsProvider({ children }) {
     return false;
   };
 
+  const updateCustomerStatus = async (id, status) => {
+    // Optimistic UI
+    setDb(prev => {
+      const newDb = { ...prev };
+      if (newDb.customers) {
+        const idx = newDb.customers.findIndex(c => c.id === id);
+        if (idx > -1) {
+          newDb.customers = [...newDb.customers];
+          newDb.customers[idx] = { ...newDb.customers[idx], role: status };
+        }
+      }
+      return newDb;
+    });
+
+    try {
+      const res = await fetch(`/api/customers/${id}/status`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify({ status })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification(`Customer account is now ${status}.`);
+        await fetchDatabase();
+        return true;
+      } else {
+        setErrorNotification(data.error || 'Failed to update customer.');
+        await fetchDatabase();
+      }
+    } catch (err) {
+      setErrorNotification('Failed to update customer status.');
+      await fetchDatabase();
+    }
+    return false;
+  };
+
+  const deleteCustomer = async (id) => {
+    // Optimistic UI
+    setDb(prev => {
+      const newDb = { ...prev };
+      if (newDb.customers) {
+        newDb.customers = newDb.customers.filter(c => c.id !== id);
+      }
+      return newDb;
+    });
+
+    try {
+      const res = await fetch(`/api/customers/${id}`, {
+        method: 'DELETE',
+        headers: getHeaders()
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification('Customer account deleted successfully.');
+        await fetchDatabase();
+        return true;
+      } else {
+        setErrorNotification(data.error || 'Failed to delete customer.');
+        await fetchDatabase();
+      }
+    } catch (err) {
+      setErrorNotification('Failed to delete customer.');
+      await fetchDatabase();
+    }
+    return false;
+  };
+
   return (
     <CmsContext.Provider value={{
       db,
@@ -474,7 +557,9 @@ export function CmsProvider({ children }) {
       backupDatabase,
       restoreDatabase,
       updateOrderStatus,
-      processRefund
+      processRefund,
+      updateCustomerStatus,
+      deleteCustomer
     }}>
       {children}
 

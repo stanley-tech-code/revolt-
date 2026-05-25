@@ -17,6 +17,7 @@ export default function AdminLayout() {
     { name: 'Dashboard', path: '/admin/dashboard', roles: ['Super Admin', 'Editor'] },
     { name: 'Products', path: '/admin/products', roles: ['Super Admin', 'Editor'] },
     { name: 'Orders', path: '/admin/orders', roles: ['Super Admin', 'Editor'] },
+    { name: 'Customers', path: '/admin/customers', roles: ['Super Admin', 'Editor'] },
     { name: 'Settings', path: '/admin/settings', roles: ['Super Admin'] },
   ];
 
