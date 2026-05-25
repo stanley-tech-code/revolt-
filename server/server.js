@@ -472,9 +472,15 @@ app.post('/api/checkout/create-order', verifyToken, async (req, res) => {
   if (!items || items.length === 0) return res.status(400).json({ success: false, error: 'Cart is empty.' });
   
   try {
+    // 0. Fetch user details for customer info
+    const { data: userRecord } = await supabase.from('users').select('fullName, email, phone').eq('id', req.user.id).single();
+
     // 1. Create order
     const { data: order, error: orderError } = await supabase.from('orders').insert([{
       userId: req.user.id,
+      customer: userRecord?.fullName || 'Guest User',
+      customerEmail: userRecord?.email || req.user.email,
+      customerPhone: userRecord?.phone || '',
       items,
       subtotal,
       tax,

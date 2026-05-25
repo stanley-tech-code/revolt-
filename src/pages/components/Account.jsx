@@ -84,7 +84,7 @@ export default function Account() {
         setLoadingOrders(true);
         try {
           const res = await fetch('/api/checkout/orders', {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('revolt_token')}` }
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('revolt_client_token')}` }
           });
           const data = await res.json();
           if (data.success) {
@@ -368,18 +368,7 @@ export default function Account() {
             </div>
           )}
 
-          {/* ORDERS TAB */}
-          {activeTab === 'orders' && (
-            <div className="animate-fade-in">
-              <h2 className="text-xl font-bold uppercase tracking-wider mb-6">Order History</h2>
-              <div className="text-center py-12 bg-gray-50 border border-gray-100">
-                <p className="text-sm text-gray-500">You have not placed any orders yet.</p>
-                <button className="mt-4 text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5" onClick={() => navigate('/')}>
-                  Start Shopping
-                </button>
-              </div>
-            </div>
-          )}
+
 
           {/* SECURITY TAB */}
           {activeTab === 'security' && (
