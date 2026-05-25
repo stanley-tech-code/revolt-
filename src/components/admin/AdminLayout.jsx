@@ -37,7 +37,7 @@ export default function AdminLayout() {
       </div>
       <aside className="w-full md:w-64 bg-white border-r border-[#000000]/10 flex flex-col hidden md:flex">
         <div className="p-8 border-b border-[#000000]/10">
-          <h1 className="text-2xl font-bold tracking-tight uppercase">Revolt</h1>
+          <h1 className="text-2xl font-bold tracking-tight uppercase">Revolt <span className="text-[10px] bg-red-600 text-white px-1 py-0.5 rounded ml-2 align-top">v2.1</span></h1>
           <p className="text-[9px] tracking-[0.2em] uppercase text-[#000000]/50 mt-1">Workspace</p>
         </div>
 
