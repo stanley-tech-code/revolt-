@@ -3,7 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useCms } from '../../context/CmsContext';
 
 export default function AdminLayout() {
-  const { db, logoutAdmin } = useCms();
+  const { db, logoutAdmin, successNotification, errorNotification } = useCms();
   const navigate = useNavigate();
 
   const currentUser = db?.admin?.currentUser;
@@ -21,9 +21,20 @@ export default function AdminLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] text-[#000000] flex flex-col md:flex-row">
-      
-      {/* SIDEBAR */}
+    <div className="min-h-screen bg-[#f5f5f5] text-[#000000] flex flex-col md:flex-row relative">
+      {/* NOTIFICATIONS */}
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[999] flex flex-col gap-2 w-full max-w-md px-4 pointer-events-none">
+        {successNotification && (
+          <div className="bg-green-600 text-white px-6 py-3 shadow-2xl animate-fade-in text-center text-xs font-bold uppercase tracking-wider">
+            {successNotification}
+          </div>
+        )}
+        {errorNotification && (
+          <div className="bg-red-600 text-white px-6 py-3 shadow-2xl animate-fade-in text-center text-xs font-bold uppercase tracking-wider">
+            {errorNotification}
+          </div>
+        )}
+      </div>
       <aside className="w-full md:w-64 bg-white border-r border-[#000000]/10 flex flex-col hidden md:flex">
         <div className="p-8 border-b border-[#000000]/10">
           <h1 className="text-2xl font-bold tracking-tight uppercase">Revolt</h1>
