@@ -18,6 +18,7 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminFinance from './pages/admin/AdminFinance';
+import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 
 import OurStory from './pages/about/OurStory';
@@ -93,6 +94,7 @@ function App() {
               <Route path="orders" element={<AdminOrders />} />
               <Route path="customers" element={<AdminCustomers />} />
               <Route path="finance" element={<AdminFinance />} />
+              <Route path="promotions" element={<AdminPromotions />} />
               <Route path="settings" element={<div className="p-4">Settings Module Coming Soon</div>} />
             </Route>
 

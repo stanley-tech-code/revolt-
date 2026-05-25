@@ -17,8 +17,9 @@ CREATE TABLE IF NOT EXISTS public.users (
 );
 
 -- 2. PRODUCTS TABLE
-DROP TABLE IF EXISTS public.products CASCADE;
-CREATE TABLE public.products (
+-- ⚠️  WARNING: Never run DROP TABLE here — it will delete all product data.
+-- Use CREATE TABLE IF NOT EXISTS to safely add the table only if it doesn't exist.
+CREATE TABLE IF NOT EXISTS public.products (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   name text NOT NULL,
   "mainCategory" text DEFAULT ''::text,
@@ -43,8 +44,8 @@ CREATE TABLE public.products (
 );
 
 -- 3. ORDERS TABLE
-DROP TABLE IF EXISTS public.orders CASCADE;
-CREATE TABLE public.orders (
+-- ⚠️  WARNING: Never run DROP TABLE here — it will delete all order history.
+CREATE TABLE IF NOT EXISTS public.orders (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   "userId" uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
   items jsonb NOT NULL,
@@ -79,3 +80,18 @@ ALTER TABLE public.products DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.orders DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.logs DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.cms DISABLE ROW LEVEL SECURITY;
+
+-- 6. PROMO CODES TABLE
+CREATE TABLE IF NOT EXISTS public.promos (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  code text UNIQUE NOT NULL,
+  "discountType" text NOT NULL CHECK ("discountType" IN ('percentage', 'fixed')),
+  "discountValue" numeric NOT NULL CHECK ("discountValue" > 0),
+  "expiresAt" timestamp with time zone DEFAULT NULL,
+  "usageLimit" integer DEFAULT NULL,
+  "usageCount" integer DEFAULT 0,
+  active boolean DEFAULT true,
+  created_at timestamp with time zone DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.promos DISABLE ROW LEVEL SECURITY;

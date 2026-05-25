@@ -722,6 +722,121 @@ app.delete('/api/customers/:id', verifyToken, async (req, res) => {
   }
 });
 
+// --- PROMO CODES & DISCOUNTS ---
+
+// GET all promos (admin only)
+app.get('/api/promos', verifyToken, async (req, res) => {
+  try {
+    const { data: promos, error } = await supabase.from('promos').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return res.json({ success: true, promos });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch promos.' });
+  }
+});
+
+// POST create promo (admin only)
+app.post('/api/promos', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Super Admin access required.' });
+
+  const { code, discountType, discountValue, expiresAt, usageLimit, active } = req.body;
+
+  if (!code || !discountType || discountValue === undefined) {
+    return res.status(400).json({ success: false, error: 'Code, discount type and value are required.' });
+  }
+
+  const normalizedCode = code.trim().toUpperCase();
+
+  try {
+    // Check for duplicate code
+    const { data: existing } = await supabase.from('promos').select('id').eq('code', normalizedCode).maybeSingle();
+    if (existing) return res.status(409).json({ success: false, error: `Promo code "${normalizedCode}" already exists.` });
+
+    const { data: promo, error } = await supabase.from('promos').insert([{
+      code: normalizedCode,
+      discountType,          // 'percentage' | 'fixed'
+      discountValue: Number(discountValue),
+      expiresAt: expiresAt || null,
+      usageLimit: usageLimit ? Number(usageLimit) : null,
+      usageCount: 0,
+      active: active !== undefined ? active : true,
+    }]).select().single();
+
+    if (error) throw error;
+
+    await addLog(req.user.username, `Created promo code "${normalizedCode}" (${discountType}: ${discountValue})`);
+    return res.json({ success: true, promo });
+  } catch(err) {
+    console.error('Create promo error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to create promo.' });
+  }
+});
+
+// PUT update promo (admin only)
+app.put('/api/promos/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Super Admin access required.' });
+
+  const { id } = req.params;
+  const fields = req.body;
+
+  try {
+    if (fields.code) fields.code = fields.code.trim().toUpperCase();
+
+    const { data: updated, error } = await supabase.from('promos').update(fields).eq('id', id).select().single();
+    if (error || !updated) return res.status(404).json({ success: false, error: 'Promo not found.' });
+
+    await addLog(req.user.username, `Updated promo code "${updated.code}"`);
+    return res.json({ success: true, promo: updated });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to update promo.' });
+  }
+});
+
+// DELETE promo (admin only)
+app.delete('/api/promos/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Super Admin access required.' });
+
+  const { id } = req.params;
+  try {
+    const { data: deleted, error } = await supabase.from('promos').delete().eq('id', id).select().single();
+    if (error || !deleted) return res.status(404).json({ success: false, error: 'Promo not found.' });
+
+    await addLog(req.user.username, `Deleted promo code "${deleted.code}"`);
+    return res.json({ success: true });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to delete promo.' });
+  }
+});
+
+// POST validate / apply a promo code at checkout (public)
+app.post('/api/promos/validate', async (req, res) => {
+  const { code } = req.body;
+  if (!code) return res.status(400).json({ success: false, error: 'Promo code is required.' });
+
+  try {
+    const { data: promo, error } = await supabase.from('promos').select('*').eq('code', code.trim().toUpperCase()).maybeSingle();
+
+    if (error || !promo) return res.status(404).json({ success: false, error: 'Invalid promo code.' });
+    if (!promo.active) return res.status(400).json({ success: false, error: 'This promo code is inactive.' });
+    if (promo.expiresAt && new Date(promo.expiresAt) < new Date()) return res.status(400).json({ success: false, error: 'This promo code has expired.' });
+    if (promo.usageLimit !== null && promo.usageCount >= promo.usageLimit) return res.status(400).json({ success: false, error: 'This promo code has reached its usage limit.' });
+
+    // Increment usage count
+    await supabase.from('promos').update({ usageCount: promo.usageCount + 1 }).eq('id', promo.id);
+
+    return res.json({
+      success: true,
+      promo: {
+        code: promo.code,
+        discountType: promo.discountType,
+        discountValue: promo.discountValue,
+      }
+    });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to validate promo.' });
+  }
+});
+
 // --- AUDIT ACTIVITY LOG TIMELINE ---
 app.get('/api/logs', verifyToken, async (req, res) => {
   try {

@@ -12,6 +12,7 @@ export function CmsProvider({ children }) {
     products: [],
     orders: [],
     customers: [],
+    promos: [],
     seo: { title: 'REVOLT — Refined Luxury Essentials', description: '', googleAnalyticsId: '', facebookPixelId: '', promoBannerActive: true, promoBannerText: '' },
     admin: { currentUser: null, logs: [] }
   });
@@ -53,6 +54,7 @@ export function CmsProvider({ children }) {
 
       let orders = [];
       let customers = [];
+      let promos = [];
       let logs = [];
       let currentUser = null;
 
@@ -88,6 +90,19 @@ export function CmsProvider({ children }) {
                 console.error("Failed to fetch customers", err);
               }
             }
+
+            // Fetch promos (Super Admin only)
+            if (currentUser.role === 'Super Admin') {
+              try {
+                const promosRes = await fetch('/api/promos', { headers: { 'Authorization': `Bearer ${token}` } });
+                const promosData = await promosRes.json();
+                if (promosData.success) {
+                  promos = promosData.promos;
+                }
+              } catch (err) {
+                console.error("Failed to fetch promos", err);
+              }
+            }
           } else {
             localStorage.removeItem('REVOLT_ADMIN_JWT_TOKEN');
           }
@@ -105,6 +120,7 @@ export function CmsProvider({ children }) {
         seo: seoData.seo || db.seo,
         orders,
         customers,
+        promos,
         admin: {
           currentUser,
           logs
@@ -532,6 +548,78 @@ export function CmsProvider({ children }) {
     return false;
   };
 
+  // --- PROMO CODES CRUD ---
+  const createPromo = async (promoData) => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/promos', {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(promoData)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification(`Promo code "${data.promo.code}" created successfully.`);
+        await fetchDatabase();
+        return { success: true, promo: data.promo };
+      } else {
+        setErrorNotification(data.error || 'Failed to create promo.');
+        return { success: false, error: data.error };
+      }
+    } catch (err) {
+      setErrorNotification('Failed to create promo.');
+      return { success: false, error: 'Network error.' };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updatePromo = async (id, fields) => {
+    try {
+      const res = await fetch(`/api/promos/${id}`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify(fields)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification(`Promo code updated.`);
+        await fetchDatabase();
+        return { success: true };
+      } else {
+        setErrorNotification(data.error || 'Failed to update promo.');
+        return { success: false, error: data.error };
+      }
+    } catch (err) {
+      setErrorNotification('Failed to update promo.');
+      return { success: false };
+    }
+  };
+
+  const deletePromo = async (id, code) => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/promos/${id}`, {
+        method: 'DELETE',
+        headers: getHeaders()
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification(`Promo code "${code}" deleted.`);
+        await fetchDatabase();
+        return { success: true };
+      } else {
+        setErrorNotification(data.error || 'Failed to delete promo.');
+        return { success: false };
+      }
+    } catch (err) {
+      setErrorNotification('Failed to delete promo.');
+      return { success: false };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <CmsContext.Provider value={{
       db,
@@ -559,7 +647,10 @@ export function CmsProvider({ children }) {
       updateOrderStatus,
       processRefund,
       updateCustomerStatus,
-      deleteCustomer
+      deleteCustomer,
+      createPromo,
+      updatePromo,
+      deletePromo
     }}>
       {children}
 

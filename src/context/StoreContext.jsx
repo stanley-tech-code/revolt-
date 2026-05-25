@@ -11,6 +11,9 @@ export function StoreProvider({ children }) {
   // Basic wishlist array of product IDs or names
   const [wishlist, setWishlist] = useState([]);
 
+  // Promo code state
+  const [appliedPromo, setAppliedPromo] = useState(null);
+
   const { currentUser, updateProfile } = useAuth();
   const hasMergedRef = useRef(false);
 
@@ -122,12 +125,36 @@ export function StoreProvider({ children }) {
     return cartItems.reduce((count, item) => count + item.quantity, 0);
   };
 
+  const applyPromo = async (code) => {
+    try {
+      const res = await fetch('/api/promos/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAppliedPromo(data.promo);
+        return { success: true };
+      } else {
+        return { success: false, error: data.error };
+      }
+    } catch (err) {
+      return { success: false, error: 'Network error validating promo.' };
+    }
+  };
+
+  const removePromo = () => {
+    setAppliedPromo(null);
+  };
+
   return (
     <StoreContext.Provider value={{
       cartItems, addToCart, removeFromCart, updateQuantity, 
       isCartOpen, openCart, closeCart, getCartTotal, getCartCount,
       isSearchOpen, openSearch, closeSearch,
-      wishlist, toggleWishlist
+      wishlist, toggleWishlist,
+      appliedPromo, applyPromo, removePromo
     }}>
       {children}
     </StoreContext.Provider>
