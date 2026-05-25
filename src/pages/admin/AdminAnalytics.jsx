@@ -1,9 +1,30 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useCms } from '../../context/CmsContext';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
-  BarChart, Bar, PieChart, Pie, Cell, Legend
-} from 'recharts';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+} from 'chart.js';
+import { Line, Bar, Pie } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
 const COLORS = ['#000000', '#666666', '#a3a3a3', '#d4d4d4', '#4ade80'];
 
@@ -54,19 +75,40 @@ export default function AdminAnalytics() {
       }
     });
 
-    return Object.keys(map).map(date => ({
-      date: date.slice(5), // MM-DD
-      revenue: map[date]
-    }));
+    const dates = Object.keys(map).map(date => date.slice(5)); // MM-DD
+    const revenues = Object.values(map);
+
+    return {
+      labels: dates,
+      datasets: [
+        {
+          label: 'Revenue (Ksh)',
+          data: revenues,
+          borderColor: '#000000',
+          backgroundColor: '#000000',
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 3,
+        }
+      ]
+    };
   }, [orders]);
 
   // 2. Best-Selling Products
   const bestSellersData = useMemo(() => {
     const sorted = [...products].sort((a, b) => (b.conversions || 0) - (a.conversions || 0));
-    return sorted.slice(0, 5).map(p => ({
-      name: (p?.name || 'Unknown').length > 15 ? p.name.substring(0, 15) + '...' : (p?.name || 'Unknown'),
-      sales: p.conversions || 0
-    }));
+    const top5 = sorted.slice(0, 5);
+    return {
+      labels: top5.map(p => (p?.name || 'Unknown').length > 15 ? p.name.substring(0, 15) + '...' : (p?.name || 'Unknown')),
+      datasets: [
+        {
+          label: 'Sales (Conversions)',
+          data: top5.map(p => p.conversions || 0),
+          backgroundColor: '#000000',
+          borderRadius: 4,
+        }
+      ]
+    };
   }, [products]);
 
   // 3. Revenue by Payment Method
@@ -77,11 +119,24 @@ export default function AdminAnalytics() {
       const pm = (o.paymentMethod || 'Unknown').toUpperCase();
       map[pm] = (map[pm] || 0) + Number(o.total || 0);
     });
-    return Object.keys(map).map(pm => ({ name: pm, value: map[pm] }));
+    
+    const labels = Object.keys(map);
+    const values = Object.values(map);
+
+    return {
+      labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: COLORS.slice(0, labels.length),
+          borderWidth: 0,
+        }
+      ]
+    };
   }, [orders]);
 
   // 4. New vs Returning Customers
-  const { customerData, newCustomersList, returningCustomersList } = useMemo(() => {
+  const { customerChartData, newCustomersList, returningCustomersList, totalValid } = useMemo(() => {
     const emailCounts = {};
     const customerDetails = {};
 
@@ -119,12 +174,19 @@ export default function AdminAnalytics() {
     });
 
     return {
-      customerData: [
-        { name: 'New', value: newC },
-        { name: 'Returning', value: returningC }
-      ],
+      customerChartData: {
+        labels: ['New', 'Returning'],
+        datasets: [
+          {
+            data: [newC, returningC],
+            backgroundColor: ['#000000', '#a3a3a3'],
+            borderWidth: 0,
+          }
+        ]
+      },
       newCustomersList: newL,
-      returningCustomersList: retL
+      returningCustomersList: retL,
+      totalValid: newC + returningC
     };
   }, [orders]);
 
@@ -137,18 +199,69 @@ export default function AdminAnalytics() {
       const dateStr = d.toISOString().split('T')[0];
       map[dateStr] = trafficData[dateStr] || 0;
     }
-    return Object.keys(map).map(date => ({
-      date: date.slice(5),
-      visits: map[date]
-    }));
+    
+    const dates = Object.keys(map).map(date => date.slice(5));
+    const visits = Object.values(map);
+
+    return {
+      labels: dates,
+      datasets: [
+        {
+          label: 'Website Visits',
+          data: visits,
+          backgroundColor: '#000000',
+          borderRadius: 4,
+        }
+      ]
+    };
   }, [trafficData]);
 
-  const totalVisits = trafficChartData.reduce((acc, curr) => acc + curr.visits, 0);
-  const totalOrdersLast7Days = orders.filter(o => {
+  const totalVisits = useMemo(() => trafficChartData.datasets[0].data.reduce((acc, curr) => acc + curr, 0), [trafficChartData]);
+  const totalOrdersLast7Days = useMemo(() => orders.filter(o => {
     const diffTime = Math.abs(new Date() - new Date(o.createdAt || o.date));
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) <= 7 && o.status?.toLowerCase() !== 'cancelled';
-  }).length;
+  }).length, [orders]);
   const conversionRate = totalVisits > 0 ? ((totalOrdersLast7Days / totalVisits) * 100).toFixed(2) : 0;
+
+  // Chart Options
+  const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false }
+      },
+      y: {
+        grid: { color: '#f0f0f0' },
+        border: { display: false }
+      }
+    }
+  };
+
+  const barHorizontalOptions = {
+    ...commonOptions,
+    indexAxis: 'y',
+    scales: {
+      x: { grid: { color: '#f0f0f0' }, border: { display: false } },
+      y: { grid: { display: false } }
+    }
+  };
+
+  const pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { boxWidth: 10, font: { size: 10 } }
+      }
+    }
+  };
 
   return (
     <div className="space-y-8 animate-fade-in pb-20">
@@ -164,15 +277,7 @@ export default function AdminAnalytics() {
         <div className="bg-white border border-[#000000]/10 p-6 shadow-sm">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-6 border-b border-[#000000]/10 pb-4">Sales Overview (Last 7 Days)</h3>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={salesData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e5e5" />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} tickFormatter={(val) => `Ksh ${val}`} width={80} />
-                <RechartsTooltip formatter={(value) => `Ksh ${value.toLocaleString()}`} labelStyle={{ color: 'black' }} />
-                <Line type="monotone" dataKey="revenue" stroke="#000000" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-              </LineChart>
-            </ResponsiveContainer>
+            <Line data={salesData} options={commonOptions} />
           </div>
         </div>
 
@@ -186,15 +291,7 @@ export default function AdminAnalytics() {
             </div>
           </div>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={trafficChartData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e5e5" />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                <RechartsTooltip cursor={{ fill: '#f5f5f5' }} />
-                <Bar dataKey="visits" fill="#000000" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <Bar data={trafficChartData} options={commonOptions} />
           </div>
         </div>
 
@@ -202,18 +299,10 @@ export default function AdminAnalytics() {
         <div className="bg-white border border-[#000000]/10 p-6 shadow-sm">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-6 border-b border-[#000000]/10 pb-4">Revenue by Payment Method</h3>
           <div className="h-64 flex justify-center items-center">
-            {paymentMethodData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={paymentMethodData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                    {paymentMethodData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <RechartsTooltip formatter={(value) => `Ksh ${value.toLocaleString()}`} />
-                  <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '10px', textTransform: 'uppercase' }} />
-                </PieChart>
-              </ResponsiveContainer>
+            {paymentMethodData.labels.length > 0 ? (
+              <div className="w-full h-full relative">
+                <Pie data={paymentMethodData} options={pieOptions} />
+              </div>
             ) : (
               <p className="text-sm text-[#000000]/50">No data available.</p>
             )}
@@ -224,28 +313,18 @@ export default function AdminAnalytics() {
         <div className="bg-white border border-[#000000]/10 p-6 shadow-sm">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-6 border-b border-[#000000]/10 pb-4">New vs Returning Customers</h3>
           <div className="h-64 flex justify-center items-center relative">
-            {(customerData && customerData.length >= 2 && (customerData[0].value > 0 || customerData[1].value > 0)) ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={customerData} innerRadius={0} outerRadius={80} dataKey="value">
-                    {customerData.map((entry, index) => (
-                      <Cell 
-                        key={`cell-${index}`} 
-                        fill={entry.name === 'New' ? '#000000' : '#a3a3a3'} 
-                        onClick={() => setShowCustomersList(entry.name)}
-                        className="cursor-pointer hover:opacity-80 outline-none"
-                      />
-                    ))}
-                  </Pie>
-                  <RechartsTooltip />
-                  <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '10px', textTransform: 'uppercase' }} />
-                </PieChart>
-              </ResponsiveContainer>
+            {totalValid > 0 ? (
+              <div className="w-full h-full relative cursor-pointer" onClick={(e) => {
+                // Approximate clicking on the pie chart slices
+                const target = e.target;
+                if (target) setShowCustomersList('New'); // Open list by default to easily browse
+              }}>
+                <Pie data={customerChartData} options={pieOptions} />
+                <p className="absolute bottom-0 w-full text-center text-[10px] text-[#000000]/50 italic pointer-events-none">Click to see customer lists</p>
+              </div>
             ) : (
               <p className="text-sm text-[#000000]/50">No data available.</p>
             )}
-            
-            <p className="absolute bottom-0 text-[10px] text-[#000000]/50 italic">Click chart slices to see customer lists</p>
           </div>
         </div>
 
@@ -253,15 +332,7 @@ export default function AdminAnalytics() {
         <div className="bg-white border border-[#000000]/10 p-6 shadow-sm lg:col-span-2">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-6 border-b border-[#000000]/10 pb-4">Best-Selling Products</h3>
           <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={bestSellersData} layout="vertical" margin={{ left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e5e5e5" />
-                <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} width={120} />
-                <RechartsTooltip cursor={{ fill: '#f5f5f5' }} />
-                <Bar dataKey="sales" fill="#000000" radius={[0, 4, 4, 0]} barSize={30} />
-              </BarChart>
-            </ResponsiveContainer>
+            <Bar data={bestSellersData} options={barHorizontalOptions} />
           </div>
         </div>
       </div>
@@ -271,9 +342,25 @@ export default function AdminAnalytics() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 animate-fade-in">
           <div className="bg-white w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col shadow-2xl">
             <div className="flex justify-between items-center p-6 border-b border-[#000000]/10">
-              <h2 className="text-lg font-bold uppercase tracking-tight">{showCustomersList} Customers</h2>
+              <h2 className="text-lg font-bold uppercase tracking-tight">Customer Breakdown</h2>
               <button onClick={() => setShowCustomersList(null)} className="text-2xl text-[#000000]/50 hover:text-[#000000]">&times;</button>
             </div>
+            
+            <div className="flex gap-4 p-4 bg-gray-50 border-b border-[#000000]/10">
+              <button 
+                onClick={() => setShowCustomersList('New')} 
+                className={`text-sm font-bold uppercase tracking-widest px-4 py-2 ${showCustomersList === 'New' ? 'border-b-2 border-black text-black' : 'text-gray-400 hover:text-black'}`}
+              >
+                New ({newCustomersList.length})
+              </button>
+              <button 
+                onClick={() => setShowCustomersList('Returning')} 
+                className={`text-sm font-bold uppercase tracking-widest px-4 py-2 ${showCustomersList === 'Returning' ? 'border-b-2 border-black text-black' : 'text-gray-400 hover:text-black'}`}
+              >
+                Returning ({returningCustomersList.length})
+              </button>
+            </div>
+
             <div className="overflow-y-auto p-6">
               <table className="w-full text-left border-collapse">
                 <thead>
