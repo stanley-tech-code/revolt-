@@ -628,7 +628,8 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
   try {
     const ext = path.extname(req.file.originalname);
     const basename = path.basename(req.file.originalname, ext).replace(/[^a-zA-Z0-9]/g, '_');
-    const filename = `${Date.now()}-${basename}${ext}`;
+    // Upload to public/ subfolder so the Supabase storage policy covers it
+    const filename = `public/${Date.now()}-${basename}${ext}`;
 
     const { data, error } = await supabase.storage
       .from('uploads')
