@@ -55,9 +55,11 @@ function ClientLayout() {
   React.useEffect(() => {
     setMobileMenuOpen(false);
     window.scrollTo(0, 0);
-    document.title = db.seo.title;
+    if (db?.seo?.title) {
+      document.title = db.seo.title;
+    }
     fetch('/api/track-visit', { method: 'POST' }).catch(() => {});
-  }, [location.pathname, db.seo.title]);
+  }, [location.pathname, db?.seo?.title]);
 
   return (
     <div className="bg-canvas text-ink min-h-screen flex flex-col">

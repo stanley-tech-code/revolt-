@@ -64,7 +64,7 @@ export default function AdminAnalytics() {
   const bestSellersData = useMemo(() => {
     const sorted = [...products].sort((a, b) => (b.conversions || 0) - (a.conversions || 0));
     return sorted.slice(0, 5).map(p => ({
-      name: p.name.length > 15 ? p.name.substring(0, 15) + '...' : p.name,
+      name: (p?.name || 'Unknown').length > 15 ? p.name.substring(0, 15) + '...' : (p?.name || 'Unknown'),
       sales: p.conversions || 0
     }));
   }, [products]);
@@ -224,7 +224,7 @@ export default function AdminAnalytics() {
         <div className="bg-white border border-[#000000]/10 p-6 shadow-sm">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-6 border-b border-[#000000]/10 pb-4">New vs Returning Customers</h3>
           <div className="h-64 flex justify-center items-center relative">
-            {(customerData[0].value > 0 || customerData[1].value > 0) ? (
+            {(customerData && customerData.length >= 2 && (customerData[0].value > 0 || customerData[1].value > 0)) ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={customerData} innerRadius={0} outerRadius={80} dataKey="value">
