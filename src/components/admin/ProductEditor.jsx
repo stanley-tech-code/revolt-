@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useCms } from '../../context/CmsContext';
 
 export default function ProductEditor({ product, onClose }) {
-  const { createProduct, updateProduct, uploadFile } = useCms();
+  const { createProduct, updateProduct } = useCms();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [uploadingIdx, setUploadingIdx] = useState(null);
@@ -63,22 +63,51 @@ export default function ProductEditor({ product, onClose }) {
     });
   };
 
-  // Upload one or multiple files
+  // Compress and convert image file to base64 using Canvas
+  // This avoids ALL Supabase storage / permission issues
+  const compressToBase64 = (file, maxWidth = 1200, quality = 0.82) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Failed to read file'));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.onload = () => {
+          let { width, height } = img;
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Process one or multiple files — compress client-side, no server upload needed
   const handleFileUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
-    for (let i = 0; i < files.length; i++) {
-      setUploadingIdx(images.length + i);
-      const res = await uploadFile(files[i]);
-      if (res.success) {
-        setImages(prev => [...prev, res.url]);
-      } else {
-        setErrorMsg(res.error || 'Failed to upload one or more images.');
+    setUploadingIdx(0);
+    const results = [];
+    for (const file of files) {
+      try {
+        const base64 = await compressToBase64(file);
+        results.push(base64);
+      } catch (err) {
+        setErrorMsg(`Failed to process "${file.name}". Make sure it is a valid image.`);
       }
     }
+    setImages(prev => [...prev, ...results]);
     setUploadingIdx(null);
-    // Reset file input so same file can be re-selected
     e.target.value = '';
   };
 
