@@ -243,12 +243,12 @@ export default function Account() {
                       <div className="space-y-3">
                         {order.items.map((item, idx) => (
                           <div key={idx} className="flex gap-4 items-center">
-                            <img src={item.primaryImage} alt={item.name} className="w-12 h-16 object-cover bg-gray-50" />
+                            {item.image && <img src={item.image} alt={item.name} className="w-12 h-16 object-cover bg-gray-50" />}
                             <div className="flex-1">
                               <p className="text-xs font-bold uppercase">{item.name}</p>
-                              <p className="text-[10px] text-gray-500">Qty: {item.quantity} | Size: {item.size} | Color: {item.color}</p>
+                              <p className="text-[10px] text-gray-500">Qty: {item.quantity || 1} | Size: {item.size} | Color: {item.color}</p>
                             </div>
-                            <p className="text-xs font-bold">Ksh {((item.salePrice || item.originalPrice) * item.quantity).toLocaleString()}</p>
+                            <p className="text-xs font-bold">Ksh {((item.salePrice || item.originalPrice || item.price || 0) * (item.quantity || 1)).toLocaleString()}</p>
                           </div>
                         ))}
                       </div>
