@@ -20,8 +20,8 @@ export default function ProductEditor({ product, onClose }) {
 
   // Build initial images array from existing product data
   const buildInitialImages = () => {
-    if (product?.images && Array.isArray(product.images) && product.images.length > 0) {
-      return product.images;
+    if (product?.allImages && Array.isArray(product.allImages) && product.allImages.length > 0) {
+      return product.allImages;
     }
     if (product?.primaryImage) {
       return [product.primaryImage];
@@ -127,7 +127,7 @@ export default function ProductEditor({ product, onClose }) {
       stock: Number(formData.stock),
       colors: formData.colors.split(',').map(c => c.trim()).filter(Boolean),
       sizes: formData.sizes.split(',').map(s => s.trim()).filter(Boolean),
-      images,                      // full array stored
+      allImages: images,             // full array stored in allImages column
       primaryImage: images[0] || '' // first image is always the primary
     };
 
