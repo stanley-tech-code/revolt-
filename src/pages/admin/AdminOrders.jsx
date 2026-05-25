@@ -150,8 +150,8 @@ export default function AdminOrders() {
                 <div>
                   <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Customer Information</h3>
                   <p className="text-sm font-medium">{selectedOrder.customer || 'Guest User'}</p>
-                  <p className="text-sm text-[#000000]/70 mt-1">Email: {selectedOrder.customerEmail || 'Not provided'}</p>
-                  <p className="text-sm text-[#000000]/70 mt-1">Phone: {selectedOrder.customerPhone || 'Not provided'}</p>
+                  <p className="text-sm text-[#000000]/70 mt-1">Email: {selectedOrder.deliveryInfo?.customerEmail || 'Not provided'}</p>
+                  <p className="text-sm text-[#000000]/70 mt-1">Phone: {selectedOrder.deliveryInfo?.customerPhone || 'Not provided'}</p>
                 </div>
                 {selectedOrder.deliveryInfo && (
                   <div>
