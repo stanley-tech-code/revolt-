@@ -15,6 +15,13 @@ export default function AdminOrders() {
 
   const handleStatusChange = async (e, orderId) => {
     const newStatus = e.target.value;
+    // Optimistic UI update: Find the order in db.orders and mutate it locally first so the UI snaps instantly
+    if (db && db.orders) {
+      const orderIndex = db.orders.findIndex(o => o.id === orderId);
+      if (orderIndex > -1) {
+        db.orders[orderIndex].status = newStatus;
+      }
+    }
     await updateOrderStatus(orderId, newStatus);
   };
 
@@ -140,8 +147,23 @@ export default function AdminOrders() {
                 <div className="text-right">
                   <p className="text-sm font-bold uppercase tracking-wider">Order #{selectedOrder.id.toString().substring(0,8).toUpperCase()}</p>
                   <p className="text-sm text-[#000000]/60 mt-1">{new Date(selectedOrder.createdAt || selectedOrder.date).toLocaleString()}</p>
-                  <div className="mt-2 inline-block px-2 py-1 bg-[#f5f5f5] text-[10px] font-bold uppercase tracking-wider">
-                    Status: {selectedOrder.status}
+                  <div className="mt-2 inline-block">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/50 mr-2">Status:</span>
+                    <select 
+                      value={selectedOrder.status.toLowerCase()} 
+                      onChange={(e) => {
+                        handleStatusChange(e, selectedOrder.id);
+                        setSelectedOrder(prev => ({ ...prev, status: e.target.value }));
+                      }}
+                      className="px-2 py-1 bg-[#f5f5f5] text-[10px] font-bold uppercase tracking-wider border-0 outline-none cursor-pointer"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="processing">Processing</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                      {selectedOrder.status.toLowerCase() === 'refunded' && <option value="refunded">Refunded</option>}
+                    </select>
                   </div>
                 </div>
               </div>
