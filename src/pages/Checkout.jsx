@@ -124,7 +124,9 @@ export default function Checkout() {
           paymentMethod,
           deliveryInfo: {
             method: deliveryMethod,
-            address: selectedAddress
+            address: selectedAddress,
+            appliedPromo: appliedPromo || null,
+            discount: discount || 0
           }
         })
       });
@@ -158,7 +160,13 @@ export default function Checkout() {
           <h3 className="font-bold uppercase tracking-widest mb-4">Receipt Summary</h3>
           <p className="text-sm mb-2"><span className="font-semibold">Payment Method:</span> {paymentMethod.toUpperCase()}</p>
           <p className="text-sm mb-2"><span className="font-semibold">Delivery To:</span> {orderConfirmed.deliveryInfo.address.name} ({orderConfirmed.deliveryInfo.address.street})</p>
-          <p className="text-sm mb-6"><span className="font-semibold">Total Paid:</span> Ksh {total.toLocaleString()}</p>
+          <p className="text-sm mb-2"><span className="font-semibold">Total Paid:</span> Ksh {total.toLocaleString()}</p>
+          {orderConfirmed.deliveryInfo?.appliedPromo && (
+            <p className="text-sm mb-6 text-green-600">
+              <span className="font-semibold">Promo Applied:</span> {orderConfirmed.deliveryInfo.appliedPromo.code} (-Ksh {orderConfirmed.deliveryInfo.discount?.toLocaleString()})
+            </p>
+          )}
+          {!orderConfirmed.deliveryInfo?.appliedPromo && <div className="mb-6"></div>}
           
           <h4 className="font-bold text-xs uppercase tracking-wider mb-2">Items</h4>
           <ul className="text-sm space-y-2">

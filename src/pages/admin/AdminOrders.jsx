@@ -224,6 +224,12 @@ export default function AdminOrders() {
                     <span className="text-[#000000]/60">Subtotal</span>
                     <span>Ksh {selectedOrder.subtotal?.toLocaleString() || selectedOrder.total.toLocaleString()}</span>
                   </div>
+                  {selectedOrder.deliveryInfo?.appliedPromo && (
+                    <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5 text-green-600">
+                      <span>Promo ({selectedOrder.deliveryInfo.appliedPromo.code})</span>
+                      <span>-Ksh {selectedOrder.deliveryInfo.discount?.toLocaleString() || 0}</span>
+                    </div>
+                  )}
                   {selectedOrder.deliveryFee !== undefined && (
                     <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
                       <span className="text-[#000000]/60">Shipping</span>
