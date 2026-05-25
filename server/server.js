@@ -478,7 +478,6 @@ app.post('/api/checkout/create-order', verifyToken, async (req, res) => {
     // 1. Create order
     const { data: order, error: orderError } = await supabase.from('orders').insert([{
       userId: req.user.id,
-      customer: userRecord?.fullName || 'Guest User',
       items,
       subtotal,
       tax,
@@ -488,6 +487,7 @@ app.post('/api/checkout/create-order', verifyToken, async (req, res) => {
       paymentMethod,
       deliveryInfo: {
         ...deliveryInfo,
+        customerName: userRecord?.fullName || 'Guest User',
         customerEmail: userRecord?.email || req.user.email,
         customerPhone: userRecord?.phone || ''
       },

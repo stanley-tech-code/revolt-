@@ -76,7 +76,7 @@ export default function AdminOrders() {
                 <tr key={order.id} className="border-b border-[#000000]/5 hover:bg-[#fafafa] transition-colors">
                   <td className="py-4 px-6 text-sm font-medium">#{order.id.toString().substring(0,8).toUpperCase()}</td>
                   <td className="py-4 px-6 text-sm">{new Date(order.createdAt || order.date).toLocaleDateString()}</td>
-                  <td className="py-4 px-6 text-sm">{order.customer || 'Guest User'}</td>
+                  <td className="py-4 px-6 text-sm">{order.deliveryInfo?.customerName || 'Guest User'}</td>
                   <td className="py-4 px-6 text-sm font-semibold">Ksh {order.total.toLocaleString()}</td>
                   <td className="py-4 px-6">
                     <select 
@@ -149,7 +149,7 @@ export default function AdminOrders() {
               <div className="grid grid-cols-2 gap-8 mb-8">
                 <div>
                   <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Customer Information</h3>
-                  <p className="text-sm font-medium">{selectedOrder.customer || 'Guest User'}</p>
+                  <p className="text-sm font-medium">{selectedOrder.deliveryInfo?.customerName || 'Guest User'}</p>
                   <p className="text-sm text-[#000000]/70 mt-1">Email: {selectedOrder.deliveryInfo?.customerEmail || 'Not provided'}</p>
                   <p className="text-sm text-[#000000]/70 mt-1">Phone: {selectedOrder.deliveryInfo?.customerPhone || 'Not provided'}</p>
                 </div>
