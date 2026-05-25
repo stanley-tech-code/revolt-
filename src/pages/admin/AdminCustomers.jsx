@@ -5,6 +5,7 @@ export default function AdminCustomers() {
   const { db, updateCustomerStatus, deleteCustomer } = useCms();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
+  const [sortBy, setSortBy] = useState('Joined (Newest)');
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -22,13 +23,34 @@ export default function AdminCustomers() {
     return metrics;
   }, [customers, orders]);
 
-  const filteredCustomers = customers.filter(customer => {
-    const matchesSearch = customer.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          customer.email?.toLowerCase().includes(searchTerm.toLowerCase());
-    if (filterStatus === 'Active') return matchesSearch && customer.role === 'client';
-    if (filterStatus === 'Suspended') return matchesSearch && customer.role === 'suspended';
-    return matchesSearch;
-  });
+  const filteredCustomers = useMemo(() => {
+    let result = customers.filter(customer => {
+      const matchesSearch = customer.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                            customer.email?.toLowerCase().includes(searchTerm.toLowerCase());
+      if (filterStatus === 'Active') return matchesSearch && customer.role === 'client';
+      if (filterStatus === 'Suspended') return matchesSearch && customer.role === 'suspended';
+      return matchesSearch;
+    });
+
+    result.sort((a, b) => {
+      const metricsA = customerMetrics[a.id] || { orderCount: 0, totalSpent: 0 };
+      const metricsB = customerMetrics[b.id] || { orderCount: 0, totalSpent: 0 };
+
+      switch (sortBy) {
+        case 'Joined (Oldest)':
+          return new Date(a.createdat || a.createdAt) - new Date(b.createdat || b.createdAt);
+        case 'Orders (High-Low)':
+          return metricsB.orderCount - metricsA.orderCount;
+        case 'Total Spent (High-Low)':
+          return metricsB.totalSpent - metricsA.totalSpent;
+        case 'Joined (Newest)':
+        default:
+          return new Date(b.createdat || b.createdAt) - new Date(a.createdat || a.createdAt);
+      }
+    });
+
+    return result;
+  }, [customers, searchTerm, filterStatus, sortBy, customerMetrics]);
 
   const handleStatusToggle = async (id, currentRole) => {
     if (window.confirm(`Are you sure you want to ${currentRole === 'suspended' ? 'reactivate' : 'suspend'} this account?`)) {
@@ -85,6 +107,16 @@ export default function AdminCustomers() {
               <option value="All">All Status</option>
               <option value="Active">Active</option>
               <option value="Suspended">Suspended</option>
+            </select>
+            <select 
+              className="px-4 py-2 text-xs border border-[#000000]/20 bg-white focus:outline-none focus:border-[#000000] uppercase tracking-wider font-semibold"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="Joined (Newest)">Joined (Newest)</option>
+              <option value="Joined (Oldest)">Joined (Oldest)</option>
+              <option value="Orders (High-Low)">Orders (High-Low)</option>
+              <option value="Total Spent (High-Low)">Total Spent (High-Low)</option>
             </select>
           </div>
         </div>
