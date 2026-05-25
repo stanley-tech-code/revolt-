@@ -419,7 +419,7 @@ app.delete('/api/products/:id', verifyToken, async (req, res) => {
 // --- CRUD ORDERS & TRANSACTIONS ROUTERS ---
 app.get('/api/orders', verifyToken, async (req, res) => {
   try {
-    const { data: orders, error } = await supabase.from('orders').select('*').order('date', { ascending: false });
+    const { data: orders, error } = await supabase.from('orders').select('*').order('createdAt', { ascending: false });
     if (error) throw error;
     return res.json({ success: true, orders });
   } catch(err) {
