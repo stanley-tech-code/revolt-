@@ -106,17 +106,35 @@ export default function Checkout() {
     const selectedAddress = currentUser?.addresses?.[selectedAddressIdx] || { name: 'Guest User', street: '123 Fake Street', city: 'Fake City', zip: '00000', country: 'Kenya' };
 
     try {
-      // FAKE PAYMENT SUCCESS (Bypassing backend due to auth token issues)
-      const fakeOrder = {
-        id: 'FAKE-' + Math.floor(Math.random() * 1000000),
-        items: cartItems,
-        deliveryInfo: {
-          method: deliveryMethod,
-          address: selectedAddress
-        }
-      };
+      const token = localStorage.getItem('revolt_client_token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
 
-      setOrderConfirmed(fakeOrder);
+      const res = await fetch('/api/checkout/create-order', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          items: cartItems,
+          subtotal: discountedSubtotal,
+          tax,
+          deliveryFee,
+          total,
+          paymentMethod,
+          deliveryInfo: {
+            method: deliveryMethod,
+            address: selectedAddress
+          }
+        })
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || 'Checkout failed');
+      }
+
+      setOrderConfirmed(data.order);
       setStep(4);
       
       // Wait a bit, then redirect to home

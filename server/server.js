@@ -472,19 +472,39 @@ app.post('/api/orders', async (req, res) => {
   }
 });
 // --- NEW E-COMMERCE CHECKOUT ---
-app.post('/api/checkout/create-order', verifyToken, async (req, res) => {
-  if (req.user.role !== 'client') return res.status(403).json({ success: false, error: 'Access denied.' });
-
+app.post('/api/checkout/create-order', async (req, res) => {
   const { items, subtotal, tax, deliveryFee, total, paymentMethod, deliveryInfo } = req.body;
   if (!items || items.length === 0) return res.status(400).json({ success: false, error: 'Cart is empty.' });
   
-  try {
-    // 0. Fetch user details for customer info
-    const { data: userRecord } = await supabase.from('users').select('fullName, email, phone').eq('id', req.user.id).single();
+  // Optional auth
+  let userId = '00000000-0000-0000-0000-000000000000'; // fallback guest user ID or null
+  let customerName = deliveryInfo?.address?.name || 'Guest User';
+  let customerEmail = 'guest@example.com';
+  let customerPhone = '';
 
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.split(' ')[1];
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      if (decoded.role === 'client') {
+        userId = decoded.id;
+        const { data: userRecord } = await supabase.from('users').select('fullName, email, phone').eq('id', userId).single();
+        if (userRecord) {
+          customerName = userRecord.fullName || customerName;
+          customerEmail = userRecord.email || customerEmail;
+          customerPhone = userRecord.phone || customerPhone;
+        }
+      }
+    } catch(e) {
+      // ignore invalid token, process as guest
+    }
+  }
+
+  try {
     // 1. Create order
     const { data: order, error: orderError } = await supabase.from('orders').insert([{
-      userId: req.user.id,
+      userId: userId,
       items,
       subtotal,
       tax,
@@ -494,9 +514,9 @@ app.post('/api/checkout/create-order', verifyToken, async (req, res) => {
       paymentMethod,
       deliveryInfo: {
         ...deliveryInfo,
-        customerName: userRecord?.fullName || 'Guest User',
-        customerEmail: userRecord?.email || req.user.email,
-        customerPhone: userRecord?.phone || ''
+        customerName,
+        customerEmail,
+        customerPhone
       },
       tracking: ''
     }]).select().single();
@@ -518,10 +538,12 @@ app.post('/api/checkout/create-order', verifyToken, async (req, res) => {
       }
     }
 
-    // 3. Clear user cart
-    await supabase.from('users').update({ cart: [] }).eq('id', req.user.id);
+    // 3. Clear user cart if logged in
+    if (userId !== '00000000-0000-0000-0000-000000000000') {
+      await supabase.from('users').update({ cart: [] }).eq('id', userId);
+    }
 
-    await addLog(req.user.email, `Created new order #${order.id} via Checkout`);
+    await addLog(customerEmail, `Created new order #${order.id} via Checkout`);
     return res.json({ success: true, order });
   } catch(err) {
     console.error(err);
