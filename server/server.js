@@ -343,8 +343,16 @@ app.post('/api/products', verifyToken, async (req, res) => {
   }
 
   try {
+    // Explicitly handle image fields so they are never silently dropped
+    const allImages = Array.isArray(newProduct.allImages) ? newProduct.allImages : [];
+    const primaryImage = newProduct.primaryImage || allImages[0] || '';
+    const secondaryImage = newProduct.secondaryImage || allImages[1] || '';
+
     const { data: productItem, error } = await supabase.from('products').insert([{
       ...newProduct,
+      allImages,
+      primaryImage,
+      secondaryImage,
       conversions: 0,
       revenue: 0.00
     }]).select().single();
@@ -354,6 +362,7 @@ app.post('/api/products', verifyToken, async (req, res) => {
     await addLog(req.user.username, `Added new product to catalog: "${productItem.name}"`);
     return res.json({ success: true, product: productItem });
   } catch(err) {
+    console.error('Create product error:', err);
     return res.status(500).json({ success: false, error: 'Failed to create product.' });
   }
 });
@@ -363,9 +372,21 @@ app.put('/api/products/:id', verifyToken, async (req, res) => {
   const updateFields = req.body;
 
   try {
+    // Explicitly handle image fields so they are never silently dropped
+    const allImages = Array.isArray(updateFields.allImages) ? updateFields.allImages : undefined;
+    const primaryImage = updateFields.primaryImage || (allImages && allImages[0]) || undefined;
+    const secondaryImage = updateFields.secondaryImage || (allImages && allImages[1]) || undefined;
+
+    const finalFields = {
+      ...updateFields,
+      ...(allImages !== undefined ? { allImages } : {}),
+      ...(primaryImage !== undefined ? { primaryImage } : {}),
+      ...(secondaryImage !== undefined ? { secondaryImage } : {}),
+    };
+
     const { data: updated, error } = await supabase
       .from('products')
-      .update(updateFields)
+      .update(finalFields)
       .eq('id', id)
       .select()
       .single();
@@ -375,6 +396,7 @@ app.put('/api/products/:id', verifyToken, async (req, res) => {
     await addLog(req.user.username, `Updated product fields for product: "${updated.name}"`);
     return res.json({ success: true, product: updated });
   } catch(err) {
+    console.error('Update product error:', err);
     return res.status(500).json({ success: false, error: 'Failed to update product.' });
   }
 });
