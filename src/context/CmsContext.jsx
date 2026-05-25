@@ -307,17 +307,30 @@ export function CmsProvider({ children }) {
         },
         body: formData
       });
-      const data = await res.json();
+
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        // Vercel body-size limit or network error returned non-JSON
+        const msg = `Upload failed (HTTP ${res.status}). The file may be too large (Vercel limit: 4.5 MB).`;
+        setErrorNotification(msg);
+        return { success: false, error: msg };
+      }
+
       if (data.success) {
-        setSuccessNotification('Asset uploaded to server uploads folder successfully.');
+        setSuccessNotification('Image uploaded to Supabase storage successfully.');
         return { success: true, url: data.url };
       } else {
-        setErrorNotification(data.error);
-        return { success: false, error: data.error };
+        // Show the real server-side reason (e.g. missing bucket, auth)
+        const msg = data.error || 'Upload failed for an unknown reason.';
+        setErrorNotification(msg);
+        return { success: false, error: msg };
       }
     } catch (err) {
-      setErrorNotification('File upload failed. Server connection error.');
-      return { success: false, error: 'Upload failed.' };
+      const msg = 'File upload failed — could not reach the API server. Check your internet connection or Vercel function logs.';
+      setErrorNotification(msg);
+      return { success: false, error: msg };
     } finally {
       setIsLoading(false);
     }
