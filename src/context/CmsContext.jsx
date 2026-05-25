@@ -411,14 +411,17 @@ export function CmsProvider({ children }) {
       });
       const data = await res.json();
       if (data.success) {
+        alert('DEBUG: Database successfully updated order status!');
         setSuccessNotification(`Order #${id} status updated to ${status}.`);
         await fetchDatabase();
         return true;
       } else {
+        alert('DEBUG ERROR: Backend returned success=false. ' + data.error);
         setErrorNotification(data.error || 'Failed to update order status.');
         await fetchDatabase(); // Revert to true server state
       }
     } catch (err) {
+      alert('DEBUG ERROR: Fetch threw a catastrophic error: ' + err.message);
       setErrorNotification('Failed to update order status.');
       await fetchDatabase(); // Revert to true server state
     }
