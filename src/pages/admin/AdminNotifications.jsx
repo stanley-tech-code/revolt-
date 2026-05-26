@@ -393,7 +393,7 @@ export default function AdminNotifications() {
                   <select value={newCampaign.segmentId} onChange={e => setNewCampaign({ ...newCampaign, segmentId: e.target.value })} className="w-full bg-white border border-[#000000]/20 px-3 py-2 text-sm outline-none">
                     <option value="All">All Opted-in Customers</option>
                     <option value="VIP">VIP Customers</option>
-                    <option value="Inactive">Inactive > 30 Days</option>
+                    <option value="Inactive">Inactive &gt; 30 Days</option>
                   </select>
                 </div>
               </div>
