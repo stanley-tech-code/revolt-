@@ -61,7 +61,6 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-// --- AUTHENTICATION ENDPOINTS ---
 app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -69,38 +68,46 @@ app.post('/api/auth/login', async (req, res) => {
     return res.status(400).json({ success: false, error: 'Please provide both username and password.' });
   }
 
-  // Real secure roles: admin / admin (Super Admin), editor / editor (Editor), etc.
-  const validUsers = [
-    { username: 'admin', role: 'Super Admin', pass: 'admin' },
-    { username: 'editor', role: 'Editor', pass: 'editor' },
-    { username: 'fulfillment', role: 'Fulfillment', pass: 'fulfillment' },
-    { username: 'support', role: 'Support', pass: 'support' },
-    { username: 'marketing', role: 'Marketing', pass: 'marketing' }
-  ];
+  try {
+    const { data: settingsDoc } = await supabase.from('cms').select('data').eq('type', 'settings').maybeSingle();
+    let validUsers = [
+      { username: 'admin', role: 'Super Admin', pass: 'admin' },
+      { username: 'editor', role: 'Editor', pass: 'editor' },
+      { username: 'fulfillment', role: 'Fulfillment', pass: 'fulfillment' },
+      { username: 'support', role: 'Support', pass: 'support' },
+      { username: 'marketing', role: 'Marketing', pass: 'marketing' }
+    ];
 
-  const matched = validUsers.find(u => u.username === username && u.pass === password);
-
-  if (!matched) {
-    return res.status(401).json({ success: false, error: 'Invalid administrator credentials. Access Denied.' });
-  }
-
-  // Sign real JWT token
-  const token = jwt.sign(
-    { username: matched.username, role: matched.role },
-    JWT_SECRET,
-    { expiresIn: '24h' }
-  );
-
-  await addLog(matched.username, `Authenticated successfully (Role: ${matched.role})`);
-
-  return res.json({
-    success: true,
-    token,
-    user: {
-      username: matched.username,
-      role: matched.role
+    if (settingsDoc && settingsDoc.data && settingsDoc.data.adminUsers && settingsDoc.data.adminUsers.length > 0) {
+      validUsers = settingsDoc.data.adminUsers;
     }
-  });
+
+    const matched = validUsers.find(u => u.username === username && u.pass === password);
+
+    if (!matched) {
+      return res.status(401).json({ success: false, error: 'Invalid administrator credentials. Access Denied.' });
+    }
+
+    const token = jwt.sign(
+      { username: matched.username, role: matched.role },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    await addLog(matched.username, `Authenticated successfully (Role: ${matched.role})`);
+
+    return res.json({
+      success: true,
+      token,
+      user: {
+        username: matched.username,
+        role: matched.role
+      }
+    });
+  } catch(err) {
+    console.error(err);
+    return res.status(500).json({ success: false, error: 'Server error during admin login.' });
+  }
 });
 
 app.get('/api/auth/me', verifyToken, async (req, res) => {

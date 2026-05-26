@@ -1,30 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCms } from '../../context/CmsContext';
 
 export default function AdminSettings() {
   const { draftDb, updateDraft, publishChanges, discardChanges, isLoading } = useCms();
   const [activeTab, setActiveTab] = useState('general');
 
-  const settings = draftDb.settings || {
+  // Initialize settings if they don't exist
+  const defaultSettings = {
     shipping: { zones: [], fees: [], pickupLocations: [] },
-    payments: { gateways: [], currency: 'KES', taxMode: 'exclusive' },
+    payments: { gateways: ['M-Pesa Express', 'Cash on Delivery'], currency: 'KES', taxMode: 'exclusive' },
     localization: { language: 'en', timeFormat: '24h' },
     legal: { cookieBannerEnabled: true, privacyPolicy: '', terms: '', refund: '' },
     maintenance: { active: false, message: 'We are currently upgrading our store. Check back soon!' },
-    developer: { webhookUrls: [] }
+    developer: { webhookUrls: [] },
+    adminUsers: [
+      { username: 'admin', role: 'Super Admin', pass: 'admin' },
+      { username: 'editor', role: 'Editor', pass: 'editor' },
+      { username: 'fulfillment', role: 'Fulfillment', pass: 'fulfillment' },
+      { username: 'support', role: 'Support', pass: 'support' },
+      { username: 'marketing', role: 'Marketing', pass: 'marketing' }
+    ]
   };
+
+  const settings = {
+    ...defaultSettings,
+    ...(draftDb.settings || {})
+  };
+
+  // Local state for forms
+  const [newZone, setNewZone] = useState({ name: '', fee: '' });
+  const [newPickup, setNewPickup] = useState({ name: '', hours: '' });
+  const [newWebhook, setNewWebhook] = useState('');
+  const [newAdmin, setNewAdmin] = useState({ username: '', role: 'Editor', pass: '' });
 
   const updateSetting = (category, field, value) => {
     updateDraft((prev) => ({
       ...prev,
       settings: {
         ...prev.settings,
+        ...(prev.settings || defaultSettings),
         [category]: {
-          ...(prev.settings?.[category] || {}),
+          ...(prev.settings?.[category] || defaultSettings[category]),
           [field]: value
         }
       }
     }));
+  };
+
+  // Generic array update
+  const addToArray = (category, field, item) => {
+    const currentArray = settings[category]?.[field] || [];
+    updateSetting(category, field, [...currentArray, item]);
+  };
+
+  const removeFromArray = (category, field, index) => {
+    const currentArray = [...(settings[category]?.[field] || [])];
+    currentArray.splice(index, 1);
+    updateSetting(category, field, currentArray);
+  };
+
+  // Admin users array update (top-level setting field)
+  const addAdmin = () => {
+    if (!newAdmin.username || !newAdmin.pass) return;
+    const currentAdmins = settings.adminUsers || defaultSettings.adminUsers;
+    updateDraft((prev) => ({
+      ...prev,
+      settings: {
+        ...(prev.settings || defaultSettings),
+        adminUsers: [...currentAdmins, { ...newAdmin }]
+      }
+    }));
+    setNewAdmin({ username: '', role: 'Editor', pass: '' });
+  };
+
+  const removeAdmin = (index) => {
+    const currentAdmins = [...(settings.adminUsers || defaultSettings.adminUsers)];
+    currentAdmins.splice(index, 1);
+    updateDraft((prev) => ({
+      ...prev,
+      settings: {
+        ...(prev.settings || defaultSettings),
+        adminUsers: currentAdmins
+      }
+    }));
+  };
+
+  const toggleGateway = (gateway) => {
+    const currentGateways = settings.payments.gateways || [];
+    if (currentGateways.includes(gateway)) {
+      updateSetting('payments', 'gateways', currentGateways.filter(g => g !== gateway));
+    } else {
+      updateSetting('payments', 'gateways', [...currentGateways, gateway]);
+    }
   };
 
   const handlePublish = async () => {
@@ -91,7 +158,7 @@ export default function AdminSettings() {
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Default Store Language</label>
                     <select 
-                      value={settings.localization.language} 
+                      value={settings.localization?.language || 'en'} 
                       onChange={e => updateSetting('localization', 'language', e.target.value)} 
                       className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"
                     >
@@ -104,7 +171,7 @@ export default function AdminSettings() {
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Time Format</label>
                     <select 
-                      value={settings.localization.timeFormat} 
+                      value={settings.localization?.timeFormat || '24h'} 
                       onChange={e => updateSetting('localization', 'timeFormat', e.target.value)} 
                       className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"
                     >
@@ -119,10 +186,10 @@ export default function AdminSettings() {
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Contact Information</h2>
                 <p className="text-xs text-[#000000]/60 mb-4">This information appears in your footer, receipts, and contact page.</p>
                 <div className="grid grid-cols-1 gap-4">
-                  <input type="email" placeholder="Support Email (e.g., support@revolt.com)" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
-                  <input type="tel" placeholder="Support Phone (+254...)" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
-                  <textarea rows="3" placeholder="Physical Address or Headquarters" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"></textarea>
-                  <input type="text" placeholder="Google Maps Embed Link" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
+                  <input type="email" value={settings.localization?.supportEmail || ''} onChange={e => updateSetting('localization', 'supportEmail', e.target.value)} placeholder="Support Email (e.g., support@revolt.com)" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
+                  <input type="tel" value={settings.localization?.supportPhone || ''} onChange={e => updateSetting('localization', 'supportPhone', e.target.value)} placeholder="Support Phone (+254...)" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
+                  <textarea rows="3" value={settings.localization?.address || ''} onChange={e => updateSetting('localization', 'address', e.target.value)} placeholder="Physical Address or Headquarters" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"></textarea>
+                  <input type="text" value={settings.localization?.mapsLink || ''} onChange={e => updateSetting('localization', 'mapsLink', e.target.value)} placeholder="Google Maps Embed Link" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
                 </div>
               </section>
             </div>
@@ -134,25 +201,48 @@ export default function AdminSettings() {
               <section>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Delivery Zones</h2>
                 <p className="text-xs text-[#000000]/60 mb-4">Define regions where you deliver, and set flat-rate fees.</p>
-                <div className="border border-[#000000]/10 p-4 bg-[#f9f9f9] flex justify-between items-center">
-                  <div>
-                    <h3 className="font-bold text-sm">Nairobi Metro</h3>
-                    <p className="text-xs text-[#000000]/50">Flat rate: Ksh 500</p>
-                  </div>
-                  <button className="text-[10px] font-bold uppercase underline">Edit</button>
+                <div className="space-y-2 mb-4">
+                  {(settings.shipping?.zones || []).map((zone, idx) => (
+                    <div key={idx} className="border border-[#000000]/10 p-4 bg-[#f9f9f9] flex justify-between items-center">
+                      <div>
+                        <h3 className="font-bold text-sm">{zone.name}</h3>
+                        <p className="text-xs text-[#000000]/50">Flat rate: {settings.payments?.currency || 'KES'} {zone.fee}</p>
+                      </div>
+                      <button onClick={() => removeFromArray('shipping', 'zones', idx)} className="text-[10px] font-bold uppercase text-red-500 hover:underline">Remove</button>
+                    </div>
+                  ))}
+                  {(!settings.shipping?.zones || settings.shipping.zones.length === 0) && (
+                    <p className="text-sm italic text-gray-400">No delivery zones added yet.</p>
+                  )}
                 </div>
-                <button className="mt-4 text-[10px] font-bold uppercase bg-[#000000] text-white px-4 py-2 hover:bg-[#000000]/80">+ Add Zone</button>
+                <div className="flex gap-2 items-center">
+                  <input type="text" placeholder="Zone Name (e.g. Nairobi Metro)" value={newZone.name} onChange={e => setNewZone({...newZone, name: e.target.value})} className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                  <input type="number" placeholder="Fee" value={newZone.fee} onChange={e => setNewZone({...newZone, fee: e.target.value})} className="w-32 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                  <button onClick={() => { if(newZone.name) { addToArray('shipping', 'zones', newZone); setNewZone({name: '', fee: ''}); } }} className="text-[10px] font-bold uppercase bg-[#000000] text-white px-4 py-2 hover:bg-[#000000]/80">+ Add Zone</button>
+                </div>
               </section>
 
               <section>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Pickup Locations</h2>
                 <p className="text-xs text-[#000000]/60 mb-4">Manage store or warehouse locations available for local pickup.</p>
-                <div className="border border-[#000000]/10 p-4 bg-[#f9f9f9] flex justify-between items-center">
-                  <div>
-                    <h3 className="font-bold text-sm">Revolt Flagship Store (CBD)</h3>
-                    <p className="text-xs text-[#000000]/50">Mon-Sat, 9AM-6PM</p>
-                  </div>
-                  <button className="text-[10px] font-bold uppercase underline">Edit</button>
+                <div className="space-y-2 mb-4">
+                  {(settings.shipping?.pickupLocations || []).map((loc, idx) => (
+                    <div key={idx} className="border border-[#000000]/10 p-4 bg-[#f9f9f9] flex justify-between items-center">
+                      <div>
+                        <h3 className="font-bold text-sm">{loc.name}</h3>
+                        <p className="text-xs text-[#000000]/50">{loc.hours}</p>
+                      </div>
+                      <button onClick={() => removeFromArray('shipping', 'pickupLocations', idx)} className="text-[10px] font-bold uppercase text-red-500 hover:underline">Remove</button>
+                    </div>
+                  ))}
+                  {(!settings.shipping?.pickupLocations || settings.shipping.pickupLocations.length === 0) && (
+                    <p className="text-sm italic text-gray-400">No pickup locations added yet.</p>
+                  )}
+                </div>
+                <div className="flex gap-2 items-center">
+                  <input type="text" placeholder="Location Name" value={newPickup.name} onChange={e => setNewPickup({...newPickup, name: e.target.value})} className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                  <input type="text" placeholder="Operating Hours" value={newPickup.hours} onChange={e => setNewPickup({...newPickup, hours: e.target.value})} className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                  <button onClick={() => { if(newPickup.name) { addToArray('shipping', 'pickupLocations', newPickup); setNewPickup({name: '', hours: ''}); } }} className="text-[10px] font-bold uppercase bg-[#000000] text-white px-4 py-2 hover:bg-[#000000]/80">+ Add Location</button>
                 </div>
               </section>
             </div>
@@ -167,7 +257,12 @@ export default function AdminSettings() {
                 <div className="space-y-3">
                   {['M-Pesa Express', 'Stripe (Card Payments)', 'PayPal', 'Flutterwave', 'Cash on Delivery'].map((gw) => (
                     <label key={gw} className="flex items-center gap-3 cursor-pointer p-3 border border-[#000000]/10 bg-[#f9f9f9] hover:bg-white transition-colors">
-                      <input type="checkbox" defaultChecked={['M-Pesa Express', 'Cash on Delivery'].includes(gw)} className="w-5 h-5 accent-[#000000]" />
+                      <input 
+                        type="checkbox" 
+                        checked={(settings.payments?.gateways || []).includes(gw)} 
+                        onChange={() => toggleGateway(gw)}
+                        className="w-5 h-5 accent-[#000000]" 
+                      />
                       <span className="font-bold text-sm">{gw}</span>
                     </label>
                   ))}
@@ -180,7 +275,7 @@ export default function AdminSettings() {
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Base Currency</label>
                     <select 
-                      value={settings.payments.currency} 
+                      value={settings.payments?.currency || 'KES'} 
                       onChange={e => updateSetting('payments', 'currency', e.target.value)} 
                       className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"
                     >
@@ -192,7 +287,7 @@ export default function AdminSettings() {
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Tax Mode</label>
                     <select 
-                      value={settings.payments.taxMode} 
+                      value={settings.payments?.taxMode || 'exclusive'} 
                       onChange={e => updateSetting('payments', 'taxMode', e.target.value)} 
                       className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"
                     >
@@ -210,43 +305,45 @@ export default function AdminSettings() {
             <div className="space-y-8 animate-fade-in">
               <section>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Admin Accounts</h2>
-                <div className="overflow-x-auto border border-[#000000]/10">
+                <div className="overflow-x-auto border border-[#000000]/10 mb-4">
                   <table className="w-full text-left text-sm whitespace-nowrap">
                     <thead className="bg-[#f9f9f9] border-b border-[#000000]/10 text-[10px] font-bold uppercase tracking-[0.1em] text-[#000000]/60">
                       <tr>
                         <th className="px-4 py-3">Username</th>
                         <th className="px-4 py-3">Role</th>
-                        <th className="px-4 py-3">Status</th>
+                        <th className="px-4 py-3 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#000000]/10">
-                      <tr>
-                        <td className="px-4 py-3 font-medium">admin</td>
-                        <td className="px-4 py-3">Super Admin</td>
-                        <td className="px-4 py-3 text-green-600 font-bold text-[10px] uppercase">Active</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-medium">editor</td>
-                        <td className="px-4 py-3">Editor</td>
-                        <td className="px-4 py-3 text-green-600 font-bold text-[10px] uppercase">Active</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-medium">fulfillment</td>
-                        <td className="px-4 py-3">Fulfillment</td>
-                        <td className="px-4 py-3 text-green-600 font-bold text-[10px] uppercase">Active</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-medium">support</td>
-                        <td className="px-4 py-3">Support</td>
-                        <td className="px-4 py-3 text-green-600 font-bold text-[10px] uppercase">Active</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-medium">marketing</td>
-                        <td className="px-4 py-3">Marketing</td>
-                        <td className="px-4 py-3 text-green-600 font-bold text-[10px] uppercase">Active</td>
-                      </tr>
+                      {(settings.adminUsers || []).map((admin, idx) => (
+                        <tr key={idx}>
+                          <td className="px-4 py-3 font-medium">{admin.username}</td>
+                          <td className="px-4 py-3">
+                            <span className="bg-[#000000]/5 px-2 py-1 rounded text-xs">{admin.role}</span>
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            {admin.username !== 'admin' && (
+                              <button onClick={() => removeAdmin(idx)} className="text-red-500 font-bold text-[10px] uppercase hover:underline">Revoke</button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
+                </div>
+                
+                <h3 className="font-bold text-sm mb-2">Add New Administrator</h3>
+                <div className="flex gap-2 items-center">
+                  <input type="text" placeholder="Username" value={newAdmin.username} onChange={e => setNewAdmin({...newAdmin, username: e.target.value})} className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                  <input type="password" placeholder="Password" value={newAdmin.pass} onChange={e => setNewAdmin({...newAdmin, pass: e.target.value})} className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                  <select value={newAdmin.role} onChange={e => setNewAdmin({...newAdmin, role: e.target.value})} className="bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none">
+                    <option value="Super Admin">Super Admin</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Support">Support</option>
+                    <option value="Fulfillment">Fulfillment</option>
+                  </select>
+                  <button onClick={addAdmin} className="text-[10px] font-bold uppercase bg-[#000000] text-white px-4 py-2 hover:bg-[#000000]/80">Add</button>
                 </div>
               </section>
               
@@ -254,11 +351,21 @@ export default function AdminSettings() {
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Security Rules</h2>
                 <div className="space-y-4">
                   <label className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" className="w-5 h-5 accent-[#000000]" />
+                    <input 
+                      type="checkbox" 
+                      checked={settings.security?.force2FA || false} 
+                      onChange={e => updateSetting('security', 'force2FA', e.target.checked)}
+                      className="w-5 h-5 accent-[#000000]" 
+                    />
                     <span className="font-bold text-sm">Force Two-Factor Authentication (2FA) for all Admins</span>
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" defaultChecked className="w-5 h-5 accent-[#000000]" />
+                    <input 
+                      type="checkbox" 
+                      checked={settings.security?.restrictIPs || true} 
+                      onChange={e => updateSetting('security', 'restrictIPs', e.target.checked)}
+                      className="w-5 h-5 accent-[#000000]" 
+                    />
                     <span className="font-bold text-sm">Restrict Admin Logins to Trusted IPs</span>
                   </label>
                 </div>
@@ -274,7 +381,7 @@ export default function AdminSettings() {
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input 
                     type="checkbox" 
-                    checked={settings.legal.cookieBannerEnabled} 
+                    checked={settings.legal?.cookieBannerEnabled ?? true} 
                     onChange={e => updateSetting('legal', 'cookieBannerEnabled', e.target.checked)} 
                     className="w-5 h-5 accent-[#000000]" 
                   />
@@ -286,7 +393,7 @@ export default function AdminSettings() {
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Privacy Policy</h2>
                 <textarea 
                   rows="6" 
-                  value={settings.legal.privacyPolicy}
+                  value={settings.legal?.privacyPolicy || ''}
                   onChange={e => updateSetting('legal', 'privacyPolicy', e.target.value)}
                   placeholder="Enter Privacy Policy text here..." 
                   className="w-full bg-[#f9f9f9] border border-[#000000]/20 p-4 text-sm outline-none"
@@ -297,7 +404,7 @@ export default function AdminSettings() {
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Terms & Conditions</h2>
                 <textarea 
                   rows="6" 
-                  value={settings.legal.terms}
+                  value={settings.legal?.terms || ''}
                   onChange={e => updateSetting('legal', 'terms', e.target.value)}
                   placeholder="Enter Terms & Conditions text here..." 
                   className="w-full bg-[#f9f9f9] border border-[#000000]/20 p-4 text-sm outline-none"
@@ -308,7 +415,7 @@ export default function AdminSettings() {
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Refund Policy</h2>
                 <textarea 
                   rows="6" 
-                  value={settings.legal.refund}
+                  value={settings.legal?.refund || ''}
                   onChange={e => updateSetting('legal', 'refund', e.target.value)}
                   placeholder="Enter Refund Policy text here..." 
                   className="w-full bg-[#f9f9f9] border border-[#000000]/20 p-4 text-sm outline-none"
@@ -326,16 +433,16 @@ export default function AdminSettings() {
                 <label className="flex items-center gap-3 cursor-pointer mb-4">
                   <input 
                     type="checkbox" 
-                    checked={settings.maintenance.active} 
+                    checked={settings.maintenance?.active || false} 
                     onChange={e => updateSetting('maintenance', 'active', e.target.checked)} 
                     className="w-5 h-5 accent-[#000000]" 
                   />
                   <span className="font-bold text-sm text-red-600">Activate Maintenance Mode Overlay</span>
                 </label>
-                {settings.maintenance.active && (
+                {settings.maintenance?.active && (
                   <input 
                     type="text" 
-                    value={settings.maintenance.message}
+                    value={settings.maintenance?.message || ''}
                     onChange={e => updateSetting('maintenance', 'message', e.target.value)}
                     placeholder="Maintenance message..." 
                     className="w-full bg-white border border-red-500 px-4 py-3 text-sm outline-none" 
@@ -345,19 +452,37 @@ export default function AdminSettings() {
 
               <section>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Webhooks</h2>
+                <div className="space-y-2 mb-4">
+                  {(settings.developer?.webhookUrls || []).map((url, idx) => (
+                    <div key={idx} className="border border-[#000000]/10 p-3 bg-[#f9f9f9] flex justify-between items-center text-sm">
+                      <span className="font-mono text-xs">{url}</span>
+                      <button onClick={() => removeFromArray('developer', 'webhookUrls', idx)} className="text-[10px] font-bold uppercase text-red-500 hover:underline">Remove</button>
+                    </div>
+                  ))}
+                </div>
                 <div className="flex gap-2">
-                  <input type="url" placeholder="https://your-server.com/webhook" className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
-                  <button className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider">Add</button>
+                  <input type="url" value={newWebhook} onChange={e => setNewWebhook(e.target.value)} placeholder="https://your-server.com/webhook" className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                  <button onClick={() => { if(newWebhook) { addToArray('developer', 'webhookUrls', newWebhook); setNewWebhook(''); } }} className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80">Add</button>
                 </div>
               </section>
 
               <section>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Data Management</h2>
                 <div className="flex gap-4">
-                  <button className="flex-1 bg-[#f5f5f5] text-[#000000] border border-[#000000]/20 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#e0e0e0] transition-colors">
+                  <button onClick={() => {
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(draftDb, null, 2));
+                    const dlAnchorElem = document.createElement('a');
+                    dlAnchorElem.setAttribute("href", dataStr);
+                    dlAnchorElem.setAttribute("download", "revolt_store_backup.json");
+                    dlAnchorElem.click();
+                  }} className="flex-1 bg-[#f5f5f5] text-[#000000] border border-[#000000]/20 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#e0e0e0] transition-colors">
                     Export Full Backup (JSON)
                   </button>
-                  <button className="flex-1 bg-red-50 text-red-600 border border-red-200 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-red-100 transition-colors">
+                  <button onClick={() => {
+                    if (window.confirm("Are you sure you want to perform a factory reset? This is for demonstration purposes only!")) {
+                      alert("Factory Reset simulation complete. In a real environment, this would wipe the Supabase tables.");
+                    }
+                  }} className="flex-1 bg-red-50 text-red-600 border border-red-200 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-red-100 transition-colors">
                     Factory Reset Database
                   </button>
                 </div>
