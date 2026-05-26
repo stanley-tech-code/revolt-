@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useCms } from '../../context/CmsContext';
 
 export default function Footer() {
+  const { db } = useCms();
+  const social = db?.social || {};
+
   return (
     <footer className="bg-canvas text-[#000000] pt-12 md:pt-16 pb-8 border-t border-clay/30">
       <div className="container-standard">
@@ -34,10 +38,12 @@ export default function Footer() {
             <div className="space-y-4">
               <h5 className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#000000]">Social</h5>
               <ul className="space-y-2.5 text-[11px] font-medium tracking-wide">
-                <li><a href="https://instagram.com/revolt" target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Instagram</a></li>
-                <li><a href="https://tiktok.com/@revolt" target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">TikTok</a></li>
-                <li><a href="https://twitter.com/revolt" target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">X (Twitter)</a></li>
-                <li><a href="https://facebook.com/revolt" target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Facebook</a></li>
+                {social.instagram && <li><a href={social.instagram} target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Instagram</a></li>}
+                {social.tiktok && <li><a href={social.tiktok} target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">TikTok</a></li>}
+                {social.twitter && <li><a href={social.twitter} target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">X (Twitter)</a></li>}
+                {social.facebook && <li><a href={social.facebook} target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Facebook</a></li>}
+                {social.youtube && <li><a href={social.youtube} target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">YouTube</a></li>}
+                {social.pinterest && <li><a href={social.pinterest} target="_blank" rel="noreferrer" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Pinterest</a></li>}
               </ul>
             </div>
           </div>

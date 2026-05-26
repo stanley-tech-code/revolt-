@@ -64,8 +64,39 @@ function ClientLayout() {
     fetch('/api/track-visit', { method: 'POST' }).catch(() => {});
   }, [location.pathname, db?.seo?.title]);
 
+  // Inject Custom Scripts
+  React.useEffect(() => {
+    if (!db?.scripts) return;
+    
+    // Clean up old scripts by assigning them an ID and removing if exists
+    const manageScript = (id, content, target) => {
+      let el = document.getElementById(id);
+      if (el) el.remove();
+      if (content) {
+        el = document.createElement('script');
+        el.id = id;
+        el.innerHTML = content;
+        target.appendChild(el);
+      }
+    };
+    
+    manageScript('custom-header-script', db.scripts.header, document.head);
+    manageScript('custom-footer-script', db.scripts.footer, document.body);
+  }, [db?.scripts]);
+
+  const themeVars = {
+    '--color-canvas': db?.theme?.backgroundColor || '#ffffff',
+    '--color-ink': db?.theme?.primaryColor || '#000000',
+    '--color-sand': db?.theme?.secondaryColor || '#f5f0eb',
+    '--color-btn': db?.theme?.buttonColor || '#000000',
+    '--color-btn-text': db?.theme?.buttonTextColor || '#ffffff',
+    '--font-heading': db?.theme?.headingFont || 'Inter, sans-serif',
+    '--font-body': db?.theme?.bodyFont || 'Inter, sans-serif',
+    '--section-padding': db?.theme?.sectionPadding || '4rem',
+  };
+
   return (
-    <div className="bg-canvas text-ink min-h-screen flex flex-col">
+    <div className="bg-canvas text-ink min-h-screen flex flex-col" style={themeVars}>
       <div className="fixed top-0 left-0 w-full z-[999]">
         <AnnouncementBar />
         <Navbar onMenuToggle={() => setMobileMenuOpen(true)} />

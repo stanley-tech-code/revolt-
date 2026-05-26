@@ -14,6 +14,19 @@ export function CmsProvider({ children }) {
     customers: [],
     promos: [],
     seo: { title: 'REVOLT — Refined Luxury Essentials', description: '', googleAnalyticsId: '', facebookPixelId: '', promoBannerActive: true, promoBannerText: '' },
+    theme: {
+      primaryColor: '#000000',
+      secondaryColor: '#f5f0eb',
+      backgroundColor: '#ffffff',
+      buttonColor: '#000000',
+      buttonTextColor: '#ffffff',
+      headingFont: 'Inter',
+      bodyFont: 'Inter',
+      sectionPadding: '4rem'
+    },
+    assets: { logo: '', favicon: '' },
+    social: { instagram: '', tiktok: '', facebook: '', twitter: '', youtube: '', pinterest: '' },
+    scripts: { header: '', footer: '' },
     admin: { currentUser: null, logs: [] }
   });
 
@@ -51,6 +64,18 @@ export function CmsProvider({ children }) {
       // 3. Fetch public SEO config
       const seoRes = await fetch('/api/seo');
       const seoData = await seoRes.json();
+
+      // 4. Fetch generic CMS configs
+      const [themeRes, assetsRes, socialRes, scriptsRes] = await Promise.all([
+        fetch('/api/cms/theme'),
+        fetch('/api/cms/assets'),
+        fetch('/api/cms/social'),
+        fetch('/api/cms/scripts')
+      ]);
+      const themeData = await themeRes.json();
+      const assetsData = await assetsRes.json();
+      const socialData = await socialRes.json();
+      const scriptsData = await scriptsRes.json();
 
       let orders = [];
       let customers = [];
@@ -118,6 +143,10 @@ export function CmsProvider({ children }) {
         },
         products: prodData.products || db.products,
         seo: seoData.seo || db.seo,
+        theme: themeData.data || db.theme,
+        assets: assetsData.data || db.assets,
+        social: socialData.data || db.social,
+        scripts: scriptsData.data || db.scripts,
         orders,
         customers,
         promos,
@@ -197,6 +226,14 @@ export function CmsProvider({ children }) {
         body: JSON.stringify(draftDb.seo)
       });
       const seoData = await seoRes.json();
+
+      // 3. Sync generic CMS config
+      await Promise.all([
+        fetch('/api/cms/theme', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.theme }) }),
+        fetch('/api/cms/assets', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.assets }) }),
+        fetch('/api/cms/social', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.social }) }),
+        fetch('/api/cms/scripts', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.scripts }) })
+      ]);
 
       if (secData.success && seoData.success) {
         setSuccessNotification('Draft changes successfully compiled & published live!');

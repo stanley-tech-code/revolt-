@@ -330,6 +330,65 @@ app.put('/api/sections', verifyToken, async (req, res) => {
   }
 });
 
+// --- GENERIC CMS ROUTES ---
+app.get('/api/cms/:type', async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { data: doc, error } = await supabase.from('cms').select('data').eq('type', type).single();
+    if (error && error.code !== 'PGRST116') throw error; // ignore not found
+    return res.json({ success: true, data: doc ? doc.data : null });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch CMS block.' });
+  }
+});
+
+app.put('/api/cms/:type', verifyToken, async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { data } = req.body;
+    await supabase.from('cms').upsert({ type, data });
+    await addLog(req.user.username, `Updated generic CMS configuration for type: ${type}`);
+    return res.json({ success: true });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to update CMS block.' });
+  }
+});
+
+app.get('/robots.txt', async (req, res) => {
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'seo_globals').single();
+    const txt = doc?.data?.robotsTxt || 'User-agent: *\nAllow: /';
+    res.type('text/plain');
+    res.send(txt);
+  } catch(err) {
+    res.type('text/plain');
+    res.send('User-agent: *\nAllow: /');
+  }
+});
+
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const { data: products } = await supabase.from('products').select('id, name');
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://revolt.com/</loc></url>
+  <url><loc>https://revolt.com/other/shop-the-collection</loc></url>
+`;
+    if (products) {
+      products.forEach(p => {
+        // use slug if we have it later, for now id
+        xml += `  <url><loc>https://revolt.com/product/${p.id}</loc></url>\n`;
+      });
+    }
+    xml += `</urlset>`;
+    res.type('application/xml');
+    res.send(xml);
+  } catch(err) {
+    res.type('application/xml');
+    res.send('<?xml version="1.0" encoding="UTF-8"?><urlset></urlset>');
+  }
+});
+
 // --- CRUD PRODUCTS INVENTORY ROUTERS ---
 app.get('/api/products', async (req, res) => {
   try {

@@ -9,8 +9,13 @@ export default function ProductDetails() {
   const { db, isLoading } = useCms();
   const { addToCart, toggleWishlist, wishlist } = useStore();
 
-  const product = db.products?.find(p => p.id === id);
-  const relatedProducts = db.products?.filter(p => p.mainCategory === product?.mainCategory && p.id !== id).slice(0, 3) || [];
+  const product = db.products?.find(p => {
+    if (p.id === id) return true;
+    const pSeo = db.seo?.productSeo?.[p.id];
+    if (pSeo && pSeo.slug === id) return true;
+    return false;
+  });
+  const relatedProducts = db.products?.filter(p => p.mainCategory === product?.mainCategory && p.id !== product?.id).slice(0, 3) || [];
 
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState(() => {
