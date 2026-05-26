@@ -19,6 +19,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
+import AdminContent from './pages/admin/AdminContent';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
@@ -101,6 +102,7 @@ function App() {
               <Route path="customers" element={<AdminCustomers />} />
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
+              <Route path="content" element={<AdminContent />} />
               <Route path="analytics" element={
                 <ErrorBoundary>
                   <React.Suspense fallback={<div className="p-10 text-center animate-pulse font-bold">Loading Analytics...</div>}>

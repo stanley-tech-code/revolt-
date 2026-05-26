@@ -28,8 +28,20 @@ export default function ProductDetails() {
       setSelectedColor(defaultColor);
       setCurrentImageIndex(0);
       setSelectedSize('');
+
+      // Set Document Title and Meta Description for SEO
+      const productSeo = db?.seo?.productSeo?.[product.id] || {};
+      document.title = productSeo.title || `${product.name} — Revolt Elite`;
+      
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = "description";
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.content = productSeo.description || product.description || db?.seo?.description || '';
     }
-  }, [id, product]);
+  }, [id, product, db?.seo]);
 
   if (isLoading) {
     return (
