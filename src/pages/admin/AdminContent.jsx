@@ -307,10 +307,48 @@ export default function AdminContent() {
                       </div>
                     )}
 
-                    {sec.image !== undefined && (
+                    {sec.image !== undefined && sec.type !== 'curation' && sec.type !== 'products' && (
                       <div>
                         <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">Image URL</label>
                         <input type="text" value={sec.image} onChange={(e) => handleSectionChange(sec.id, 'image', e.target.value)} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                      </div>
+                    )}
+
+                    {sec.type === 'curation' && (
+                      <div className="space-y-4 pt-4 border-t border-[#000000]/10">
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">Main Curation Image URL</label>
+                          <input type="text" value={sec.mainItem?.image || ''} onChange={(e) => handleSectionChange(sec.id, 'mainItem', { ...sec.mainItem, image: e.target.value })} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {(sec.subItems || []).map((subItem, idx) => (
+                            <div key={idx}>
+                              <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">Sub-Item {idx + 1} Image URL</label>
+                              <input type="text" value={subItem.image || ''} onChange={(e) => {
+                                const newSubItems = [...sec.subItems];
+                                newSubItems[idx] = { ...newSubItems[idx], image: e.target.value };
+                                handleSectionChange(sec.id, 'subItems', newSubItems);
+                              }} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {sec.type === 'products' && (
+                      <div className="space-y-4 pt-4 border-t border-[#000000]/10">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {(sec.categories || []).map((cat, idx) => (
+                            <div key={idx}>
+                              <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">{cat.name} Image URL</label>
+                              <input type="text" value={cat.image || ''} onChange={(e) => {
+                                const newCategories = [...sec.categories];
+                                newCategories[idx] = { ...newCategories[idx], image: e.target.value };
+                                handleSectionChange(sec.id, 'categories', newCategories);
+                              }} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
