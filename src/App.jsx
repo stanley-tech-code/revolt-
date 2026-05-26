@@ -20,6 +20,7 @@ import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminContent from './pages/admin/AdminContent';
+import AdminNotifications from './pages/admin/AdminNotifications';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
@@ -40,6 +41,7 @@ import Wishlist from './pages/components/Wishlist';
 
 import ProductDetails from './pages/ProductDetails';
 import CollectionPage from './pages/CollectionPage';
+import Preferences from './pages/Preferences';
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -134,6 +136,7 @@ function App() {
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
               <Route path="content" element={<AdminContent />} />
+              <Route path="notifications" element={<AdminNotifications />} />
               <Route path="analytics" element={
                 <ErrorBoundary>
                   <React.Suspense fallback={<div className="p-10 text-center animate-pulse font-bold">Loading Analytics...</div>}>
@@ -163,6 +166,8 @@ function App() {
               <Route path="/help/size-guide" element={<SizeGuide />} />
               <Route path="/help/contact" element={<Contact />} />
               
+              <Route path="/preferences" element={<Preferences />} />
+
               <Route path="/components/account" element={
                 <ProtectedRoute>
                   <Account />

@@ -27,6 +27,7 @@ export function CmsProvider({ children }) {
     assets: { logo: '', favicon: '' },
     social: { instagram: '', tiktok: '', facebook: '', twitter: '', youtube: '', pinterest: '' },
     scripts: { header: '', footer: '' },
+    notifications: { templates: [], campaigns: [], automations: [], segments: [] },
     admin: { currentUser: null, logs: [] }
   });
 
@@ -66,16 +67,18 @@ export function CmsProvider({ children }) {
       const seoData = await seoRes.json();
 
       // 4. Fetch generic CMS configs
-      const [themeRes, assetsRes, socialRes, scriptsRes] = await Promise.all([
+      const [themeRes, assetsRes, socialRes, scriptsRes, notifRes] = await Promise.all([
         fetch('/api/cms/theme'),
         fetch('/api/cms/assets'),
         fetch('/api/cms/social'),
-        fetch('/api/cms/scripts')
+        fetch('/api/cms/scripts'),
+        fetch('/api/cms/notifications')
       ]);
       const themeData = await themeRes.json();
       const assetsData = await assetsRes.json();
       const socialData = await socialRes.json();
       const scriptsData = await scriptsRes.json();
+      const notifData = await notifRes.json();
 
       let orders = [];
       let customers = [];
@@ -147,6 +150,7 @@ export function CmsProvider({ children }) {
         assets: assetsData.data || db.assets,
         social: socialData.data || db.social,
         scripts: scriptsData.data || db.scripts,
+        notifications: notifData.data || db.notifications,
         orders,
         customers,
         promos,
@@ -232,7 +236,8 @@ export function CmsProvider({ children }) {
         fetch('/api/cms/theme', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.theme }) }),
         fetch('/api/cms/assets', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.assets }) }),
         fetch('/api/cms/social', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.social }) }),
-        fetch('/api/cms/scripts', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.scripts }) })
+        fetch('/api/cms/scripts', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.scripts }) }),
+        fetch('/api/cms/notifications', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.notifications }) })
       ]);
 
       if (secData.success && seoData.success) {
@@ -308,6 +313,16 @@ export function CmsProvider({ children }) {
     setDraftDb(prev => ({ ...prev, admin: { ...prev.admin, currentUser: null } }));
     setIsEditMode(false);
     setSuccessNotification('Successfully logged out of portal.');
+  };
+
+  const sendNotification = async (customer, channel, templateId, content, campaignId) => {
+    try {
+      await fetch('/api/notifications/send', {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ customer, channel, templateId, content, campaignId })
+      });
+    } catch(e) {}
   };
 
   // --- REAL-TIME PRODUCTS INVENTORY CRUD ---
@@ -687,7 +702,8 @@ export function CmsProvider({ children }) {
       deleteCustomer,
       createPromo,
       updatePromo,
-      deletePromo
+      deletePromo,
+      sendNotification
     }}>
       {children}
 

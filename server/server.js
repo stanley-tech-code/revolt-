@@ -636,6 +636,24 @@ app.put('/api/orders/:id', verifyToken, async (req, res) => {
     if (error || !updated) return res.status(404).json({ success: false, error: 'Order not found.' });
 
     await addLog(req.user.username, `Updated order status details for Order #${id}`);
+
+    // Trigger Notification Automations
+    if (fields.status) {
+      try {
+        const { data: notifDoc } = await supabase.from('cms').select('data').eq('type', 'notifications').single();
+        const automations = notifDoc?.data?.automations || [];
+        const triggerEvent = `ORDER_${fields.status.toUpperCase()}`;
+        const auto = automations.find(a => a.trigger === triggerEvent && a.active);
+        
+        if (auto) {
+           const targetEmail = updated.deliveryInfo?.customerEmail || 'customer@example.com';
+           await addLog(targetEmail, `[NOTIFICATION] Channel:${auto.channel || 'Email'} | Status:Delivered | Template:${auto.templateId} | Campaign:Automation | Content:Automated trigger for ${triggerEvent}`);
+        }
+      } catch(e) {
+        console.error('Failed to trigger notification automation', e);
+      }
+    }
+
     return res.json({ success: true, order: updated });
   } catch(err) {
     return res.status(500).json({ success: false, error: 'Failed to update order.' });
@@ -653,6 +671,18 @@ app.post('/api/orders/:id/refund', verifyToken, async (req, res) => {
     if (action === 'approve') {
       const { data: updated } = await supabase.from('orders').update({ status: 'Refunded', refundStatus: 'Approved' }).eq('id', id).select().single();
       await addLog(req.user.username, `Approved refund for transaction Order #${id} (${order.customer})`);
+
+      // Trigger Refund Automation
+      try {
+        const { data: notifDoc } = await supabase.from('cms').select('data').eq('type', 'notifications').single();
+        const automations = notifDoc?.data?.automations || [];
+        const auto = automations.find(a => a.trigger === 'ORDER_REFUNDED' && a.active);
+        if (auto) {
+           const targetEmail = updated.deliveryInfo?.customerEmail || 'customer@example.com';
+           await addLog(targetEmail, `[NOTIFICATION] Channel:${auto.channel || 'Email'} | Status:Delivered | Template:${auto.templateId} | Campaign:Automation | Content:Automated trigger for ORDER_REFUNDED`);
+        }
+      } catch(e) {}
+
       return res.json({ success: true, order: updated, message: 'Refund approved successfully.' });
     } else {
       const { data: updated } = await supabase.from('orders').update({ refundStatus: 'Rejected' }).eq('id', id).select().single();
@@ -661,6 +691,28 @@ app.post('/api/orders/:id/refund', verifyToken, async (req, res) => {
     }
   } catch(err) {
     return res.status(500).json({ success: false, error: 'Failed to process refund.' });
+  }
+});
+
+// --- NOTIFICATIONS & LOGS ---
+app.get('/api/notifications/logs', verifyToken, async (req, res) => {
+  try {
+    const { data: logs, error } = await supabase.from('logs').select('*').like('action', '%[NOTIFICATION]%').order('timestamp', { ascending: false });
+    if (error) throw error;
+    return res.json({ success: true, logs });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch notification logs.' });
+  }
+});
+
+app.post('/api/notifications/send', verifyToken, async (req, res) => {
+  const { customer, channel, templateId, content, campaignId } = req.body;
+  try {
+    const cleanContent = content ? content.substring(0, 100).replace(/\n/g, ' ') : '';
+    await addLog(customer, `[NOTIFICATION] Channel:${channel || 'Email'} | Status:Delivered | Template:${templateId || 'None'} | Campaign:${campaignId || 'Broadcast'} | Content:${cleanContent}...`);
+    return res.json({ success: true });
+  } catch(err) {
+    return res.status(500).json({ success: false });
   }
 });
 
