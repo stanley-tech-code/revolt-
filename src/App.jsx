@@ -9,6 +9,7 @@ import { useCms } from './context/CmsContext';
 import { StoreProvider } from './context/StoreContext';
 import CartDrawer from './components/ui/CartDrawer';
 import SearchModal from './components/ui/SearchModal';
+import CookieBanner from './components/ui/CookieBanner';
 import { Outlet } from 'react-router-dom';
 
 import AdminLogin from './pages/admin/AdminLogin';
@@ -21,6 +22,7 @@ import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminContent from './pages/admin/AdminContent';
 import AdminNotifications from './pages/admin/AdminNotifications';
+import AdminSettings from './pages/admin/AdminSettings';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
@@ -42,6 +44,7 @@ import Wishlist from './pages/components/Wishlist';
 import ProductDetails from './pages/ProductDetails';
 import CollectionPage from './pages/CollectionPage';
 import Preferences from './pages/Preferences';
+import PolicyPage from './pages/PolicyPage';
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -97,6 +100,17 @@ function ClientLayout() {
     '--section-padding': db?.theme?.sectionPadding || '4rem',
   };
 
+  if (db?.settings?.maintenance?.active) {
+    return (
+      <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center p-6 text-center animate-fade-in z-[9999] fixed inset-0">
+        <h1 className="text-3xl md:text-5xl font-bold uppercase tracking-widest mb-6">Store Paused</h1>
+        <p className="text-sm md:text-base max-w-md mx-auto text-gray-500 uppercase tracking-widest leading-relaxed">
+          {db?.settings?.maintenance?.message || 'We are currently performing maintenance. Please check back later.'}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-canvas text-ink min-h-screen flex flex-col" style={themeVars}>
       <div className="fixed top-0 left-0 w-full z-[999]">
@@ -106,6 +120,7 @@ function ClientLayout() {
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
       <CartDrawer />
       <SearchModal />
+      <CookieBanner />
       <div className={`flex-1 ${isTransparentPage ? '' : 'pt-[88px] md:pt-[108px]'}`}>
         <Outlet />
       </div>
@@ -144,7 +159,7 @@ function App() {
                   </React.Suspense>
                 </ErrorBoundary>
               } />
-              <Route path="settings" element={<div className="p-4">Settings Module Coming Soon</div>} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
 
             {/* CLIENT STOREFRONT ROUTES */}
@@ -166,6 +181,7 @@ function App() {
               <Route path="/help/size-guide" element={<SizeGuide />} />
               <Route path="/help/contact" element={<Contact />} />
               
+              <Route path="/policies/:slug" element={<PolicyPage />} />
               <Route path="/preferences" element={<Preferences />} />
 
               <Route path="/components/account" element={

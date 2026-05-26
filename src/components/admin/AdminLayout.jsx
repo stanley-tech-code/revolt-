@@ -15,15 +15,15 @@ export default function AdminLayout() {
   };
 
   const navItems = [
-    { name: 'Dashboard', path: '/admin/dashboard', roles: ['Super Admin', 'Editor'] },
-    { name: 'Analytics', path: '/admin/analytics', roles: ['Super Admin', 'Editor'] },
-    { name: 'Products', path: '/admin/products', roles: ['Super Admin', 'Editor'] },
-    { name: 'Orders', path: '/admin/orders', roles: ['Super Admin', 'Editor'] },
-    { name: 'Customers', path: '/admin/customers', roles: ['Super Admin', 'Editor'] },
+    { name: 'Dashboard', path: '/admin/dashboard', roles: ['Super Admin', 'Editor', 'Marketing', 'Fulfillment', 'Support'] },
+    { name: 'Analytics', path: '/admin/analytics', roles: ['Super Admin', 'Editor', 'Marketing'] },
+    { name: 'Products', path: '/admin/products', roles: ['Super Admin', 'Editor', 'Fulfillment'] },
+    { name: 'Orders', path: '/admin/orders', roles: ['Super Admin', 'Editor', 'Fulfillment', 'Support'] },
+    { name: 'Customers', path: '/admin/customers', roles: ['Super Admin', 'Editor', 'Support', 'Marketing'] },
     { name: 'Finance', path: '/admin/finance', roles: ['Super Admin'] },
-    { name: 'Promotions', path: '/admin/promotions', roles: ['Super Admin'] },
+    { name: 'Promotions', path: '/admin/promotions', roles: ['Super Admin', 'Marketing'] },
     { name: 'Content & Appearance', path: '/admin/content', roles: ['Super Admin', 'Editor'] },
-    { name: 'Notifications & CRM', path: '/admin/notifications', roles: ['Super Admin', 'Editor'] },
+    { name: 'Notifications & CRM', path: '/admin/notifications', roles: ['Super Admin', 'Editor', 'Marketing', 'Support'] },
     { name: 'Settings', path: '/admin/settings', roles: ['Super Admin'] },
   ];
 

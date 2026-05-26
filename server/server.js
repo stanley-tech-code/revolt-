@@ -69,10 +69,13 @@ app.post('/api/auth/login', async (req, res) => {
     return res.status(400).json({ success: false, error: 'Please provide both username and password.' });
   }
 
-  // Real secure roles: admin / admin (Super Admin), editor / editor (Editor)
+  // Real secure roles: admin / admin (Super Admin), editor / editor (Editor), etc.
   const validUsers = [
     { username: 'admin', role: 'Super Admin', pass: 'admin' },
-    { username: 'editor', role: 'Editor', pass: 'editor' }
+    { username: 'editor', role: 'Editor', pass: 'editor' },
+    { username: 'fulfillment', role: 'Fulfillment', pass: 'fulfillment' },
+    { username: 'support', role: 'Support', pass: 'support' },
+    { username: 'marketing', role: 'Marketing', pass: 'marketing' }
   ];
 
   const matched = validUsers.find(u => u.username === username && u.pass === password);
