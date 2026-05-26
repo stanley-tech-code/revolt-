@@ -96,6 +96,64 @@ export default function AdminContent() {
     });
   };
 
+  const handleAddSection = (type) => {
+    if (!type) return;
+    const newId = `sec_${Date.now()}`;
+    let newSection = { id: newId, type, active: true };
+    
+    switch (type) {
+      case 'text-block':
+        newSection = { ...newSection, title: 'New Text Block', text: 'Enter your text here.' };
+        break;
+      case 'curation':
+        newSection = { ...newSection, mainItem: { title: 'Main', image: '', link: '/' }, subItems: [{ title: 'Sub 1', image: '', link: '/' }, { title: 'Sub 2', image: '', link: '/' }] };
+        break;
+      case 'products':
+        newSection = { ...newSection, title: 'Products', categories: [{ name: 'Cat 1', image: '', link: '/' }] };
+        break;
+      case 'editorial':
+        newSection = { ...newSection, title: 'Campaign', text: 'Editorial text', image: '' };
+        break;
+      case 'new-arrivals':
+        newSection = { ...newSection, title: 'New Arrivals' };
+        break;
+      case 'newsletter':
+        newSection = { ...newSection, title: 'Newsletter', text: 'Sign up for updates' };
+        break;
+      case 'testimonials':
+        newSection = { ...newSection, title: 'Customer Name', text: 'Great product!' };
+        break;
+      case 'faq':
+        newSection = { ...newSection, title: 'FAQ', text: 'Answer' };
+        break;
+      case 'contact':
+        newSection = { ...newSection, title: 'Contact', text: 'Reach out to us.' };
+        break;
+      default:
+        break;
+    }
+
+    updateDraft(prev => ({
+      ...prev,
+      homepage: {
+        ...prev.homepage,
+        sections: [...(prev.homepage.sections || []), newSection]
+      }
+    }));
+  };
+
+  const handleRemoveSection = (id) => {
+    if (window.confirm('Are you sure you want to remove this section?')) {
+      updateDraft(prev => ({
+        ...prev,
+        homepage: {
+          ...prev.homepage,
+          sections: prev.homepage.sections.filter(sec => sec.id !== id)
+        }
+      }));
+    }
+  };
+
   // --- SEO & PRODUCT SEO HANDLERS ---
   const handleSeoChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -287,10 +345,15 @@ export default function AdminContent() {
                   <div className="flex-1 space-y-4">
                     <div className="flex justify-between items-center">
                       <h3 className="text-sm font-bold uppercase tracking-wider text-[#000000]">{sec.type.replace('-', ' ')}</h3>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <span className="text-xs font-bold uppercase tracking-wider">{sec.active ? 'Visible' : 'Hidden'}</span>
-                        <input type="checkbox" checked={sec.active} onChange={() => handleSectionToggle(sec.id)} className="w-4 h-4" />
-                      </label>
+                      <div className="flex items-center gap-6">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <span className="text-xs font-bold uppercase tracking-wider">{sec.active ? 'Visible' : 'Hidden'}</span>
+                          <input type="checkbox" checked={sec.active} onChange={() => handleSectionToggle(sec.id)} className="w-4 h-4" />
+                        </label>
+                        <button onClick={() => handleRemoveSection(sec.id)} className="text-[10px] font-bold uppercase tracking-wider text-red-500 hover:text-red-700 transition-colors">
+                          Remove
+                        </button>
+                      </div>
                     </div>
 
                     {sec.title !== undefined && (
@@ -355,6 +418,38 @@ export default function AdminContent() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-6 p-4 border border-dashed border-[#000000]/20 bg-[#f9f9f9] flex flex-col sm:flex-row items-center gap-4 justify-between">
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider">Add New Section</h3>
+                <p className="text-xs text-[#000000]/60 mt-1">Select a layout type to append to your homepage.</p>
+              </div>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <select id="newSectionType" className="bg-white border border-[#000000]/20 px-3 py-2 text-xs outline-none flex-1 sm:w-48">
+                  <option value="">-- Select Type --</option>
+                  <option value="text-block">Text Block / Ethos</option>
+                  <option value="curation">Curation Showcase</option>
+                  <option value="products">Most Wanted / Categories</option>
+                  <option value="new-arrivals">New Arrivals Carousel</option>
+                  <option value="editorial">Editorial Image Banner</option>
+                  <option value="newsletter">Newsletter Signup</option>
+                  <option value="testimonials">Testimonial Quote</option>
+                  <option value="faq">FAQ Block</option>
+                  <option value="contact">Contact Block</option>
+                </select>
+                <button 
+                  onClick={() => {
+                    const select = document.getElementById('newSectionType');
+                    handleAddSection(select.value);
+                    select.value = '';
+                  }}
+                  className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80 transition-colors whitespace-nowrap"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+
           </div>
         )}
 
