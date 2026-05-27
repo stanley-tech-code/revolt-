@@ -1187,6 +1187,16 @@ app.post('/api/promos/validate', async (req, res) => {
   }
 });
 
+app.get('/api/debug-env', (req, res) => {
+  res.json({
+    hasUrl: !!process.env.SUPABASE_URL,
+    hasKey: !!process.env.SUPABASE_SERVICE_KEY,
+    urlValue: process.env.SUPABASE_URL ? process.env.SUPABASE_URL.substring(0, 15) + '...' : 'MISSING',
+    nodeEnv: process.env.NODE_ENV,
+    vercel: !!process.env.VERCEL
+  });
+});
+
 // --- AUDIT ACTIVITY LOG TIMELINE ---
 app.get('/api/logs', verifyToken, async (req, res) => {
   try {
