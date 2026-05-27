@@ -53,8 +53,8 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
 
       <div className="w-full px-4 md:px-6 lg:px-8 h-full flex items-center justify-between">
         
-        <Link to="/" className="md:hidden flex items-center h-full">
-          <img src="/images/logo.png?v=2" alt="Revolt" className={`h-[44px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"}`} />
+        <Link to="/" className="md:hidden flex items-center h-full -ml-1">
+          <img src="/images/logo.png?v=2" alt="Revolt" className={`h-[64px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"}`} />
         </Link>
 
         {/* Desktop Left: Logo & Nav Links */}
