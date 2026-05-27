@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useCms } from '../../context/CmsContext';
 
 export default function AdminNotifications() {
-  const { db, draftDb, updateDraft, publishChanges, discardChanges, isLoading, sendNotification } = useCms();
+  const { db, draftDb, updateDraft, publishChanges, discardChanges, isLoading, sendNotification, fetchTwilioConversations } = useCms();
   const [activeTab, setActiveTab] = useState('logs');
   const [logs, setLogs] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [activeConversationId, setActiveConversationId] = useState(null);
+  const [replyMessage, setReplyMessage] = useState('');
   const [loadingLogs, setLoadingLogs] = useState(false);
 
   const notifications = draftDb.notifications || { templates: [], campaigns: [], automations: [], segments: [] };
+  const twilioSettings = draftDb.twilio_settings || { sid: '', authToken: '', senderPhone: '', messagingServiceSid: '', testMode: true };
   const templates = notifications.templates || [];
   const campaigns = notifications.campaigns || [];
   const automations = notifications.automations || [];
@@ -16,8 +20,15 @@ export default function AdminNotifications() {
   useEffect(() => {
     if (activeTab === 'logs') {
       fetchLogs();
+    } else if (activeTab === 'inbox') {
+      loadConversations();
     }
   }, [activeTab]);
+
+  const loadConversations = async () => {
+    const data = await fetchTwilioConversations();
+    setConversations(data);
+  };
 
   const fetchLogs = async () => {
     setLoadingLogs(true);
@@ -99,14 +110,14 @@ export default function AdminNotifications() {
   };
 
   // --- AUTOMATIONS ---
-  const triggersList = ['ORDER_PENDING', 'ORDER_SHIPPED', 'ORDER_DELIVERED', 'ORDER_REFUNDED'];
+  const triggersList = ['ORDER_PENDING', 'ORDER_SHIPPED', 'ORDER_DELIVERED', 'ORDER_REFUNDED', 'ABANDONED_CART', 'BACK_IN_STOCK', 'REVIEW_REQUEST', 'LOYALTY_EARNED'];
 
   const addAutomation = () => {
     updateDraft(prev => ({
       ...prev,
       notifications: {
         ...prev.notifications,
-        automations: [...(prev.notifications?.automations || []), { id: `auto_${Date.now()}`, trigger: 'ORDER_SHIPPED', templateId: '', active: false }]
+        automations: [...(prev.notifications?.automations || []), { id: `auto_${Date.now()}`, trigger: 'ORDER_SHIPPED', templateId: '', delay: 0, active: false }]
       }
     }));
   };
@@ -140,7 +151,7 @@ export default function AdminNotifications() {
     
     // Simulate sending broadcast to dummy audience immediately for mockup
     alert(`Starting broadcast for campaign: ${newCampaign.name}`);
-    await sendNotification('Broadcast Audience', 'Email/SMS', newCampaign.templateId, 'Broadcast content...', campId);
+    await sendNotification('Broadcast Audience', '+10000000000', 'SMS', newCampaign.templateId, 'Broadcast content...', campId);
     
     updateDraft(prev => ({
       ...prev,
@@ -163,12 +174,12 @@ export default function AdminNotifications() {
     ];
 
     return (
-      <div className="flex border-b border-[#000000]/10 mb-6 overflow-x-auto scrollbar-none">
+      <div className="flex flex-wrap border-b border-[#000000]/10 mb-6 gap-y-2">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => { setActiveTab(tab.id); setEditingTemplate(null); }}
-            className={`px-6 py-3 text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors ${
+            className={`px-4 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${
               activeTab === tab.id ? 'border-b-2 border-[#000000] text-[#000000]' : 'text-[#000000]/50 hover:text-[#000000]'
             }`}
           >
@@ -261,6 +272,10 @@ export default function AdminNotifications() {
                         {templates.map(t => <option key={t.id} value={t.id}>{t.name} ({t.channel})</option>)}
                       </select>
                     </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider mb-1">Delay (Hours):</label>
+                      <input type="number" min="0" value={auto.delay || 0} onChange={e => updateAutomation(auto.id, 'delay', parseInt(e.target.value))} className="w-full bg-white border border-[#000000]/20 px-3 py-2 text-sm outline-none" />
+                    </div>
                     <div className="flex items-center gap-4 pt-4">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" checked={auto.active} onChange={e => updateAutomation(auto.id, 'active', e.target.checked)} className="w-4 h-4" />
@@ -322,6 +337,9 @@ export default function AdminNotifications() {
                   <option value="Push">Push</option>
                   <option value="WhatsApp">WhatsApp</option>
                 </select>
+                {editingTemplate.channel === 'WhatsApp' && (
+                  <button onClick={() => alert('Template submitted to Meta for approval.')} className="mt-2 text-[10px] font-bold uppercase bg-green-100 text-green-800 px-3 py-1 rounded">Submit for Meta Approval</button>
+                )}
               </div>
             </div>
 
@@ -467,38 +485,68 @@ export default function AdminNotifications() {
 
         {/* --- TWO-WAY INBOX --- */}
         {activeTab === 'inbox' && (
-          <div className="space-y-6 max-w-3xl">
+          <div className="space-y-6 max-w-4xl">
             <div className="flex justify-between items-center border-b border-[#000000]/10 pb-2">
               <h2 className="text-lg font-bold uppercase tracking-wider">Two-Way SMS / WhatsApp Inbox</h2>
+              <button onClick={loadConversations} className="text-xs font-bold uppercase tracking-wider text-[#000000]/60 hover:text-[#000000]">↻ Refresh</button>
             </div>
-            <div className="border border-[#000000]/20 h-[400px] flex bg-[#f9f9f9]">
+            <div className="border border-[#000000]/20 h-[500px] flex bg-[#f9f9f9]">
               <div className="w-1/3 border-r border-[#000000]/20 overflow-y-auto">
-                <div className="p-3 border-b border-[#000000]/10 bg-white cursor-pointer hover:bg-gray-50">
-                  <p className="text-xs font-bold truncate">customer_mock_1@example.com</p>
-                  <p className="text-[10px] text-[#000000]/50 truncate">Can I change my shipping address?</p>
-                </div>
-                <div className="p-3 border-b border-[#000000]/10 cursor-pointer hover:bg-gray-50">
-                  <p className="text-xs font-bold truncate">+1 (555) 019-2831</p>
-                  <p className="text-[10px] text-[#000000]/50 truncate">Thanks! Just got the package.</p>
-                </div>
+                {conversations.length === 0 ? (
+                  <p className="p-4 text-xs text-[#000000]/50 text-center">No recent messages.</p>
+                ) : (
+                  conversations.map((c, i) => (
+                    <div key={c.id || i} onClick={() => setActiveConversationId(c.id)} className={`p-3 border-b border-[#000000]/10 cursor-pointer ${activeConversationId === c.id ? 'bg-white border-l-4 border-l-[#000000]' : 'hover:bg-gray-50'}`}>
+                      <p className="text-xs font-bold truncate">{c.user || 'Unknown Sender'}</p>
+                      <p className="text-[10px] text-[#000000]/50 truncate">{c.action.replace('[TWILIO_INBOUND]', '').trim()}</p>
+                      <p className="text-[9px] text-[#000000]/40 mt-1">{new Date(c.timestamp).toLocaleString()}</p>
+                    </div>
+                  ))
+                )}
               </div>
-              <div className="flex-1 flex flex-col">
-                <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-                  <div className="flex justify-start">
-                    <div className="bg-[#e0e0e0] text-black text-xs p-3 rounded-lg rounded-tl-none max-w-[80%]">
-                      Can I change my shipping address? Order #8821
+              <div className="flex-1 flex flex-col bg-white">
+                {activeConversationId ? (
+                  <>
+                    <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                      {/* Normally we'd group messages by thread, here we just show the selected inbound message and allow a reply */}
+                      {conversations.filter(c => c.id === activeConversationId).map(msg => (
+                        <div key={`msg_${msg.id}`} className="flex justify-start">
+                          <div className="bg-[#f5f5f5] text-black text-xs p-3 rounded-lg rounded-tl-none max-w-[80%] whitespace-pre-wrap">
+                            {msg.action.replace('[TWILIO_INBOUND]', '').trim()}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                  <div className="flex justify-end">
-                    <div className="bg-[#000000] text-white text-xs p-3 rounded-lg rounded-tr-none max-w-[80%]">
-                      Hi there! I've updated the address for you. It will ship tomorrow.
+                    <div className="p-3 border-t border-[#000000]/20 flex gap-2">
+                      <input 
+                        type="text" 
+                        value={replyMessage}
+                        onChange={e => setReplyMessage(e.target.value)}
+                        placeholder="Type reply..." 
+                        className="flex-1 text-xs border border-[#000000]/20 px-3 outline-none" 
+                      />
+                      <button 
+                        onClick={async () => {
+                          if(!replyMessage) return;
+                          const activeMsg = conversations.find(c => c.id === activeConversationId);
+                          // Extract phone from 'From: +123 | Message: ...'
+                          const phoneMatch = activeMsg?.action.match(/From:\s*([^\s|]+)/);
+                          const phone = phoneMatch ? phoneMatch[1] : null;
+                          if (phone) {
+                            await sendNotification('Reply', phone, 'SMS', null, replyMessage, 'Manual_Reply');
+                            setReplyMessage('');
+                            alert('Reply sent!');
+                            loadConversations();
+                          } else {
+                            alert('Could not determine phone number.');
+                          }
+                        }}
+                        className="bg-[#000000] text-white text-[10px] font-bold uppercase tracking-wider px-4">Send</button>
                     </div>
-                  </div>
-                </div>
-                <div className="p-3 border-t border-[#000000]/20 flex gap-2">
-                  <input type="text" placeholder="Type message..." className="flex-1 text-xs border border-[#000000]/20 px-3 outline-none" />
-                  <button className="bg-[#000000] text-white text-[10px] font-bold uppercase tracking-wider px-4">Send</button>
-                </div>
+                  </>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center text-[#000000]/40 text-sm">Select a message to view thread.</div>
+                )}
               </div>
             </div>
           </div>

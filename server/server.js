@@ -7,6 +7,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { supabase } from './db/supabase.js';
+import twilio from 'twilio';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -336,7 +337,24 @@ app.put('/api/sections', verifyToken, async (req, res) => {
     await addLog(req.user.username, 'Updated website sections and layout draft configurations');
     return res.json({ success: true, message: 'Layout updated successfully' });
   } catch(err) {
-    return res.status(500).json({ success: false, error: 'Failed to update sections.' });
+    return res.status(500).json({ success: false, error: 'Failed to create notification.' });
+  }
+});
+
+app.put('/api/customers/:id/optin', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { field, value } = req.body;
+  if (!['smsOptIn', 'whatsappOptIn'].includes(field)) {
+    return res.status(400).json({ success: false, error: 'Invalid field.' });
+  }
+
+  try {
+    const { data: updated, error } = await supabase.from('users').update({ [field]: value }).eq('id', id).select().single();
+    if (error) throw error;
+    await addLog(req.user.username, `Updated ${field} to ${value} for customer ${id}`);
+    return res.json({ success: true, user: updated });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to update customer opt-in status.' });
   }
 });
 
@@ -396,6 +414,66 @@ app.get('/sitemap.xml', async (req, res) => {
   } catch(err) {
     res.type('application/xml');
     res.send('<?xml version="1.0" encoding="UTF-8"?><urlset></urlset>');
+  }
+});
+
+// --- BACKUP / RESTORE / FACTORY RESET ---
+app.get('/api/backup', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin' && req.user.role !== 'Editor') {
+    return res.status(403).json({ success: false, error: 'Access denied' });
+  }
+  try {
+    const { data: cms } = await supabase.from('cms').select('*');
+    const { data: products } = await supabase.from('products').select('*');
+    const backupData = { cms, products };
+    const jsonStr = JSON.stringify(backupData, null, 2);
+    res.setHeader('Content-disposition', `attachment; filename=revolt_live_backup_${new Date().toISOString().split('T')[0]}.json`);
+    res.setHeader('Content-type', 'application/json');
+    res.send(jsonStr);
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Backup failed.' });
+  }
+});
+
+app.post('/api/restore', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') {
+    return res.status(403).json({ success: false, error: 'Access denied' });
+  }
+  try {
+    const { cms, products } = req.body;
+    if (cms && Array.isArray(cms)) {
+      for (const block of cms) {
+        await supabase.from('cms').upsert({ type: block.type, data: block.data });
+      }
+    }
+    if (products && Array.isArray(products)) {
+      for (const product of products) {
+        await supabase.from('products').upsert(product);
+      }
+    }
+    await addLog(req.user.username, 'Restored database from backup file.');
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Restore failed.' });
+  }
+});
+
+app.post('/api/factory-reset', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') {
+    return res.status(403).json({ success: false, error: 'Access denied' });
+  }
+  try {
+    await supabase.from('cms').delete().neq('type', 'INVALID');
+    await supabase.from('products').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    await supabase.from('orders').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    await supabase.from('users').delete().neq('id', '00000000-0000-0000-0000-000000000000').neq('role', 'client'); // wait let's just wipe clients, or all except admin if any are stored there. Users in Supabase includes clients. 
+    await supabase.from('users').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    await supabase.from('logs').delete().neq('id', 0);
+
+    await addLog(req.user.username, 'Performed factory reset of the database.');
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Factory reset failed.' });
   }
 });
 
@@ -704,6 +782,54 @@ app.post('/api/orders/:id/refund', verifyToken, async (req, res) => {
   }
 });
 
+// --- TWILIO HELPERS & ROUTES ---
+const getTwilioClient = async () => {
+  const { data: doc } = await supabase.from('cms').select('data').eq('type', 'twilio_settings').single();
+  if (doc?.data?.sid && doc?.data?.authToken) {
+    return { client: twilio(doc.data.sid, doc.data.authToken), config: doc.data };
+  }
+  return { client: null, config: null };
+};
+
+app.post('/api/twilio/webhook', async (req, res) => {
+  const { SmsSid, MessageStatus, From, Body } = req.body;
+  try {
+    if (MessageStatus) {
+      // It's a delivery status update
+      await addLog('System', `[TWILIO] Webhook - Message ${SmsSid} status changed to: ${MessageStatus}`);
+    } else if (Body && From) {
+      // It's an inbound reply (Two-way SMS)
+      // Automatically handle STOP/UNSUBSCRIBE here if we want to store it in customer record
+      const isOptOut = ['stop', 'unsubscribe', 'cancel', 'quit'].includes(Body.trim().toLowerCase());
+      if (isOptOut) {
+        // Opt-out logic (find customer by phone, update record)
+        const { data: user } = await supabase.from('users').select('id, fullName').eq('phone', From).maybeSingle();
+        if (user) {
+          await supabase.from('users').update({ smsOptIn: false }).eq('id', user.id);
+          await addLog(user.fullName, `[TWILIO] Customer opted out of SMS messages.`);
+        }
+      }
+      
+      // Store in conversations / logs
+      await addLog('Inbox', `[TWILIO_INBOUND] From: ${From} | Message: ${Body}`);
+    }
+    return res.status(200).send('<Response></Response>');
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Error');
+  }
+});
+
+app.get('/api/twilio/conversations', verifyToken, async (req, res) => {
+  try {
+    const { data: logs, error } = await supabase.from('logs').select('*').like('action', '%[TWILIO_INBOUND]%').order('timestamp', { ascending: false });
+    if (error) throw error;
+    return res.json({ success: true, logs });
+  } catch(err) {
+    return res.status(500).json({ success: false });
+  }
+});
+
 // --- NOTIFICATIONS & LOGS ---
 app.get('/api/notifications/logs', verifyToken, async (req, res) => {
   try {
@@ -716,11 +842,47 @@ app.get('/api/notifications/logs', verifyToken, async (req, res) => {
 });
 
 app.post('/api/notifications/send', verifyToken, async (req, res) => {
-  const { customer, channel, templateId, content, campaignId } = req.body;
+  const { customer, phone, channel, templateId, content, campaignId } = req.body;
   try {
     const cleanContent = content ? content.substring(0, 100).replace(/\n/g, ' ') : '';
-    await addLog(customer, `[NOTIFICATION] Channel:${channel || 'Email'} | Status:Delivered | Template:${templateId || 'None'} | Campaign:${campaignId || 'Broadcast'} | Content:${cleanContent}...`);
-    return res.json({ success: true });
+    
+    const { client, config } = await getTwilioClient();
+    let twilioSid = 'Mock_SID';
+    let status = 'Delivered';
+
+    if (client && config && phone && (channel === 'SMS' || channel === 'WhatsApp')) {
+      try {
+        const fromNumber = channel === 'WhatsApp' ? `whatsapp:${config.senderPhone}` : (config.messagingServiceSid || config.senderPhone);
+        const toNumber = channel === 'WhatsApp' ? `whatsapp:${phone}` : phone;
+        
+        const msgOptions = {
+          body: content || 'No content provided',
+          to: toNumber
+        };
+        
+        if (config.messagingServiceSid && channel !== 'WhatsApp') {
+          msgOptions.messagingServiceSid = config.messagingServiceSid;
+        } else {
+          msgOptions.from = fromNumber;
+        }
+
+        // Test mode / Mock checking (to prevent burning credits during dev if requested)
+        if (config.testMode) {
+          twilioSid = `TEST_${Date.now()}`;
+          console.log(`[TWILIO TEST MODE] Would send: ${JSON.stringify(msgOptions)}`);
+        } else {
+          const message = await client.messages.create(msgOptions);
+          twilioSid = message.sid;
+          status = message.status;
+        }
+      } catch (twilioErr) {
+        console.error('Twilio Error:', twilioErr);
+        status = `Failed: ${twilioErr.message}`;
+      }
+    }
+
+    await addLog(customer, `[NOTIFICATION] Channel:${channel || 'Email'} | Status:${status} | Template:${templateId || 'None'} | Campaign:${campaignId || 'Broadcast'} | TwilioSID:${twilioSid} | Content:${cleanContent}...`);
+    return res.json({ success: true, twilioSid, status });
   } catch(err) {
     return res.status(500).json({ success: false });
   }

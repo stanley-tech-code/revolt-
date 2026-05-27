@@ -38,8 +38,14 @@ const AccordionItem = ({ title, children, to }) => {
 export default function MobileMenu({ isOpen, onClose }) {
   return (
     <div className={`fixed inset-0 z-[80] bg-canvas transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-      <div className="px-6 h-11 flex items-center justify-end border-b border-clay/40 shrink-0">
-        <button onClick={onClose} aria-label="Close Menu" className="p-1 text-cocoa hover:text-ink">
+      <div className="px-6 h-14 flex items-center justify-between border-b border-clay/40 shrink-0">
+        <button onClick={onClose} aria-label="Back" className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink hover:text-cocoa transition-colors">
+          <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Back
+        </button>
+        <button onClick={onClose} aria-label="Close Menu" className="p-1 text-cocoa hover:text-ink transition-colors">
           <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round"/>
           </svg>

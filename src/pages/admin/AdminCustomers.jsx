@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useCms } from '../../context/CmsContext';
 
 export default function AdminCustomers() {
-  const { db, updateCustomerStatus, deleteCustomer } = useCms();
+  const { db, updateCustomerStatus, updateCustomerOptIn, deleteCustomer } = useCms();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [sortBy, setSortBy] = useState('Joined (Newest)');
@@ -216,6 +216,36 @@ export default function AdminCustomers() {
                   <p className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/50">Gender</p>
                   <p>{selectedCustomer.gender || 'N/A'}</p>
                 </div>
+              </div>
+
+              <div className="space-y-4 mb-8 pt-6 border-t border-[#000000]/10">
+                <h3 className="text-xs font-bold uppercase tracking-wider">Marketing Preferences</h3>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedCustomer.smsOptIn ?? true} 
+                    onChange={async (e) => {
+                      const val = e.target.checked;
+                      setSelectedCustomer(prev => ({ ...prev, smsOptIn: val }));
+                      await updateCustomerOptIn(selectedCustomer.id, 'smsOptIn', val);
+                    }}
+                    className="w-4 h-4 text-[#000000] border-gray-300 rounded focus:ring-[#000000]"
+                  />
+                  <span className="text-xs font-medium">SMS Notifications</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedCustomer.whatsappOptIn ?? false} 
+                    onChange={async (e) => {
+                      const val = e.target.checked;
+                      setSelectedCustomer(prev => ({ ...prev, whatsappOptIn: val }));
+                      await updateCustomerOptIn(selectedCustomer.id, 'whatsappOptIn', val);
+                    }}
+                    className="w-4 h-4 text-[#000000] border-gray-300 rounded focus:ring-[#000000]"
+                  />
+                  <span className="text-xs font-medium">WhatsApp Notifications</span>
+                </label>
               </div>
 
               <div className="mt-auto space-y-3 pt-8 border-t border-[#000000]/10">

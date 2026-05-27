@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCms } from '../../context/CmsContext';
 
 export default function AdminSettings() {
-  const { draftDb, updateDraft, publishChanges, discardChanges, isLoading } = useCms();
+  const { draftDb, updateDraft, publishChanges, discardChanges, isLoading, backupDatabase, restoreDatabase, factoryResetDatabase } = useCms();
+  const fileInputRef = useRef(null);
   const [activeTab, setActiveTab] = useState('general');
 
   // Initialize settings if they don't exist
@@ -468,19 +469,33 @@ export default function AdminSettings() {
 
               <section>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Data Management</h2>
-                <div className="flex gap-4">
-                  <button onClick={() => {
-                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(draftDb, null, 2));
-                    const dlAnchorElem = document.createElement('a');
-                    dlAnchorElem.setAttribute("href", dataStr);
-                    dlAnchorElem.setAttribute("download", "revolt_store_backup.json");
-                    dlAnchorElem.click();
-                  }} className="flex-1 bg-[#f5f5f5] text-[#000000] border border-[#000000]/20 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#e0e0e0] transition-colors">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button onClick={backupDatabase} className="flex-1 bg-[#f5f5f5] text-[#000000] border border-[#000000]/20 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#e0e0e0] transition-colors">
                     Export Full Backup (JSON)
                   </button>
-                  <button onClick={() => {
-                    if (window.confirm("Are you sure you want to perform a factory reset? This is for demonstration purposes only!")) {
-                      alert("Factory Reset simulation complete. In a real environment, this would wipe the Supabase tables.");
+                  <input 
+                    type="file" 
+                    accept=".json" 
+                    className="hidden" 
+                    ref={fileInputRef}
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = async (ev) => {
+                          await restoreDatabase(ev.target.result);
+                        };
+                        reader.readAsText(file);
+                      }
+                      e.target.value = ''; // Reset input
+                    }} 
+                  />
+                  <button onClick={() => fileInputRef.current.click()} className="flex-1 bg-[#f5f5f5] text-[#000000] border border-[#000000]/20 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#e0e0e0] transition-colors">
+                    Import Backup (JSON)
+                  </button>
+                  <button onClick={async () => {
+                    if (window.confirm("Are you sure you want to perform a factory reset? This will WIPE ALL DATA from the database forever!")) {
+                      await factoryResetDatabase();
                     }
                   }} className="flex-1 bg-red-50 text-red-600 border border-red-200 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-red-100 transition-colors">
                     Factory Reset Database

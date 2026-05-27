@@ -22,6 +22,7 @@ import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminContent from './pages/admin/AdminContent';
 import AdminNotifications from './pages/admin/AdminNotifications';
+import AdminTwilio from './pages/admin/AdminTwilio';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import ErrorBoundary from './components/ui/ErrorBoundary';
@@ -152,6 +153,7 @@ function App() {
               <Route path="promotions" element={<AdminPromotions />} />
               <Route path="content" element={<AdminContent />} />
               <Route path="notifications" element={<AdminNotifications />} />
+              <Route path="twilio" element={<AdminTwilio />} />
               <Route path="analytics" element={
                 <ErrorBoundary>
                   <React.Suspense fallback={<div className="p-10 text-center animate-pulse font-bold">Loading Analytics...</div>}>

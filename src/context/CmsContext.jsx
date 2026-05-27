@@ -36,6 +36,13 @@ export function CmsProvider({ children }) {
       maintenance: { active: false, message: 'We are currently upgrading our store. Check back soon!' },
       developer: { webhookUrls: [] }
     },
+    twilio_settings: {
+      sid: '',
+      authToken: '',
+      senderPhone: '',
+      messagingServiceSid: '',
+      testMode: true
+    },
     admin: { currentUser: null, logs: [] }
   });
 
@@ -75,13 +82,14 @@ export function CmsProvider({ children }) {
       const seoData = await seoRes.json();
 
       // 4. Fetch generic CMS configs
-      const [themeRes, assetsRes, socialRes, scriptsRes, notifRes, settingsRes] = await Promise.all([
+      const [themeRes, assetsRes, socialRes, scriptsRes, notifRes, settingsRes, twilioRes] = await Promise.all([
         fetch('/api/cms/theme'),
         fetch('/api/cms/assets'),
         fetch('/api/cms/social'),
         fetch('/api/cms/scripts'),
         fetch('/api/cms/notifications'),
-        fetch('/api/cms/settings')
+        fetch('/api/cms/settings'),
+        fetch('/api/cms/twilio_settings')
       ]);
       const themeData = await themeRes.json();
       const assetsData = await assetsRes.json();
@@ -89,6 +97,7 @@ export function CmsProvider({ children }) {
       const scriptsData = await scriptsRes.json();
       const notifData = await notifRes.json();
       const settingsData = await settingsRes.json();
+      const twilioData = await twilioRes.json();
 
       let orders = [];
       let customers = [];
@@ -162,6 +171,7 @@ export function CmsProvider({ children }) {
         scripts: scriptsData.data || db.scripts,
         notifications: notifData.data || db.notifications,
         settings: settingsData.data || db.settings,
+        twilio_settings: twilioData.data || db.twilio_settings,
         orders,
         customers,
         promos,
@@ -249,7 +259,8 @@ export function CmsProvider({ children }) {
         fetch('/api/cms/social', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.social }) }),
         fetch('/api/cms/scripts', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.scripts }) }),
         fetch('/api/cms/notifications', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.notifications }) }),
-        fetch('/api/cms/settings', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.settings }) })
+        fetch('/api/cms/settings', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.settings }) }),
+        fetch('/api/cms/twilio_settings', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.twilio_settings }) })
       ]);
 
       if (secData.success && seoData.success) {
@@ -327,14 +338,24 @@ export function CmsProvider({ children }) {
     setSuccessNotification('Successfully logged out of portal.');
   };
 
-  const sendNotification = async (customer, channel, templateId, content, campaignId) => {
+  const sendNotification = async (customer, phone, channel, templateId, content, campaignId) => {
     try {
       await fetch('/api/notifications/send', {
         method: 'POST',
         headers: getHeaders(),
-        body: JSON.stringify({ customer, channel, templateId, content, campaignId })
+        body: JSON.stringify({ customer, phone, channel, templateId, content, campaignId })
       });
     } catch(e) {}
+  };
+
+  const fetchTwilioConversations = async () => {
+    try {
+      const res = await fetch('/api/twilio/conversations', { headers: getHeaders() });
+      const data = await res.json();
+      return data.success ? data.logs : [];
+    } catch (e) {
+      return [];
+    }
   };
 
   // --- REAL-TIME PRODUCTS INVENTORY CRUD ---
@@ -485,6 +506,27 @@ export function CmsProvider({ children }) {
     }
   };
 
+  const factoryResetDatabase = async () => {
+    try {
+      const res = await fetch('/api/factory-reset', {
+        method: 'POST',
+        headers: getHeaders()
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSuccessNotification('Factory reset complete. All data wiped.');
+        await fetchDatabase();
+        return { success: true };
+      } else {
+        setErrorNotification(data.error || 'Factory reset failed.');
+        return { success: false, error: data.error };
+      }
+    } catch (err) {
+      setErrorNotification('Factory reset failed.');
+      return { success: false, error: 'Factory reset failed.' };
+    }
+  };
+
   const updateOrderStatus = async (id, status) => {
     // Optimistic UI update (Proper React state update)
     setDb(prev => {
@@ -579,6 +621,32 @@ export function CmsProvider({ children }) {
       await fetchDatabase();
     }
     return false;
+  };
+
+  const updateCustomerOptIn = async (id, field, value) => {
+    setDb(prev => {
+      const newDb = { ...prev };
+      if (newDb.customers) {
+        const idx = newDb.customers.findIndex(c => c.id === id);
+        if (idx > -1) {
+          newDb.customers = [...newDb.customers];
+          newDb.customers[idx] = { ...newDb.customers[idx], [field]: value };
+        }
+      }
+      return newDb;
+    });
+
+    try {
+      await fetch(`/api/customers/${id}/optin`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify({ field, value })
+      });
+      return true;
+    } catch (err) {
+      await fetchDatabase();
+      return false;
+    }
   };
 
   const deleteCustomer = async (id) => {
@@ -711,11 +779,14 @@ export function CmsProvider({ children }) {
       updateOrderStatus,
       processRefund,
       updateCustomerStatus,
+      updateCustomerOptIn,
       deleteCustomer,
       createPromo,
       updatePromo,
       deletePromo,
-      sendNotification
+      sendNotification,
+      fetchTwilioConversations,
+      factoryResetDatabase
     }}>
       {children}
 
