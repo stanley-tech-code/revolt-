@@ -201,21 +201,6 @@ export default function ProductDetails() {
           text-transform: uppercase;
           margin-bottom: 14px;
         }
-        .reviews-row {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 24px;
-        }
-        .stars { display: flex; gap: 2px; }
-        .star { color: #1a1a1a; font-size: 14px; }
-        .reviews-link {
-          font-size: 12px;
-          color: #1a1a1a;
-          font-weight: 600;
-          text-decoration: underline;
-          cursor: pointer;
-        }
         .section-label {
           font-size: 12px;
           letter-spacing: 0.05em;
@@ -407,13 +392,6 @@ export default function ProductDetails() {
           </div>
           {product.saleLabel && <div className="sale-badge">{product.saleLabel}</div>}
 
-          <div className="reviews-row">
-            <div className="stars">
-              <span className="star">★</span><span className="star">★</span><span className="star">★</span>
-              <span className="star">★</span><span className="star">★</span>
-            </div>
-            <span className="reviews-link">{Math.floor(Math.random() * 50) + 10} Reviews</span>
-          </div>
 
           <hr className="divider" />
 
