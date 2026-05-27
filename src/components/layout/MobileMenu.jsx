@@ -37,7 +37,7 @@ const AccordionItem = ({ title, children, to, onClose }) => {
 
 export default function MobileMenu({ isOpen, onClose }) {
   return (
-    <div className={`fixed inset-0 z-[110] bg-canvas transform transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-16 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+    <div className={`fixed inset-0 z-[110] bg-canvas transform transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-[100px] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
       <div className="flex-1 overflow-y-auto px-6 pb-10 flex flex-col gap-6">
         
         <AccordionItem title="New In" to="/new-in/new-in" onClose={onClose}>
