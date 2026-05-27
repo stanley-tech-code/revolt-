@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from '../../context/StoreContext';
 
-export default function Navbar({ onMenuToggle }) {
+export default function Navbar({ onMenuToggle, isMenuOpen }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const location = useLocation();
@@ -33,7 +33,7 @@ export default function Navbar({ onMenuToggle }) {
   }, [isTransparentPage]);
 
   // Determine if the navbar should show the solid background
-  const showSolid = isScrolled || isHovered;
+  const showSolid = isScrolled || isHovered || isMenuOpen;
 
   return (
     <>
@@ -358,7 +358,15 @@ export default function Navbar({ onMenuToggle }) {
           <button onClick={onMenuToggle} aria-label="Menu" className={`md:hidden p-1 transition-colors duration-500 ${
             showSolid ? "text-[#000000] hover:text-[#000000]/70" : "text-[#FAF9F6] hover:text-[#FAF9F6]/80"
           }`}>
-            <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round"/></svg>
+            {isMenuOpen ? (
+              <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
+              </svg>
+            )}
           </button>
         </div>
       </div>

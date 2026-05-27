@@ -37,21 +37,8 @@ const AccordionItem = ({ title, children, to, onClose }) => {
 
 export default function MobileMenu({ isOpen, onClose }) {
   return (
-    <div className={`fixed inset-0 z-[110] bg-canvas transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-      <div className="px-6 h-14 flex items-center justify-between border-b border-clay/40 shrink-0">
-        <button onClick={onClose} aria-label="Back" className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-ink hover:text-cocoa transition-colors">
-          <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Back
-        </button>
-        <button onClick={onClose} aria-label="Close Menu" className="p-1 text-cocoa hover:text-ink transition-colors">
-          <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round"/>
-          </svg>
-        </button>
-      </div>
-      <div className="flex-1 overflow-y-auto px-6 py-10 flex flex-col gap-6">
+    <div className={`fixed inset-0 z-[110] bg-canvas transform transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-16 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className="flex-1 overflow-y-auto px-6 pb-10 flex flex-col gap-6">
         
         <AccordionItem title="New In" to="/new-in/new-in" onClose={onClose}>
           <div className="flex flex-col gap-3 pb-4 border-b border-clay/20">

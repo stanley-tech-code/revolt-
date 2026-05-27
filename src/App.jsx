@@ -116,7 +116,7 @@ function ClientLayout() {
     <div className="bg-canvas text-ink min-h-screen flex flex-col" style={themeVars}>
       <div className="fixed top-0 left-0 w-full z-[999]">
         <AnnouncementBar />
-        <Navbar onMenuToggle={() => setMobileMenuOpen(true)} />
+        <Navbar onMenuToggle={() => setMobileMenuOpen(!isMobileMenuOpen)} isMenuOpen={isMobileMenuOpen} />
       </div>
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
       <CartDrawer />
