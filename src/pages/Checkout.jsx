@@ -4,7 +4,7 @@ import { useStore } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
 
 export default function Checkout() {
-  const { cartItems, updateQuantity, removeFromCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
+  const { cartItems, updateQuantity, removeFromCart, clearCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -137,6 +137,7 @@ export default function Checkout() {
       }
 
       setOrderConfirmed(data.order);
+      clearCart();
       setStep(4);
       
       // Wait a bit, then redirect to home

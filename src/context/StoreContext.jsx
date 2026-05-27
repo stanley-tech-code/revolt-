@@ -102,6 +102,8 @@ export function StoreProvider({ children }) {
     ));
   };
 
+  const clearCart = () => setCartItems([]);
+
   const toggleWishlist = (productId) => {
     setWishlist(prev => {
       if (prev.includes(productId)) {
@@ -150,7 +152,7 @@ export function StoreProvider({ children }) {
 
   return (
     <StoreContext.Provider value={{
-      cartItems, addToCart, removeFromCart, updateQuantity, 
+      cartItems, addToCart, removeFromCart, updateQuantity, clearCart,
       isCartOpen, openCart, closeCart, getCartTotal, getCartCount,
       isSearchOpen, openSearch, closeSearch,
       wishlist, toggleWishlist,
