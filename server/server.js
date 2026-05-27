@@ -308,6 +308,61 @@ app.get('/api/analytics', verifyToken, async (req, res) => {
 });
 
 // --- DYNAMIC HOMEPAGE SECTIONS & LAYOUT ROUTERS ---
+app.get('/api/init', async (req, res) => {
+  try {
+    const [
+      { data: sectionsDoc },
+      { data: heroDoc },
+      { data: products },
+      { data: seoDoc },
+      { data: themeDoc },
+      { data: assetsDoc },
+      { data: socialDoc },
+      { data: scriptsDoc },
+      { data: notifDoc },
+      { data: settingsDoc },
+      { data: twilioDoc }
+    ] = await Promise.all([
+      supabase.from('cms').select('data').eq('type', 'sections').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'hero').maybeSingle(),
+      supabase.from('products').select('*'),
+      supabase.from('cms').select('data').eq('type', 'seo').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'theme').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'assets').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'social').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'scripts').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'notifications').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'settings').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'twilio_settings').maybeSingle()
+    ]);
+
+    const defaultHero = { headline: 'Welcome', subheadline: '', ctaText: 'Shop Now', ctaLink: '/', image: '/images/hero.jpg' };
+    const defaultSeo = { title: 'Revolt Elite', description: 'The Ultimate Minimalist Clothing Brand.', promoBannerText: 'Free shipping on all orders over Ksh 10,000!', promoBannerActive: true, googleAnalyticsId: '' };
+
+    return res.json({
+      success: true,
+      data: {
+        homepage: {
+          sections: sectionsDoc?.data || [],
+          hero: heroDoc?.data || defaultHero
+        },
+        products: products || [],
+        seo: seoDoc?.data ? { ...defaultSeo, ...seoDoc.data } : defaultSeo,
+        theme: themeDoc?.data || null,
+        assets: assetsDoc?.data || null,
+        social: socialDoc?.data || null,
+        scripts: scriptsDoc?.data || null,
+        notifications: notifDoc?.data || null,
+        settings: settingsDoc?.data || null,
+        twilio_settings: twilioDoc?.data || null
+      }
+    });
+  } catch(err) {
+    console.error('Init error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to initialize app.' });
+  }
+});
+
 app.get('/api/sections', async (req, res) => {
   try {
     const { data: sectionsDoc } = await supabase.from('cms').select('data').eq('type', 'sections').single();

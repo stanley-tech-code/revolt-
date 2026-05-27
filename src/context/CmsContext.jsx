@@ -69,35 +69,13 @@ export function CmsProvider({ children }) {
   const fetchDatabase = async () => {
     setIsLoading(true);
     try {
-      // 1. Fetch public sections & hero details
-      const secRes = await fetch('/api/sections');
-      const secData = await secRes.json();
-
-      // 2. Fetch public products
-      const prodRes = await fetch('/api/products');
-      const prodData = await prodRes.json();
-
-      // 3. Fetch public SEO config
-      const seoRes = await fetch('/api/seo');
-      const seoData = await seoRes.json();
-
-      // 4. Fetch generic CMS configs
-      const [themeRes, assetsRes, socialRes, scriptsRes, notifRes, settingsRes, twilioRes] = await Promise.all([
-        fetch('/api/cms/theme'),
-        fetch('/api/cms/assets'),
-        fetch('/api/cms/social'),
-        fetch('/api/cms/scripts'),
-        fetch('/api/cms/notifications'),
-        fetch('/api/cms/settings'),
-        fetch('/api/cms/twilio_settings')
-      ]);
-      const themeData = await themeRes.json();
-      const assetsData = await assetsRes.json();
-      const socialData = await socialRes.json();
-      const scriptsData = await scriptsRes.json();
-      const notifData = await notifRes.json();
-      const settingsData = await settingsRes.json();
-      const twilioData = await twilioRes.json();
+      // 1. Fetch ALL public CMS data & products in one single optimized batch call
+      const initRes = await fetch('/api/init');
+      const initData = await initRes.json();
+      
+      if (!initData.success) {
+        throw new Error(initData.error || 'Failed to initialize app data');
+      }
 
       let orders = [];
       let customers = [];
@@ -159,19 +137,16 @@ export function CmsProvider({ children }) {
       }
 
       const freshDb = {
-        homepage: {
-          hero: secData.hero || db.homepage.hero,
-          sections: secData.sections || db.homepage.sections
-        },
-        products: prodData.products || db.products,
-        seo: seoData.seo || db.seo,
-        theme: themeData.data || db.theme,
-        assets: assetsData.data || db.assets,
-        social: socialData.data || db.social,
-        scripts: scriptsData.data || db.scripts,
-        notifications: notifData.data || db.notifications,
-        settings: settingsData.data || db.settings,
-        twilio_settings: twilioData.data || db.twilio_settings,
+        homepage: initData.data.homepage || db.homepage,
+        products: initData.data.products || db.products,
+        seo: initData.data.seo || db.seo,
+        theme: initData.data.theme || db.theme,
+        assets: initData.data.assets || db.assets,
+        social: initData.data.social || db.social,
+        scripts: initData.data.scripts || db.scripts,
+        notifications: initData.data.notifications || db.notifications,
+        settings: initData.data.settings || db.settings,
+        twilio_settings: initData.data.twilio_settings || db.twilio_settings,
         orders,
         customers,
         promos,
