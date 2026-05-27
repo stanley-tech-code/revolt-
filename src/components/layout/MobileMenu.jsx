@@ -184,19 +184,7 @@ export default function MobileMenu({ isOpen, onClose }) {
 
         <hr className="border-clay/40 my-2" />
         <Link onClick={onClose} to="/components/account" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink">Account</Link>
-        <Link onClick={onClose} to="/components/wishlist" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink mb-6">Wishlist</Link>
-        
-        <div className="flex items-center gap-4 text-cocoa pb-4">
-          <Link to="/components/instagram" aria-label="Instagram" className="hover:text-ink">
-            <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-          </Link>
-          <Link to="/components/facebook" aria-label="Facebook" className="hover:text-ink">
-            <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </Link>
-          <Link to="/components/tiktok" aria-label="TikTok" className="hover:text-ink">
-            <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v3a8 8 0 0 1-5-1z"/></svg>
-          </Link>
-        </div>
+        <Link onClick={onClose} to="/components/wishlist" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink pb-4">Wishlist</Link>
       </div>
     </div>
   );
