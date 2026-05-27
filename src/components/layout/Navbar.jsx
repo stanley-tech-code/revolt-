@@ -44,7 +44,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
           showSolid 
             ? `bg-canvas text-ink ${isHovered ? "" : "border-b border-clay/15"}` 
             : "bg-transparent text-canvas border-transparent"
-        } h-10 md:h-12`}
+        } h-12 md:h-12`}
       >
         {/* Subtle top-down gradient for readability when transparent */}
         {!showSolid && (
@@ -53,8 +53,8 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
 
       <div className="w-full px-4 md:px-6 lg:px-8 h-full flex items-center justify-between">
         
-        <Link to="/" className="md:hidden flex items-center h-full -ml-2">
-          <img src="/images/logo.png?v=2" alt="Revolt" className={`h-[64px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"}`} />
+        <Link to="/" className="md:hidden flex items-center h-full">
+          <img src="/images/logo.png?v=2" alt="Revolt" className={`h-[44px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"}`} />
         </Link>
 
         {/* Desktop Left: Logo & Nav Links */}
@@ -342,28 +342,28 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
         </div>
 
         {/* Right Side: Icons + Hamburger */}
-        <div className={`flex items-center gap-4.5 md:gap-5.5 transition-colors duration-500 ${
+        <div className={`flex items-center gap-3 md:gap-5.5 transition-colors duration-500 ${
           showSolid ? "text-[#000000]" : "text-[#FAF9F6]"
         }`}>
-          <button onClick={openSearch} aria-label="Search" className="p-1 hover:scale-110 transition-transform"><svg className="size-[15px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" strokeLinecap="round"/></svg></button>
-          <button onClick={() => navigate('/components/account')} aria-label="Account" className="p-1 hover:scale-110 transition-transform hidden sm:inline-flex"><svg className="size-[15px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
+          <button onClick={openSearch} aria-label="Search" className="p-1 hover:scale-110 transition-transform"><svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" strokeLinecap="round"/></svg></button>
+          <button onClick={() => navigate('/components/account')} aria-label="Account" className="p-1 hover:scale-110 transition-transform hidden sm:inline-flex"><svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
           <button onClick={() => navigate('/components/wishlist')} aria-label="Wishlist" className="p-1 hover:scale-110 transition-transform relative">
-            <svg className="size-[15px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.8 5.6a5.5 5.5 0 0 0-9 1.7 5.5 5.5 0 0 0-9-1.7c-2.1 2.1-2.1 5.6 0 7.7l9 9 9-9c2.1-2.1 2.1-5.6 0-7.7Z"/></svg>
+            <svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.8 5.6a5.5 5.5 0 0 0-9 1.7 5.5 5.5 0 0 0-9-1.7c-2.1 2.1-2.1 5.6 0 7.7l9 9 9-9c2.1-2.1 2.1-5.6 0-7.7Z"/></svg>
             {wishlist.length > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 text-white text-[8px] flex items-center justify-center rounded-full font-bold">{wishlist.length}</span>}
           </button>
           <button onClick={openCart} aria-label="Cart" className="p-1 hover:scale-110 transition-transform relative">
-            <svg className="size-[15px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 7h14l-1.5 12h-11L5 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+            <svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 7h14l-1.5 12h-11L5 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
             {getCartCount() > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 text-white text-[8px] flex items-center justify-center rounded-full font-bold">{getCartCount()}</span>}
           </button>
           <button onClick={onMenuToggle} aria-label="Menu" className={`md:hidden p-1 transition-colors duration-500 ${
             showSolid ? "text-[#000000] hover:text-[#000000]/70" : "text-[#FAF9F6] hover:text-[#FAF9F6]/80"
           }`}>
             {isMenuOpen ? (
-              <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="size-[22px] md:size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" />
               </svg>
             ) : (
-              <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="size-[22px] md:size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
               </svg>
             )}
