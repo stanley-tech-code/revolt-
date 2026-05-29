@@ -626,8 +626,15 @@ app.delete('/api/products/:id', verifyToken, async (req, res) => {
 app.get('/api/track-order/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const { data: order, error } = await supabase.from('orders').select('id, items, total, status, deliveryInfo, tracking, createdAt').eq('id', id).single();
-    if (error || !order) return res.status(404).json({ success: false, error: 'Order not found.' });
+    // Fetch orders and find by prefix since Supabase UUID columns don't support ilike queries directly.
+    const { data: orders, error } = await supabase.from('orders').select('id, items, total, status, deliveryInfo, tracking, createdAt').order('createdAt', { ascending: false }).limit(2000);
+    
+    if (error) throw error;
+    
+    const searchTerm = id.toLowerCase().trim();
+    const order = orders.find(o => o.id.toLowerCase().startsWith(searchTerm) || o.id.replace(/-/g, '').toLowerCase().startsWith(searchTerm));
+
+    if (!order) return res.status(404).json({ success: false, error: 'Order not found.' });
 
     // Strip out sensitive deliveryInfo data, keep only the timeline
     const publicDeliveryInfo = {
