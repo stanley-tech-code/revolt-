@@ -11,14 +11,26 @@ export default function OrderTracking() {
 
   const handleTrack = async (e) => {
     e.preventDefault();
-    if (!orderIdInput.trim()) return;
+    const cleanId = orderIdInput.replace(/[^a-zA-Z0-9-]/g, '').trim();
+    if (!cleanId) return;
     
     setLoading(true);
     setError('');
     setOrderData(null);
     
     try {
-      const res = await fetch(`/api/track-order/${orderIdInput.trim()}`);
+      const res = await fetch(`/api/track-order/${cleanId}`);
+      if (!res.ok && res.status !== 404 && res.status !== 500) {
+        // If it's a 404 from proxy or similar
+        const text = await res.text();
+        try {
+           const data = JSON.parse(text);
+           if (!data.success) throw new Error(data.error);
+        } catch(e) {
+           throw new Error('Network error. Please try again later.');
+        }
+      }
+      
       const data = await res.json();
       
       if (data.success) {
