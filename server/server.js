@@ -623,6 +623,28 @@ app.delete('/api/products/:id', verifyToken, async (req, res) => {
 });
 
 // --- CRUD ORDERS & TRANSACTIONS ROUTERS ---
+app.get('/api/track-order/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { data: order, error } = await supabase.from('orders').select('id, items, total, status, deliveryInfo, tracking, createdAt').eq('id', id).single();
+    if (error || !order) return res.status(404).json({ success: false, error: 'Order not found.' });
+
+    // Strip out sensitive deliveryInfo data, keep only the timeline
+    const publicDeliveryInfo = {
+      timeline: order.deliveryInfo?.timeline || []
+    };
+
+    const trackingData = {
+      ...order,
+      deliveryInfo: publicDeliveryInfo
+    };
+
+    return res.json({ success: true, order: trackingData });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch order tracking info.' });
+  }
+});
+
 app.get('/api/orders', verifyToken, async (req, res) => {
   try {
     const { data: orders, error } = await supabase.from('orders').select('*').order('createdAt', { ascending: false });

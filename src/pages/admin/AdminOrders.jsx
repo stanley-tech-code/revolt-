@@ -14,9 +14,15 @@ export default function AdminOrders() {
     : orders.filter(o => o.status?.toLowerCase() === filterStatus.toLowerCase());
 
   const handleStatusChange = async (e, orderId) => {
-    const newStatus = e.target.value;
-    alert(`Attempting to update order ${orderId} to status: ${newStatus}`);
-    await updateOrderStatus(orderId, newStatus);
+    const newStatus = typeof e === 'string' ? e : e.target.value;
+    const order = orders.find(o => o.id === orderId);
+    if (!order) return;
+    
+    const existingTimeline = order.deliveryInfo?.timeline || [];
+    const newTimeline = [...existingTimeline, { status: newStatus, timestamp: new Date().toISOString() }];
+    const updatedDeliveryInfo = { ...order.deliveryInfo, timeline: newTimeline };
+
+    await updateOrderStatus(orderId, newStatus, updatedDeliveryInfo);
   };
 
   const handlePrintInvoice = () => {
@@ -143,21 +149,9 @@ export default function AdminOrders() {
                   <p className="text-sm text-[#000000]/60 mt-1">{new Date(selectedOrder.createdAt || selectedOrder.date).toLocaleString()}</p>
                   <div className="mt-2 inline-block">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/50 mr-2">Status:</span>
-                    <select 
-                      value={selectedOrder.status.toLowerCase()} 
-                      onChange={(e) => {
-                        handleStatusChange(e, selectedOrder.id);
-                        setSelectedOrder(prev => ({ ...prev, status: e.target.value }));
-                      }}
-                      className="px-2 py-1 bg-[#f5f5f5] text-[10px] font-bold uppercase tracking-wider border-0 outline-none cursor-pointer"
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="processing">Processing</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
-                      {selectedOrder.status.toLowerCase() === 'refunded' && <option value="refunded">Refunded</option>}
-                    </select>
+                    <span className="px-2 py-1 bg-[#f5f5f5] text-[10px] font-bold uppercase tracking-wider text-[#000000]">
+                      {selectedOrder.status}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -180,6 +174,54 @@ export default function AdminOrders() {
                     </p>
                   </div>
                 )}
+              </div>
+
+              <div className="mb-8">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Order Timeline</h3>
+                
+                {/* Timeline UI (Printable) */}
+                <div className="border border-[#000000]/10 p-4 mb-4 bg-[#f9f9f9]">
+                  {selectedOrder.deliveryInfo?.timeline && selectedOrder.deliveryInfo.timeline.length > 0 ? (
+                    <div className="relative border-l border-[#000000]/20 ml-3 pl-6 space-y-6">
+                      {selectedOrder.deliveryInfo.timeline.map((event, idx) => (
+                        <div key={idx} className="relative">
+                          <span className="absolute -left-[29px] top-1 w-2.5 h-2.5 rounded-full bg-[#000000] border-2 border-[#f9f9f9]"></span>
+                          <p className="font-bold uppercase tracking-wider text-xs text-[#000000]">{event.status}</p>
+                          <p className="text-[10px] text-[#000000]/50 uppercase tracking-widest mt-1">{new Date(event.timestamp).toLocaleString()}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-[#000000]/50 italic">No timeline history recorded.</p>
+                  )}
+                </div>
+
+                {/* Status Update Controls (No Print) */}
+                <div className="no-print">
+                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-2">Update Status</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {['Pending', 'Processing', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].map(status => (
+                      <button
+                        key={status}
+                        onClick={() => {
+                          handleStatusChange(status, selectedOrder.id);
+                          setSelectedOrder(prev => {
+                            const newTimeline = [...(prev.deliveryInfo?.timeline || []), { status, timestamp: new Date().toISOString() }];
+                            return { ...prev, status, deliveryInfo: { ...prev.deliveryInfo, timeline: newTimeline } };
+                          });
+                        }}
+                        disabled={selectedOrder.status.toLowerCase() === status.toLowerCase()}
+                        className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest border transition-all duration-300 ${
+                          selectedOrder.status.toLowerCase() === status.toLowerCase()
+                            ? 'bg-[#000000] text-white border-[#000000] cursor-default shadow-md'
+                            : 'bg-white text-[#000000] border-[#000000]/20 hover:border-[#000000] hover:bg-[#f5f5f5]'
+                        }`}
+                      >
+                        {status}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <div className="mb-8">

@@ -502,7 +502,7 @@ export function CmsProvider({ children }) {
     }
   };
 
-  const updateOrderStatus = async (id, status) => {
+  const updateOrderStatus = async (id, status, deliveryInfo = undefined) => {
     // Optimistic UI update (Proper React state update)
     setDb(prev => {
       const newDb = { ...prev };
@@ -511,16 +511,24 @@ export function CmsProvider({ children }) {
         if (orderIndex > -1) {
           newDb.orders = [...newDb.orders];
           newDb.orders[orderIndex] = { ...newDb.orders[orderIndex], status };
+          if (deliveryInfo) {
+             newDb.orders[orderIndex].deliveryInfo = deliveryInfo;
+          }
         }
       }
       return newDb;
     });
 
     try {
+      const bodyPayload = { status };
+      if (deliveryInfo) {
+         bodyPayload.deliveryInfo = deliveryInfo;
+      }
+      
       const res = await fetch(`/api/orders/${id}`, {
         method: 'PUT',
         headers: getHeaders(),
-        body: JSON.stringify({ status })
+        body: JSON.stringify(bodyPayload)
       });
       const data = await res.json();
       if (data.success) {
