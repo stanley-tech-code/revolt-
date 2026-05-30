@@ -25,13 +25,37 @@ export default function Returns() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormState('submitting');
-    // Simulate API call
-    setTimeout(() => {
-      setFormState('success');
-    }, 1500);
+    try {
+      const payload = {
+        orderNumber: formData.orderNumber,
+        customer: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        product: formData.productName,
+        reason: formData.reason,
+        resolution: formData.resolution,
+        image: !!formData.image
+      };
+
+      const res = await fetch('/api/returns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      if (res.ok) {
+        setFormState('success');
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('There was an error submitting your return. Please try again or use WhatsApp.');
+      setFormState('idle');
+    }
   };
 
   const generateReturnCode = () => {

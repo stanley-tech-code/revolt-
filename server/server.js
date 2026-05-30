@@ -413,6 +413,59 @@ app.put('/api/customers/:id/optin', verifyToken, async (req, res) => {
   }
 });
 
+// --- RETURNS ROUTES ---
+app.get('/api/returns', async (req, res) => {
+  try {
+    const { data: doc, error } = await supabase.from('cms').select('data').eq('type', 'returns').single();
+    if (error && error.code !== 'PGRST116') throw error;
+    return res.json({ success: true, returns: doc ? doc.data : [] });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch returns.' });
+  }
+});
+
+app.post('/api/returns', async (req, res) => {
+  const newReturn = req.body;
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'returns').maybeSingle();
+    const returnsList = doc?.data || [];
+    
+    const returnEntry = {
+      id: newReturn.id || 'RET-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+      ...newReturn,
+      status: 'pending',
+      date: new Date().toISOString().split('T')[0]
+    };
+    
+    returnsList.unshift(returnEntry);
+    await supabase.from('cms').upsert({ type: 'returns', data: returnsList });
+    
+    return res.json({ success: true, return: returnEntry });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to submit return.' });
+  }
+});
+
+app.put('/api/returns/:id', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'returns').maybeSingle();
+    if (!doc) return res.status(404).json({ success: false, error: 'No returns found.' });
+    
+    let returnsList = doc.data;
+    const index = returnsList.findIndex(r => r.id === id);
+    if (index === -1) return res.status(404).json({ success: false, error: 'Return not found.' });
+    
+    returnsList[index].status = status;
+    await supabase.from('cms').upsert({ type: 'returns', data: returnsList });
+    
+    return res.json({ success: true, return: returnsList[index] });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to update return.' });
+  }
+});
+
 // --- GENERIC CMS ROUTES ---
 app.get('/api/cms/:type', async (req, res) => {
   try {
