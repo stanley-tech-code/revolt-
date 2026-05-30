@@ -17,6 +17,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
+import AdminReturns from './pages/admin/AdminReturns';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
@@ -148,6 +149,7 @@ function App() {
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="products" element={<AdminProducts />} />
               <Route path="orders" element={<AdminOrders />} />
+              <Route path="returns" element={<AdminReturns />} />
               <Route path="customers" element={<AdminCustomers />} />
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
