@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Returns() {
   const [activeTab, setActiveTab] = useState('policy'); // 'policy' | 'request'
   const [formState, setFormState] = useState('idle'); // 'idle' | 'submitting' | 'success'
+  const [returnId, setReturnId] = useState('');
 
   const [formData, setFormData] = useState({
     orderNumber: '',
@@ -47,6 +48,13 @@ export default function Returns() {
       });
       
       if (res.ok) {
+        const data = await res.json();
+        if (data.return && data.return.id) {
+          setReturnId(data.return.id);
+        } else {
+          // fallback
+          setReturnId('RET-' + Math.random().toString(36).substring(2, 8).toUpperCase());
+        }
         setFormState('success');
       } else {
         throw new Error('Server error');
@@ -58,9 +66,7 @@ export default function Returns() {
     }
   };
 
-  const generateReturnCode = () => {
-    return 'RET-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-  };
+
 
   return (
     <main className="bg-canvas min-h-screen text-ink pb-20 pt-10">
@@ -251,7 +257,7 @@ export default function Returns() {
             <div className="bg-sand p-6 rounded-sm mb-8">
               <div className="flex justify-between items-center border-b border-ink/10 pb-4 mb-4">
                 <span className="text-sm font-bold uppercase text-ink/70">Return Reference</span>
-                <span className="text-lg font-bold tracking-widest">{generateReturnCode()}</span>
+                <span className="text-lg font-bold tracking-widest">{returnId}</span>
               </div>
               <p className="text-xs text-ink/60 uppercase tracking-wider text-center">
                 Please write this code clearly on your return package.
