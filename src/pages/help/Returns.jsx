@@ -13,6 +13,7 @@ export default function Returns() {
     email: '',
     productName: '',
     reason: '',
+    otherReason: '',
     resolution: 'exchange'
   });
 
@@ -31,7 +32,7 @@ export default function Returns() {
         phoneNumber: formData.phoneNumber,
         email: formData.email,
         product: formData.productName,
-        reason: formData.reason,
+        reason: formData.reason === 'Other' ? `Other: ${formData.otherReason}` : formData.reason,
         resolution: formData.resolution
       };
 
@@ -189,6 +190,20 @@ export default function Returns() {
                   <option value="Not satisfied">Not satisfied</option>
                   <option value="Other">Other</option>
                 </select>
+                
+                {formData.reason === 'Other' && (
+                  <div className="mt-4 animate-fade-in">
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-2">Please Specify *</label>
+                    <textarea 
+                      required 
+                      name="otherReason" 
+                      value={formData.otherReason} 
+                      onChange={handleInputChange} 
+                      placeholder="Tell us what went wrong..."
+                      className="w-full p-3 border border-ink/20 focus:border-ink outline-none bg-canvas/50 min-h-[100px] resize-y"
+                    ></textarea>
+                  </div>
+                )}
               </div>
 
               <div>
