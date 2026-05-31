@@ -1,10 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCms } from '../../context/CmsContext';
 
 export default function Footer() {
   const { db } = useCms();
   const social = db?.social || {};
+
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [errorMessage, setErrorMessage] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (honeypot) return; // Silent reject for bots
+    if (!email || !email.includes('@')) {
+      setStatus('error');
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'footer' })
+      });
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+        setErrorMessage(data.error || 'Failed to subscribe. Please try again.');
+      }
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage('Network error. Please try again later.');
+    }
+  };
 
   return (
     <footer className="bg-canvas text-[#000000] pt-12 md:pt-16 pb-8 border-t border-clay/30">
@@ -52,10 +87,40 @@ export default function Footer() {
           <div className="lg:pl-16 lg:border-l border-clay/20 order-1 lg:order-2 mb-4 lg:mb-0">
             <h3 className="text-xl md:text-2xl font-semibold uppercase tracking-tight mb-4 text-[#000000]">Join Revolt</h3>
             <p className="text-sm text-[#000000] max-w-sm mb-6 leading-relaxed">Early access to drops, members-only releases, and editorial updates.</p>
-            <form className="flex gap-4 border-b border-[#000000]/30 pb-2 max-w-sm focus-within:border-[#000000] transition-colors" onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="Email address" className="bg-transparent border-none text-sm flex-1 outline-none placeholder:text-[#000000]/40 text-[#000000] py-1" />
-              <button type="submit" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#000000] hover:text-[#000000]/70 transition-colors">Subscribe</button>
-            </form>
+            
+            {status === 'success' ? (
+              <div className="bg-[#000000]/5 p-4 rounded-sm border border-[#000000]/10 animate-fade-in">
+                <p className="text-sm font-bold uppercase tracking-widest text-[#000000] mb-1">You're in.</p>
+                <p className="text-xs text-[#000000]/70">Welcome to Revolt.</p>
+              </div>
+            ) : (
+              <form className="flex flex-col gap-2 max-w-sm" onSubmit={handleSubscribe}>
+                <div className="flex gap-4 border-b border-[#000000]/30 pb-2 focus-within:border-[#000000] transition-colors relative">
+                  {/* Honeypot field - hidden from real users */}
+                  <input type="text" name="_honeypot" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
+                  
+                  <input 
+                    type="email" 
+                    placeholder="Email address" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={status === 'loading'}
+                    className="bg-transparent border-none text-sm flex-1 outline-none placeholder:text-[#000000]/40 text-[#000000] py-1 disabled:opacity-50" 
+                    required
+                  />
+                  <button 
+                    type="submit" 
+                    disabled={status === 'loading'}
+                    className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#000000] hover:text-[#000000]/70 transition-colors disabled:opacity-50"
+                  >
+                    {status === 'loading' ? 'WAIT...' : 'Subscribe'}
+                  </button>
+                </div>
+                {status === 'error' && (
+                  <p className="text-red-500 text-xs mt-1 animate-fade-in">{errorMessage}</p>
+                )}
+              </form>
+            )}
           </div>
         </div>
 

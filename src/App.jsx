@@ -26,6 +26,7 @@ import AdminNotifications from './pages/admin/AdminNotifications';
 import AdminTwilio from './pages/admin/AdminTwilio';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminMessages from './pages/admin/AdminMessages';
+import AdminNewsletter from './pages/admin/AdminNewsletter';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
@@ -155,9 +156,10 @@ function App() {
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
               <Route path="content" element={<AdminContent />} />
-              <Route path="notifications" element={<AdminNotifications />} />
+              <Route path="notifications" element={<AdminProtectedRoute allowedRoles={['Super Admin', 'Editor', 'Marketing', 'Support']}><AdminNotifications /></AdminProtectedRoute>} />
+              <Route path="newsletter" element={<AdminProtectedRoute allowedRoles={['Super Admin', 'Marketing']}><AdminNewsletter /></AdminProtectedRoute>} />
               <Route path="messages" element={<AdminMessages />} />
-              <Route path="twilio" element={<AdminTwilio />} />
+              <Route path="twilio" element={<AdminProtectedRoute allowedRoles={['Super Admin']}><AdminTwilio /></AdminProtectedRoute>} />
               <Route path="analytics" element={
                 <ErrorBoundary>
                   <React.Suspense fallback={<div className="p-10 text-center animate-pulse font-bold">Loading Analytics...</div>}>

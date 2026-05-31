@@ -47,6 +47,7 @@ const addLog = async (user, action) => {
 
 // Helper for sending email
 const sendEmail = async (to, subject, html) => {
+  console.log(`[EMAIL INITIATED] Attempting to send email to: ${to} | Subject: ${subject}`);
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.ethereal.email',
@@ -56,14 +57,20 @@ const sendEmail = async (to, subject, html) => {
         pass: process.env.SMTP_PASS || 'test'
       }
     });
-    await transporter.sendMail({
+    
+    // Verify connection config
+    await transporter.verify();
+    console.log('[EMAIL] SMTP connection verified successfully');
+
+    const info = await transporter.sendMail({
       from: process.env.SMTP_FROM || '"Revolt Support" <support@revolt.com>',
       to,
       subject,
       html
     });
+    console.log('[EMAIL SUCCESS] Message sent: %s', info.messageId);
   } catch (err) {
-    console.error('Failed to send email via nodemailer:', err);
+    console.error('[EMAIL ERROR] Failed to send email via nodemailer:', err);
   }
 };
 
@@ -543,6 +550,7 @@ app.post('/api/messages', async (req, res) => {
 });
 
 app.put('/api/messages/:id/reply', verifyToken, async (req, res) => {
+  console.log(`[DEBUG] PUT /api/messages/${req.params.id}/reply hit by:`, req.user);
   const { id } = req.params;
   const { text } = req.body;
   if (!text) return res.status(400).json({ success: false, error: 'Reply text is required.' });
@@ -594,8 +602,8 @@ app.put('/api/messages/:id/reply', verifyToken, async (req, res) => {
           </div>
         </div>
       `;
-      // Dispatch email asynchronously
-      sendEmail(messagesList[index].email, `Re: ${messagesList[index].subject} (Ticket ${id})`, emailHtml);
+      // Dispatch email and wait for result
+      await sendEmail(messagesList[index].email, `Re: ${messagesList[index].subject} (Ticket ${id})`, emailHtml);
     }
     
     return res.json({ success: true, ticket: messagesList[index] });
@@ -1505,6 +1513,101 @@ app.get('/api/logs', verifyToken, async (req, res) => {
     return res.json({ success: true, logs });
   } catch(err) {
     return res.status(500).json({ success: false, error: 'Failed to fetch logs.' });
+  }
+});
+
+// --- NEWSLETTER ROUTES ---
+app.post('/api/newsletter/subscribe', async (req, res) => {
+  const { email, source } = req.body;
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({ success: false, error: 'A valid email is required.' });
+  }
+
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'subscribers').maybeSingle();
+    let subscribers = doc?.data || [];
+    
+    // Check if already subscribed
+    if (subscribers.find(sub => sub.email.toLowerCase() === email.toLowerCase())) {
+      return res.status(400).json({ success: false, error: 'Email is already subscribed.' });
+    }
+
+    const newSubscriber = {
+      id: 'SUB-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+      email: email.toLowerCase(),
+      date: new Date().toISOString(),
+      source: source || 'unknown'
+    };
+
+    subscribers.push(newSubscriber);
+    
+    await supabase.from('cms').upsert({ type: 'subscribers', data: subscribers });
+    
+    // Optional: Send welcome email
+    const welcomeHtml = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; text-align: center; padding: 40px 20px;">
+        <h1 style="text-transform: uppercase; letter-spacing: 2px;">Welcome to Revolt</h1>
+        <p style="color: #666; font-size: 16px; margin-top: 20px;">You're in. You will now receive early access to drops, members-only releases, and editorial updates.</p>
+        <p style="margin-top: 40px; font-size: 12px; color: #999;">© ${new Date().getFullYear()} Revolt Studio. All Rights Reserved.</p>
+      </div>
+    `;
+    sendEmail(email, 'Welcome to Revolt', welcomeHtml);
+
+    return res.json({ success: true, subscriber: newSubscriber });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to subscribe.' });
+  }
+});
+
+app.get('/api/newsletter', verifyToken, async (req, res) => {
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'subscribers').maybeSingle();
+    return res.json({ success: true, subscribers: doc?.data || [] });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch subscribers.' });
+  }
+});
+
+app.delete('/api/newsletter/:id', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'subscribers').maybeSingle();
+    if (!doc) return res.status(404).json({ success: false, error: 'No subscribers found.' });
+    
+    const subscribers = doc.data.filter(s => s.id !== id);
+    await supabase.from('cms').upsert({ type: 'subscribers', data: subscribers });
+    await addLog(req.user.username, `Deleted subscriber ${id}`);
+    
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to delete subscriber.' });
+  }
+});
+
+app.post('/api/newsletter/send', verifyToken, async (req, res) => {
+  const { subject, html } = req.body;
+  if (!subject || !html) return res.status(400).json({ success: false, error: 'Subject and message are required.' });
+
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'subscribers').maybeSingle();
+    const subscribers = doc?.data || [];
+    
+    if (subscribers.length === 0) return res.status(400).json({ success: false, error: 'No subscribers to send to.' });
+    
+    // Send emails (In a production environment with SendGrid this would be batched or use BCC, 
+    // but for small lists looping with NodeMailer works as a starting point)
+    let sentCount = 0;
+    for (const sub of subscribers) {
+      // Small delay to prevent flooding the local SMTP or Gmail limits too aggressively in a loop
+      await new Promise(r => setTimeout(r, 200)); 
+      sendEmail(sub.email, subject, html);
+      sentCount++;
+    }
+    
+    await addLog(req.user.username, `Sent newsletter campaign "${subject}" to ${sentCount} subscribers`);
+    return res.json({ success: true, sentCount });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to send campaign.' });
   }
 });
 
