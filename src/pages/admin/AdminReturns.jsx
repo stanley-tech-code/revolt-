@@ -127,10 +127,12 @@ export default function AdminReturns() {
                     <td className="p-4">
                       <div className="font-bold text-sm">{item.id}</div>
                       <div className="text-xs text-black/50">{item.orderNumber}</div>
+                      <div className="text-xs text-black/40 mt-1">{item.date}</div>
                     </td>
                     <td className="p-4">
                       <div className="text-sm font-medium">{item.customer}</div>
-                      <div className="text-xs text-black/50">{item.date}</div>
+                      {item.email && <div className="text-xs text-black/60 mt-1">Email: {item.email}</div>}
+                      {item.phoneNumber && <div className="text-xs text-black/60">Phone: {item.phoneNumber}</div>}
                     </td>
                     <td className="p-4">
                       <div className="text-sm">{item.product}</div>
