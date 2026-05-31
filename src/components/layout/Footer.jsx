@@ -65,6 +65,9 @@ export default function Footer() {
                 <li><Link to="/help/order-tracking" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Tracking</Link></li>
                 <li><Link to="/help/returns" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Returns</Link></li>
                 <li><Link to="/help/contact" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Contact</Link></li>
+                <li><Link to="/policies/terms" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Terms of Service</Link></li>
+                <li><Link to="/policies/privacy" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/policies/refund" className="text-[#000000] hover:text-[#000000]/70 transition-colors">Refund Policy</Link></li>
               </ul>
             </div>
 
@@ -128,11 +131,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-clay/20 gap-4">
           <span className="text-xl md:text-2xl font-bold uppercase tracking-[-0.05em] text-[#000000]">Revolt</span>
           
-          <div className="flex gap-4 text-[9px] uppercase tracking-[0.2em] text-[#000000]/70 font-bold">
-            <Link to="/policies/terms" className="hover:text-[#000000] transition-colors">Terms</Link>
-            <Link to="/policies/privacy" className="hover:text-[#000000] transition-colors">Privacy</Link>
-            <Link to="/policies/refund" className="hover:text-[#000000] transition-colors">Refund</Link>
-          </div>
+
           
           <p className="text-[9px] uppercase tracking-[0.4em] text-[#000000]">© 2026 Revolt Studio. All Rights Reserved.</p>
         </div>

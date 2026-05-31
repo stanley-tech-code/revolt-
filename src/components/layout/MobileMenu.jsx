@@ -182,6 +182,17 @@ export default function MobileMenu({ isOpen, onClose }) {
           </Link>
         </AccordionItem>
 
+        <AccordionItem title="Help" to="#" onClose={() => {}}>
+          <div className="flex flex-col gap-3 pb-4">
+            <Link onClick={onClose} to="/help/order-tracking" className="text-xs text-cocoa hover:text-ink">Tracking</Link>
+            <Link onClick={onClose} to="/help/returns" className="text-xs text-cocoa hover:text-ink">Returns</Link>
+            <Link onClick={onClose} to="/help/contact" className="text-xs text-cocoa hover:text-ink">Contact</Link>
+            <Link onClick={onClose} to="/policies/terms" className="text-xs text-cocoa hover:text-ink">Terms of Service</Link>
+            <Link onClick={onClose} to="/policies/privacy" className="text-xs text-cocoa hover:text-ink">Privacy Policy</Link>
+            <Link onClick={onClose} to="/policies/refund" className="text-xs text-cocoa hover:text-ink">Refund Policy</Link>
+          </div>
+        </AccordionItem>
+
         <hr className="border-clay/40 my-2" />
         <Link onClick={onClose} to="/components/account" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink">Account</Link>
         <Link onClick={onClose} to="/components/wishlist" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink pb-4">Wishlist</Link>
