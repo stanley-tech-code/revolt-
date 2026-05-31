@@ -9,6 +9,9 @@ import { fileURLToPath } from 'url';
 import { supabase } from './db/supabase.js';
 import twilio from 'twilio';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
