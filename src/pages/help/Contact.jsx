@@ -119,12 +119,7 @@ export default function Contact() {
               </div>
             )}
             
-            {/* Fallback if nothing configured */}
-            {emails.length === 0 && phones.length === 0 && !address && (
-              <div className="bg-sand p-6 rounded-sm">
-                <p className="text-sm text-ink/70 italic">Contact information is currently being updated.</p>
-              </div>
-            )}
+
           </div>
 
           {/* CONTACT FORM */}
