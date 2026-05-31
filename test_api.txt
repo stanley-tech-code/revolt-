@@ -1,0 +1,1 @@
+{"success":true,"sections":[],"hero":{"headline":"Welcome","subheadline":"","ctaText":"Shop Now","ctaLink":"/","image":"/images/hero.jpg"}}

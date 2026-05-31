@@ -19,6 +19,12 @@ export default function Account() {
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
 
+  // Tickets state
+  const [tickets, setTickets] = useState([]);
+  const [loadingTickets, setLoadingTickets] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [replyText, setReplyText] = useState('');
+
   // Profile form state
   const [profileData, setProfileData] = useState({
     fullName: currentUser?.fullName || '',
@@ -70,6 +76,7 @@ export default function Account() {
     { id: 'profile', label: 'My Profile' },
     { id: 'orders', label: 'Order History' },
     { id: 'addresses', label: 'Address Book' },
+    { id: 'tickets', label: 'Support Tickets' },
   ];
 
   useEffect(() => {
@@ -96,8 +103,51 @@ export default function Account() {
         setLoadingOrders(false);
       };
       fetchOrders();
+    } else if (activeTab === 'tickets' && currentUser) {
+      const fetchTickets = async () => {
+        setLoadingTickets(true);
+        try {
+          const res = await fetch('/api/messages', {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('revolt_client_token')}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            setTickets(data.messages);
+          }
+        } catch (err) {
+          console.error('Failed to fetch tickets', err);
+        }
+        setLoadingTickets(false);
+      };
+      fetchTickets();
+      setSelectedTicket(null); // Reset selection when clicking tab
     }
   }, [activeTab, currentUser]);
+
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
+    if (!replyText.trim() || !selectedTicket) return;
+    
+    try {
+      const res = await fetch(`/api/messages/${selectedTicket.id}/reply`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('revolt_client_token')}`
+        },
+        body: JSON.stringify({ text: replyText })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSelectedTicket(data.ticket);
+        setTickets(tickets.map(t => t.id === data.ticket.id ? data.ticket : t));
+        setReplyText('');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to send reply');
+    }
+  };
 
   return (
     <main className="w-full min-h-screen bg-canvas text-[#1a1a1a] pt-12 px-6 pb-24">
@@ -368,7 +418,111 @@ export default function Account() {
             </div>
           )}
 
-
+          {/* SUPPORT TICKETS TAB */}
+          {activeTab === 'tickets' && (
+            <div className="animate-fade-in">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold uppercase tracking-wider">{selectedTicket ? 'Ticket Details' : 'Support Tickets'}</h2>
+                {selectedTicket && (
+                  <button onClick={() => setSelectedTicket(null)} className="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5">
+                    &larr; Back to List
+                  </button>
+                )}
+              </div>
+              
+              {loadingTickets ? (
+                <div className="text-center py-12">
+                  <div className="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest">Loading tickets...</p>
+                </div>
+              ) : selectedTicket ? (
+                <div className="space-y-6">
+                  <div className="bg-gray-50 p-6 border border-gray-200">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Ticket {selectedTicket.id}</p>
+                        <h3 className="text-lg font-bold">{selectedTicket.subject}</h3>
+                      </div>
+                      <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                        selectedTicket.status === 'open' ? 'bg-blue-100 text-blue-800' :
+                        selectedTicket.status === 'answered' ? 'bg-yellow-100 text-yellow-800' :
+                        selectedTicket.status === 'resolved' ? 'bg-green-100 text-green-800' :
+                        'bg-gray-200 text-gray-800'
+                      }`}>
+                        {selectedTicket.status.replace('_', ' ')}
+                      </span>
+                    </div>
+                    
+                    <div className="bg-white p-4 border border-gray-100">
+                      <p className="text-xs font-bold uppercase tracking-wider mb-2">Original Message <span className="text-[9px] text-gray-400 font-normal normal-case ml-2">{new Date(selectedTicket.date).toLocaleString()}</span></p>
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap">{selectedTicket.message}</p>
+                    </div>
+                    
+                    <div className="mt-4 space-y-4">
+                      {selectedTicket.replies?.map((reply, idx) => (
+                        <div key={idx} className={`p-4 border ${reply.from === 'client' ? 'bg-white border-gray-200 ml-12' : 'bg-blue-50 border-blue-100 mr-12'}`}>
+                          <p className="text-xs font-bold uppercase tracking-wider mb-2">
+                            {reply.senderName} <span className="text-[9px] text-gray-400 font-normal normal-case ml-2">{new Date(reply.date).toLocaleString()}</span>
+                          </p>
+                          <p className="text-sm text-gray-700 whitespace-pre-wrap">{reply.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {selectedTicket.status !== 'resolved' && selectedTicket.status !== 'archived' && (
+                    <form onSubmit={handleReplySubmit} className="mt-6 border border-gray-200 p-6">
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-3">Add a Reply</label>
+                      <textarea 
+                        required 
+                        rows="3" 
+                        value={replyText} 
+                        onChange={(e) => setReplyText(e.target.value)} 
+                        className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black resize-y mb-4"
+                        placeholder="Type your reply here..."
+                      ></textarea>
+                      <button type="submit" className="bg-[#1a1a1a] text-white px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-black transition-colors">
+                        Send Reply
+                      </button>
+                    </form>
+                  )}
+                  {(selectedTicket.status === 'resolved' || selectedTicket.status === 'archived') && (
+                    <div className="text-center p-4 bg-gray-50 border border-gray-200 text-xs font-bold uppercase tracking-widest text-gray-500">
+                      This ticket is closed and cannot be replied to.
+                    </div>
+                  )}
+                </div>
+              ) : tickets.length === 0 ? (
+                <div className="text-center py-12 bg-gray-50 border border-gray-100">
+                  <p className="text-sm text-gray-500 mb-4">You have no support tickets.</p>
+                  <button onClick={() => navigate('/help/contact')} className="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5">Contact Support</button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {tickets.map(ticket => (
+                    <div key={ticket.id} onClick={() => setSelectedTicket(ticket)} className="border border-gray-200 p-5 hover:border-black cursor-pointer transition-colors group">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-bold text-sm group-hover:text-blue-600 transition-colors">{ticket.subject}</h3>
+                        <span className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider ${
+                          ticket.status === 'open' ? 'bg-blue-100 text-blue-800' :
+                          ticket.status === 'answered' ? 'bg-yellow-100 text-yellow-800' :
+                          ticket.status === 'resolved' ? 'bg-green-100 text-green-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {ticket.status.replace('_', ' ')}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2 truncate max-w-lg">{ticket.message}</p>
+                      <div className="flex justify-between items-center text-[10px] text-gray-400">
+                        <span>{ticket.id} &bull; {new Date(ticket.date).toLocaleDateString()}</span>
+                        {ticket.replies?.length > 0 && <span>{ticket.replies.length} replies</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* SECURITY TAB */}
           {activeTab === 'security' && (

@@ -141,7 +141,28 @@ export default function AdminSettings() {
           <button onClick={discardChanges} disabled={isLoading} className="bg-[#f5f5f5] text-[#000000] border border-[#000000]/20 px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#e0e0e0] transition-colors">
             Discard
           </button>
-          <button onClick={handlePublish} disabled={isLoading} className="bg-[#000000] text-white px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#000000]/80 transition-colors">
+          <button onClick={async () => {
+            // Auto-add any pending text
+            let finalEmails = [...(settings.localization?.supportEmails || (settings.localization?.supportEmail ? [settings.localization.supportEmail] : []))];
+            if (newEmail) {
+              finalEmails.push(newEmail);
+              updateSetting('localization', 'supportEmails', finalEmails);
+              setNewEmail('');
+            }
+            
+            let finalPhones = [...(settings.localization?.supportPhones || (settings.localization?.supportPhone ? [settings.localization.supportPhone] : []))];
+            if (newPhone) {
+              finalPhones.push(newPhone);
+              updateSetting('localization', 'supportPhones', finalPhones);
+              setNewPhone('');
+            }
+
+            if (settings.localization?.supportEmail) updateSetting('localization', 'supportEmail', '');
+            if (settings.localization?.supportPhone) updateSetting('localization', 'supportPhone', '');
+
+            // Small delay to ensure state flushes before publish (since updateDraft is async)
+            setTimeout(handlePublish, 100);
+          }} disabled={isLoading} className="bg-[#000000] text-white px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#000000]/80 transition-colors">
             {isLoading ? 'Saving...' : 'Save Configuration'}
           </button>
         </div>
@@ -214,9 +235,8 @@ export default function AdminSettings() {
                           const arr = [...(settings.localization?.supportEmails || (settings.localization?.supportEmail ? [settings.localization.supportEmail] : []))];
                           updateSetting('localization', 'supportEmails', [...arr, newEmail]);
                           setNewEmail('');
-                          if (settings.localization?.supportEmail) updateSetting('localization', 'supportEmail', '');
                         }
-                      }} className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80">Add</button>
+                      }} type="button" className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80">Add</button>
                     </div>
                   </div>
 
@@ -243,9 +263,8 @@ export default function AdminSettings() {
                           const arr = [...(settings.localization?.supportPhones || (settings.localization?.supportPhone ? [settings.localization.supportPhone] : []))];
                           updateSetting('localization', 'supportPhones', [...arr, newPhone]);
                           setNewPhone('');
-                          if (settings.localization?.supportPhone) updateSetting('localization', 'supportPhone', '');
                         }
-                      }} className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80">Add</button>
+                      }} type="button" className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80">Add</button>
                     </div>
                   </div>
 

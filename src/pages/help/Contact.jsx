@@ -12,13 +12,46 @@ export default function Contact() {
   const address = rawLoc.address || '';
   const mapsLink = rawLoc.mapsLink || '';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    
+    // Honeypot check
+    if (formData.get('_honeypot')) {
+      console.warn('Spam detected');
+      return;
+    }
+
     setFormState('submitting');
-    setTimeout(() => {
-      setFormState('success');
-      e.target.reset();
-    }, 1500);
+    
+    const payload = {
+      name: `${formData.get('firstName')} ${formData.get('lastName')}`.trim(),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      subject: formData.get('subject'),
+      message: formData.get('message')
+    };
+
+    try {
+      const res = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      if (res.ok) {
+        setFormState('success');
+        e.target.reset();
+      } else {
+        alert('Failed to send message. Please try again.');
+        setFormState('idle');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Network error. Please try again.');
+      setFormState('idle');
+    }
   };
 
   return (
@@ -107,7 +140,7 @@ export default function Contact() {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold uppercase tracking-wider mb-2">Message Sent</h3>
-                  <p className="text-ink/70 text-sm mb-8">Thank you for reaching out. A member of our team will get back to you within 24 hours.</p>
+                  <p className="text-ink/70 text-sm mb-8">Thank you for contacting us. We have received your message and will get back to you shortly.</p>
                   <button onClick={() => setFormState('idle')} className="text-xs font-bold uppercase tracking-[0.2em] border-b border-ink pb-1 hover:text-cocoa transition-colors">
                     Send Another
                   </button>
@@ -119,31 +152,43 @@ export default function Contact() {
                       <div className="w-8 h-8 border-2 border-ink/20 border-t-ink rounded-full animate-spin"></div>
                     </div>
                   )}
+
+                  {/* HONEYPOT FIELD FOR SPAM PROTECTION */}
+                  <div className="hidden" aria-hidden="true">
+                    <input type="text" name="_honeypot" tabIndex="-1" autoComplete="off" />
+                  </div>
                   
                   <div className="grid grid-cols-2 gap-6">
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-wider mb-2 text-ink/70">First Name</label>
-                      <input required type="text" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
+                      <input name="firstName" required type="text" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-wider mb-2 text-ink/70">Last Name</label>
-                      <input required type="text" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
+                      <input name="lastName" required type="text" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider mb-2 text-ink/70">Email Address</label>
-                    <input required type="email" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider mb-2 text-ink/70">Email Address</label>
+                      <input name="email" required type="email" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider mb-2 text-ink/70">Phone Number</label>
+                      <input name="phone" required type="tel" pattern="[+0-9\s\-()]+" title="Valid phone number" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
+                      <p className="text-[9px] text-ink/50 mt-1">Please include country code (e.g. +1)</p>
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-2 text-ink/70">Subject (Optional)</label>
-                    <input type="text" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
+                    <input name="subject" type="text" className="w-full bg-sand border-b border-ink/20 px-0 py-3 text-sm outline-none focus:border-ink transition-colors bg-transparent" />
                   </div>
 
                   <div>
                     <label className="block text-[10px] font-bold uppercase tracking-wider mb-2 text-ink/70">Message</label>
-                    <textarea required rows="4" className="w-full bg-sand border border-ink/20 p-4 text-sm outline-none focus:border-ink transition-colors resize-y bg-transparent"></textarea>
+                    <textarea name="message" required rows="4" className="w-full bg-sand border border-ink/20 p-4 text-sm outline-none focus:border-ink transition-colors resize-y bg-transparent"></textarea>
                   </div>
 
                   <button type="submit" className="w-full bg-ink text-white py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-ink/80 transition-colors">

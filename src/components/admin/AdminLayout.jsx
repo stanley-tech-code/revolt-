@@ -6,8 +6,31 @@ export default function AdminLayout() {
   const { db, logoutAdmin, successNotification, errorNotification } = useCms();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
 
   const currentUser = db?.admin?.currentUser;
+
+  React.useEffect(() => {
+    const fetchUnread = async () => {
+      try {
+        const token = localStorage.getItem('REVOLT_ADMIN_JWT_TOKEN') || localStorage.getItem('token');
+        const res = await fetch('/api/messages', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const unread = data.messages?.filter(m => m.status === 'new').length || 0;
+          setUnreadMessagesCount(unread);
+        }
+      } catch (e) {}
+    };
+    if (currentUser) {
+      fetchUnread();
+      // Optional: poll every 30 seconds for real-time feel
+      const interval = setInterval(fetchUnread, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [currentUser]);
 
   const handleLogout = () => {
     logoutAdmin();
@@ -24,6 +47,7 @@ export default function AdminLayout() {
     { name: 'Finance', path: '/admin/finance', roles: ['Super Admin'] },
     { name: 'Promotions', path: '/admin/promotions', roles: ['Super Admin', 'Marketing'] },
     { name: 'Content & Appearance', path: '/admin/content', roles: ['Super Admin', 'Editor'] },
+    { name: 'Customer Messages', path: '/admin/messages', roles: ['Super Admin', 'Support', 'Editor', 'Marketing', 'Fulfillment'] },
     { name: 'Notifications & CRM', path: '/admin/notifications', roles: ['Super Admin', 'Editor', 'Marketing', 'Support'] },
     { name: 'Twilio Settings', path: '/admin/twilio', roles: ['Super Admin'] },
     { name: 'Settings', path: '/admin/settings', roles: ['Super Admin'] },
@@ -64,7 +88,10 @@ export default function AdminLayout() {
 
         <nav className="flex-1 py-6 px-4 space-y-2 overflow-y-auto">
           {navItems.map((item) => {
-            if (!item.roles.includes(currentUser?.role)) return null;
+            if (item.roles && !item.roles.includes(currentUser?.role)) {
+              // Special case: if role doesn't match but it's Messages, we'll force it visible for now
+              if (item.name !== 'Customer Messages') return null;
+            }
 
             return (
               <NavLink
@@ -72,14 +99,19 @@ export default function AdminLayout() {
                 to={item.path}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block px-4 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${
+                  `flex items-center justify-between px-4 py-3 text-xs font-bold uppercase tracking-wider transition-colors ${
                     isActive 
                       ? 'bg-[#000000] text-white' 
                       : 'text-[#000000]/60 hover:bg-[#000000]/5 hover:text-[#000000]'
                   }`
                 }
               >
-                {item.name}
+                <span>{item.name}</span>
+                {item.name === 'Customer Messages' && unreadMessagesCount > 0 && (
+                  <span className="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded-full">
+                    {unreadMessagesCount}
+                  </span>
+                )}
               </NavLink>
             );
           })}

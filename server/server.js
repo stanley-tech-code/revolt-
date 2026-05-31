@@ -8,6 +8,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { supabase } from './db/supabase.js';
 import twilio from 'twilio';
+import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,6 +39,28 @@ const addLog = async (user, action) => {
     await supabase.from('logs').insert([{ user, action }]);
   } catch (err) {
     console.error('Failed to write log to Supabase', err);
+  }
+};
+
+// Helper for sending email
+const sendEmail = async (to, subject, html) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.ethereal.email',
+      port: process.env.SMTP_PORT || 587,
+      auth: {
+        user: process.env.SMTP_USER || 'test',
+        pass: process.env.SMTP_PASS || 'test'
+      }
+    });
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM || '"Revolt Support" <support@revolt.com>',
+      to,
+      subject,
+      html
+    });
+  } catch (err) {
+    console.error('Failed to send email via nodemailer:', err);
   }
 };
 
@@ -466,6 +489,142 @@ app.put('/api/returns/:id', verifyToken, async (req, res) => {
   }
 });
 
+// --- MESSAGING / TICKETS ROUTES ---
+app.get('/api/messages', verifyToken, async (req, res) => {
+  try {
+    const { data: doc, error } = await supabase.from('cms').select('data').eq('type', 'messages').single();
+    if (error && error.code !== 'PGRST116') throw error;
+    
+    let messages = doc ? doc.data : [];
+    
+    // If it's a client, only return their messages
+    if (req.user && req.user.role === 'client') {
+      messages = messages.filter(m => m.email.toLowerCase() === req.user.email.toLowerCase());
+    }
+    
+    return res.json({ success: true, messages });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to fetch messages.' });
+  }
+});
+
+app.post('/api/messages', async (req, res) => {
+  const { name, email, phone, subject, message } = req.body;
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, error: 'Name, email, and message are required.' });
+  }
+  
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'messages').maybeSingle();
+    const messagesList = doc?.data || [];
+    
+    const newTicket = {
+      id: 'TKT-' + Math.random().toString(36).substring(2, 8).toUpperCase(),
+      name,
+      email: email.toLowerCase(),
+      phone: phone || '',
+      subject: subject || 'General Inquiry',
+      message,
+      status: 'new', // new, replied, closed
+      date: new Date().toISOString(),
+      replies: []
+    };
+    
+    messagesList.unshift(newTicket);
+    await supabase.from('cms').upsert({ type: 'messages', data: messagesList });
+    
+    return res.json({ success: true, ticket: newTicket });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to submit message.' });
+  }
+});
+
+app.put('/api/messages/:id/reply', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+  if (!text) return res.status(400).json({ success: false, error: 'Reply text is required.' });
+
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'messages').maybeSingle();
+    if (!doc) return res.status(404).json({ success: false, error: 'No messages found.' });
+    
+    let messagesList = doc.data;
+    const index = messagesList.findIndex(m => m.id === id);
+    if (index === -1) return res.status(404).json({ success: false, error: 'Ticket not found.' });
+    
+    const isClient = req.user.role === 'client';
+    
+    // Prevent client from replying to someone else's ticket
+    if (isClient && messagesList[index].email.toLowerCase() !== req.user.email.toLowerCase()) {
+      return res.status(403).json({ success: false, error: 'Unauthorized.' });
+    }
+
+    const newReply = {
+      text,
+      from: isClient ? 'client' : 'admin',
+      senderName: isClient ? messagesList[index].name : (req.user.username || 'Support Team'),
+      date: new Date().toISOString()
+    };
+    
+    messagesList[index].replies = messagesList[index].replies || [];
+    messagesList[index].replies.push(newReply);
+    messagesList[index].status = isClient ? 'new' : 'replied';
+    messagesList[index].lastUpdated = new Date().toISOString();
+    
+    await supabase.from('cms').upsert({ type: 'messages', data: messagesList });
+    
+    // Log admin action and send email
+    if (!isClient) {
+      await addLog(req.user.username, `Replied to ticket ${id}`);
+      
+      const emailHtml = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Response to your message (Ticket ${id})</h2>
+          <div style="background: #f9f9f9; padding: 15px; border-left: 4px solid #333; margin-bottom: 20px;">
+            <p style="white-space: pre-wrap;">${text}</p>
+          </div>
+          <hr />
+          <h3>Original Message</h3>
+          <p><strong>Subject:</strong> ${messagesList[index].subject}</p>
+          <div style="color: #666; white-space: pre-wrap;">
+            ${messagesList[index].message}
+          </div>
+        </div>
+      `;
+      // Dispatch email asynchronously
+      sendEmail(messagesList[index].email, `Re: ${messagesList[index].subject} (Ticket ${id})`, emailHtml);
+    }
+    
+    return res.json({ success: true, ticket: messagesList[index] });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to add reply.' });
+  }
+});
+
+app.put('/api/messages/:id/status', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  
+  if (req.user.role === 'client') return res.status(403).json({ success: false, error: 'Unauthorized.' });
+
+  try {
+    const { data: doc } = await supabase.from('cms').select('data').eq('type', 'messages').maybeSingle();
+    let messagesList = doc?.data || [];
+    const index = messagesList.findIndex(m => m.id === id);
+    if (index === -1) return res.status(404).json({ success: false, error: 'Ticket not found.' });
+    
+    messagesList[index].status = status;
+    messagesList[index].lastUpdated = new Date().toISOString();
+    
+    await supabase.from('cms').upsert({ type: 'messages', data: messagesList });
+    await addLog(req.user.username, `Updated ticket ${id} status to ${status}`);
+    
+    return res.json({ success: true, ticket: messagesList[index] });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: 'Failed to update ticket status.' });
+  }
+});
+
 // --- GENERIC CMS ROUTES ---
 app.get('/api/cms/:type', async (req, res) => {
   try {
@@ -482,6 +641,7 @@ app.put('/api/cms/:type', verifyToken, async (req, res) => {
   try {
     const { type } = req.params;
     const { data } = req.body;
+    console.log(`[DEBUG] PUT /api/cms/${type} payload:`, JSON.stringify(data));
     await supabase.from('cms').upsert({ type, data });
     await addLog(req.user.username, `Updated generic CMS configuration for type: ${type}`);
     return res.json({ success: true });

@@ -25,6 +25,7 @@ import AdminContent from './pages/admin/AdminContent';
 import AdminNotifications from './pages/admin/AdminNotifications';
 import AdminTwilio from './pages/admin/AdminTwilio';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminMessages from './pages/admin/AdminMessages';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
@@ -155,6 +156,7 @@ function App() {
               <Route path="promotions" element={<AdminPromotions />} />
               <Route path="content" element={<AdminContent />} />
               <Route path="notifications" element={<AdminNotifications />} />
+              <Route path="messages" element={<AdminMessages />} />
               <Route path="twilio" element={<AdminTwilio />} />
               <Route path="analytics" element={
                 <ErrorBoundary>
