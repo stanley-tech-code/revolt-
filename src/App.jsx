@@ -10,6 +10,7 @@ import { StoreProvider } from './context/StoreContext';
 import CartDrawer from './components/ui/CartDrawer';
 import SearchModal from './components/ui/SearchModal';
 import CookieBanner from './components/ui/CookieBanner';
+import NewsletterPopup from './components/ui/NewsletterPopup';
 import { Outlet } from 'react-router-dom';
 
 import AdminLogin from './pages/admin/AdminLogin';
@@ -125,6 +126,7 @@ function ClientLayout() {
       <CartDrawer />
       <SearchModal />
       <CookieBanner />
+      <NewsletterPopup />
       <div className={`flex-1 ${isTransparentPage ? '' : 'pt-[88px] md:pt-[108px]'}`}>
         <Outlet />
       </div>
