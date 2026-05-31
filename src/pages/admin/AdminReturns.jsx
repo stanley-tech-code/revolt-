@@ -136,7 +136,6 @@ export default function AdminReturns() {
                     </td>
                     <td className="p-4">
                       <div className="text-sm">{item.product}</div>
-                      {item.image && <span className="text-[10px] bg-black/10 px-2 py-0.5 rounded mt-1 inline-block">Image Attached</span>}
                     </td>
                     <td className="p-4">
                       <div className="text-sm">{item.reason}</div>

@@ -13,17 +13,11 @@ export default function Returns() {
     email: '',
     productName: '',
     reason: '',
-    resolution: 'exchange',
-    image: null
+    resolution: 'exchange'
   });
 
   const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'image') {
-      setFormData({ ...formData, image: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -37,8 +31,7 @@ export default function Returns() {
         email: formData.email,
         product: formData.productName,
         reason: formData.reason,
-        resolution: formData.resolution,
-        image: !!formData.image
+        resolution: formData.resolution
       };
 
       const res = await fetch('/api/returns', {
@@ -118,7 +111,7 @@ export default function Returns() {
                   <span className="w-2 h-2 bg-ink rounded-full"></span> The Process
                 </h3>
                 <ul className="space-y-3 text-sm text-ink/80">
-                  <li><strong className="text-ink">Approval:</strong> Required. Please submit a request or contact us via WhatsApp. Image proof is required for damaged/wrong items.</li>
+                  <li><strong className="text-ink">Approval:</strong> Required. Please submit a request or contact us via WhatsApp.</li>
                   <li><strong className="text-ink">Shipping:</strong> Customer is responsible for return shipping costs unless the error was ours.</li>
                   <li><strong className="text-ink">Timeframe:</strong> Processed within 3–7 days after we receive and inspect the item.</li>
                 </ul>
@@ -185,22 +178,16 @@ export default function Returns() {
                 <input required type="text" name="productName" value={formData.productName} onChange={handleInputChange} className="w-full p-3 border border-ink/20 focus:border-ink outline-none bg-canvas/50" />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-2">Reason for Return *</label>
-                  <select required name="reason" value={formData.reason} onChange={handleInputChange} className="w-full p-3 border border-ink/20 focus:border-ink outline-none bg-canvas/50 appearance-none">
-                    <option value="" disabled>Select a reason...</option>
-                    <option value="Wrong size">Wrong size</option>
-                    <option value="Damaged item">Damaged item</option>
-                    <option value="Wrong item delivered">Wrong item delivered</option>
-                    <option value="Not satisfied">Not satisfied</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-2">Upload Image Proof * (Very Important)</label>
-                  <input required type="file" name="image" accept="image/*" onChange={handleInputChange} className="w-full p-2 border border-ink/20 focus:border-ink outline-none bg-canvas/50 text-sm file:mr-4 file:py-1 file:px-4 file:border-0 file:text-xs file:font-bold file:uppercase file:bg-ink file:text-white hover:file:bg-ink/80" />
-                </div>
+              <div className="mb-6">
+                <label className="block text-xs font-bold uppercase tracking-wider mb-2">Reason for Return *</label>
+                <select required name="reason" value={formData.reason} onChange={handleInputChange} className="w-full p-3 border border-ink/20 focus:border-ink outline-none bg-canvas/50 appearance-none">
+                  <option value="" disabled>Select a reason...</option>
+                  <option value="Wrong size">Wrong size</option>
+                  <option value="Damaged item">Damaged item</option>
+                  <option value="Wrong item delivered">Wrong item delivered</option>
+                  <option value="Not satisfied">Not satisfied</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
 
               <div>
