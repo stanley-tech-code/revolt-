@@ -33,6 +33,8 @@ export default function AdminSettings() {
   const [newPickup, setNewPickup] = useState({ name: '', hours: '' });
   const [newWebhook, setNewWebhook] = useState('');
   const [newAdmin, setNewAdmin] = useState({ username: '', role: 'Editor', pass: '' });
+  const [newEmail, setNewEmail] = useState('');
+  const [newPhone, setNewPhone] = useState('');
 
   const updateSetting = (category, field, value) => {
     updateDraft((prev) => ({
@@ -186,11 +188,78 @@ export default function AdminSettings() {
               <section>
                 <h2 className="text-lg font-bold uppercase tracking-wider mb-4 border-b border-[#000000]/10 pb-2">Contact Information</h2>
                 <p className="text-xs text-[#000000]/60 mb-4">This information appears in your footer, receipts, and contact page.</p>
-                <div className="grid grid-cols-1 gap-4">
-                  <input type="email" value={settings.localization?.supportEmail || ''} onChange={e => updateSetting('localization', 'supportEmail', e.target.value)} placeholder="Support Email (e.g., support@revolt.com)" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
-                  <input type="tel" value={settings.localization?.supportPhone || ''} onChange={e => updateSetting('localization', 'supportPhone', e.target.value)} placeholder="Support Phone (+254...)" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
-                  <textarea rows="3" value={settings.localization?.address || ''} onChange={e => updateSetting('localization', 'address', e.target.value)} placeholder="Physical Address or Headquarters" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"></textarea>
-                  <input type="text" value={settings.localization?.mapsLink || ''} onChange={e => updateSetting('localization', 'mapsLink', e.target.value)} placeholder="Google Maps Embed Link" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
+                
+                <div className="space-y-6">
+                  {/* EMAILS */}
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Support Emails</label>
+                    <div className="space-y-2 mb-2">
+                      {(settings.localization?.supportEmails || (settings.localization?.supportEmail ? [settings.localization.supportEmail] : [])).map((email, idx) => (
+                        <div key={idx} className="flex justify-between items-center bg-[#f9f9f9] border border-[#000000]/10 px-4 py-2 text-sm">
+                          <span>{email}</span>
+                          <button onClick={() => {
+                            const arr = [...(settings.localization?.supportEmails || (settings.localization?.supportEmail ? [settings.localization.supportEmail] : []))];
+                            arr.splice(idx, 1);
+                            updateSetting('localization', 'supportEmails', arr);
+                            // Clear legacy field to prevent it from reappearing
+                            if (settings.localization?.supportEmail) updateSetting('localization', 'supportEmail', '');
+                          }} className="text-[10px] font-bold uppercase text-red-500 hover:underline">Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <input type="email" value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="Add new email..." className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                      <button onClick={() => {
+                        if (newEmail) {
+                          const arr = [...(settings.localization?.supportEmails || (settings.localization?.supportEmail ? [settings.localization.supportEmail] : []))];
+                          updateSetting('localization', 'supportEmails', [...arr, newEmail]);
+                          setNewEmail('');
+                          if (settings.localization?.supportEmail) updateSetting('localization', 'supportEmail', '');
+                        }
+                      }} className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80">Add</button>
+                    </div>
+                  </div>
+
+                  {/* PHONES */}
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Support Phone Numbers</label>
+                    <div className="space-y-2 mb-2">
+                      {(settings.localization?.supportPhones || (settings.localization?.supportPhone ? [settings.localization.supportPhone] : [])).map((phone, idx) => (
+                        <div key={idx} className="flex justify-between items-center bg-[#f9f9f9] border border-[#000000]/10 px-4 py-2 text-sm">
+                          <span>{phone}</span>
+                          <button onClick={() => {
+                            const arr = [...(settings.localization?.supportPhones || (settings.localization?.supportPhone ? [settings.localization.supportPhone] : []))];
+                            arr.splice(idx, 1);
+                            updateSetting('localization', 'supportPhones', arr);
+                            if (settings.localization?.supportPhone) updateSetting('localization', 'supportPhone', '');
+                          }} className="text-[10px] font-bold uppercase text-red-500 hover:underline">Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <input type="tel" value={newPhone} onChange={e => setNewPhone(e.target.value)} placeholder="Add new phone number..." className="flex-1 bg-[#f9f9f9] border border-[#000000]/20 px-4 py-2 text-sm outline-none" />
+                      <button onClick={() => {
+                        if (newPhone) {
+                          const arr = [...(settings.localization?.supportPhones || (settings.localization?.supportPhone ? [settings.localization.supportPhone] : []))];
+                          updateSetting('localization', 'supportPhones', [...arr, newPhone]);
+                          setNewPhone('');
+                          if (settings.localization?.supportPhone) updateSetting('localization', 'supportPhone', '');
+                        }
+                      }} className="bg-[#000000] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-[#000000]/80">Add</button>
+                    </div>
+                  </div>
+
+                  {/* ADDRESS & MAP */}
+                  <div className="grid grid-cols-1 gap-4 pt-4 border-t border-[#000000]/10">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Physical Address</label>
+                      <textarea rows="3" value={settings.localization?.address || ''} onChange={e => updateSetting('localization', 'address', e.target.value)} placeholder="Physical Address or Headquarters" className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none"></textarea>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-wider mb-2">Google Maps Embed Link (Src URL)</label>
+                      <input type="text" value={settings.localization?.mapsLink || ''} onChange={e => updateSetting('localization', 'mapsLink', e.target.value)} placeholder="https://www.google.com/maps/embed?pb=..." className="w-full bg-[#f9f9f9] border border-[#000000]/20 px-4 py-3 text-sm outline-none" />
+                    </div>
+                  </div>
                 </div>
               </section>
             </div>
