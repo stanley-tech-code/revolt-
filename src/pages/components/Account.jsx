@@ -296,15 +296,37 @@ export default function Account() {
     `;
 
     return (
-      <div className="w-48 h-64 bg-[#f9f9f9] border border-gray-200 flex items-center justify-center relative overflow-hidden rounded-md shadow-inner">
+      <div className="w-48 h-64 bg-[#faf9f6] border border-gray-200 flex items-center justify-center relative overflow-hidden rounded-sm shadow-sm">
         {(!fitProfile.bust || !fitProfile.waist || !fitProfile.hips) && (
-          <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center z-10 text-center p-4">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Complete your profile to see your shape</p>
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex items-center justify-center z-10 text-center p-4">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Complete your profile to see your shape</p>
           </div>
         )}
-        <svg viewBox="0 0 200 280" className="w-full h-full text-black/10 fill-current">
-          <path d={d} stroke="black" strokeWidth="2" strokeLinejoin="round" fill="currentColor" />
-          <circle cx={cx} cy="10" r="15" stroke="black" strokeWidth="2" fill="none" />
+        <svg viewBox="0 0 200 280" className="w-full h-full overflow-visible">
+          {/* Soft Shadow behind the silhouette */}
+          <path d={d} fill="rgba(0,0,0,0.05)" transform="translate(4, 4)" />
+          
+          {/* Solid Black Silhouette */}
+          <path d={d} fill="#1a1a1a" />
+          
+          {/* Thin Gold Geometric Outline Overlay (abstracting the shape) */}
+          <path 
+            d={`
+              M ${cx} ${yShoulder + 10}
+              L ${cx - dxShoulder} ${yBust - 10}
+              L ${cx - dxWaist} ${yWaist}
+              L ${cx - dxHips} ${yHips + 10}
+              L ${cx} ${yHem - 20}
+              L ${cx + dxHips} ${yHips + 10}
+              L ${cx + dxWaist} ${yWaist}
+              L ${cx + dxShoulder} ${yBust - 10}
+              Z
+            `}
+            fill="none" 
+            stroke="#d4af37" 
+            strokeWidth="1.5" 
+            opacity="0.8"
+          />
         </svg>
       </div>
     );
