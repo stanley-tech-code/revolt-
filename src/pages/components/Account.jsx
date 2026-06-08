@@ -255,82 +255,7 @@ export default function Account() {
 
   const aiRec = calculateRecommendation();
 
-  // Dynamic Avatar Proportions based on measurements
-  const renderAvatar = () => {
-    const b = Number(fitProfile.bust) || 90;
-    const w = Number(fitProfile.waist) || 70;
-    const h = Number(fitProfile.hips) || 95;
-    const s = Number(fitProfile.shoulder) || 38;
-
-    const factor = fitProfile.unit === 'in' ? 2.54 : 1;
-    const scaleBust = Math.max(0.6, Math.min(1.5, (b * factor) / 90));
-    const scaleWaist = Math.max(0.6, Math.min(1.5, (w * factor) / 70));
-    const scaleHips = Math.max(0.6, Math.min(1.5, (h * factor) / 95));
-    const scaleShoulder = Math.max(0.6, Math.min(1.5, (s * factor) / 38));
-
-    const cx = 100;
-    const yShoulder = 30;
-    const yBust = 80;
-    const yWaist = 130;
-    const yHips = 180;
-    const yHem = 240;
-
-    const dxShoulder = 35 * scaleShoulder;
-    const dxBust = 40 * scaleBust;
-    const dxWaist = 30 * scaleWaist;
-    const dxHips = 45 * scaleHips;
-    const dxHem = 40 * scaleHips;
-
-    // Path string
-    const d = `
-      M ${cx - dxShoulder} ${yShoulder}
-      C ${cx - dxShoulder} ${yBust - 20}, ${cx - dxBust} ${yBust - 10}, ${cx - dxBust} ${yBust}
-      C ${cx - dxBust} ${yWaist - 20}, ${cx - dxWaist} ${yWaist - 10}, ${cx - dxWaist} ${yWaist}
-      C ${cx - dxWaist} ${yHips - 20}, ${cx - dxHips} ${yHips - 10}, ${cx - dxHips} ${yHips}
-      L ${cx - dxHem} ${yHem}
-      L ${cx + dxHem} ${yHem}
-      C ${cx + dxHips} ${yHips - 10}, ${cx + dxHips} ${yHips - 20}, ${cx + dxWaist} ${yWaist}
-      C ${cx + dxWaist} ${yWaist - 10}, ${cx + dxBust} ${yWaist - 20}, ${cx + dxBust} ${yBust}
-      C ${cx + dxBust} ${yBust - 10}, ${cx + dxShoulder} ${yBust - 20}, ${cx + dxShoulder} ${yShoulder}
-      Z
-    `;
-
-    return (
-      <div className="w-48 h-64 bg-[#faf9f6] border border-gray-200 flex items-center justify-center relative overflow-hidden rounded-sm shadow-sm">
-        {(!fitProfile.bust || !fitProfile.waist || !fitProfile.hips) && (
-          <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex items-center justify-center z-10 text-center p-4">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Complete your profile to see your shape</p>
-          </div>
-        )}
-        <svg viewBox="0 0 200 280" className="w-full h-full overflow-visible">
-          {/* Soft Shadow behind the silhouette */}
-          <path d={d} fill="rgba(0,0,0,0.05)" transform="translate(4, 4)" />
-          
-          {/* Solid Black Silhouette */}
-          <path d={d} fill="#1a1a1a" />
-          
-          {/* Thin Gold Geometric Outline Overlay (abstracting the shape) */}
-          <path 
-            d={`
-              M ${cx} ${yShoulder + 10}
-              L ${cx - dxShoulder} ${yBust - 10}
-              L ${cx - dxWaist} ${yWaist}
-              L ${cx - dxHips} ${yHips + 10}
-              L ${cx} ${yHem - 20}
-              L ${cx + dxHips} ${yHips + 10}
-              L ${cx + dxWaist} ${yWaist}
-              L ${cx + dxShoulder} ${yBust - 10}
-              Z
-            `}
-            fill="none" 
-            stroke="#d4af37" 
-            strokeWidth="1.5" 
-            opacity="0.8"
-          />
-        </svg>
-      </div>
-    );
-  };
+  // Silhouette rendering removed per user request
 
   return (
     <main className="w-full min-h-screen bg-canvas text-[#1a1a1a] pt-12 px-6 pb-24">
@@ -573,15 +498,12 @@ export default function Account() {
                   )}
                 </div>
               ) : (
-                <div className="bg-white border border-gray-200 shadow-sm animate-fade-in flex flex-col md:flex-row">
-                  <div className="p-8 flex-1 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col items-center justify-center bg-gray-50">
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-6">Your Body Silhouette</h3>
-                    {renderAvatar()}
-                    <button onClick={() => {setShowFitResults(false); setFitStep(1);}} className="mt-6 text-[10px] font-bold uppercase tracking-widest border-b border-gray-300 pb-0.5 hover:border-black transition-colors">Edit Measurements</button>
-                  </div>
-                  
-                  <div className="p-8 flex-1">
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-6">AI Fit Analysis</h3>
+                <div className="bg-white border border-gray-200 shadow-sm animate-fade-in p-8">
+                  <div className="max-w-md mx-auto">
+                    <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">AI Fit Analysis</h3>
+                      <button onClick={() => {setShowFitResults(false); setFitStep(1);}} className="text-[10px] font-bold uppercase tracking-widest border-b border-gray-300 pb-0.5 hover:border-black transition-colors">Edit Profile</button>
+                    </div>
                     
                     {aiRec.primarySize ? (
                       <div>
