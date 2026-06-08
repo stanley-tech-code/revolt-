@@ -177,32 +177,59 @@ export default function AdminOrders() {
               </div>
 
               {selectedOrder.deliveryInfo?.measurements && (
-                <div className="mb-8 p-4 bg-[#f0fdf4] border border-[#bbf7d0] flex gap-6 rounded-sm">
-                  <div className="flex-1">
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-green-800 mb-3">Client Dimensions (AI Fit)</h3>
-                    <div className="grid grid-cols-3 gap-y-2 text-sm text-green-900">
-                      <p><span className="font-semibold">Height:</span> {selectedOrder.deliveryInfo.measurements.height}cm</p>
-                      <p><span className="font-semibold">Weight:</span> {selectedOrder.deliveryInfo.measurements.weight}kg</p>
-                      <p><span className="font-semibold">Bust:</span> {selectedOrder.deliveryInfo.measurements.bust}cm</p>
-                      <p><span className="font-semibold">Waist:</span> {selectedOrder.deliveryInfo.measurements.waist}cm</p>
-                      <p><span className="font-semibold">Hips:</span> {selectedOrder.deliveryInfo.measurements.hips}cm</p>
-                      <p><span className="font-semibold">Thighs:</span> {selectedOrder.deliveryInfo.measurements.thighs || 'N/A'}cm</p>
+                <div className="mb-8 p-4 bg-[#f0fdf4] border border-[#bbf7d0] flex flex-col gap-4 rounded-sm">
+                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-green-800 border-b border-green-200 pb-2">Client Dimensions & Fit Profile</h3>
+                  
+                  <div className="flex gap-6">
+                    <div className="flex-1">
+                      <p className="text-[9px] font-bold uppercase tracking-wider text-green-600 mb-2">Measurements ({selectedOrder.deliveryInfo.measurements.unit || 'cm'})</p>
+                      <div className="grid grid-cols-3 gap-y-2 text-xs text-green-900">
+                        <p><span className="font-semibold">Height:</span> {selectedOrder.deliveryInfo.measurements.height}</p>
+                        <p><span className="font-semibold">Weight:</span> {selectedOrder.deliveryInfo.measurements.weight}</p>
+                        <p><span className="font-semibold">Bust:</span> {selectedOrder.deliveryInfo.measurements.bust}</p>
+                        <p><span className="font-semibold">Under-bust:</span> {selectedOrder.deliveryInfo.measurements.underBust || 'N/A'}</p>
+                        <p><span className="font-semibold">Waist:</span> {selectedOrder.deliveryInfo.measurements.waist}</p>
+                        <p><span className="font-semibold">Hips:</span> {selectedOrder.deliveryInfo.measurements.hips}</p>
+                        <p><span className="font-semibold">Thighs:</span> {selectedOrder.deliveryInfo.measurements.thighs || 'N/A'}</p>
+                        <p><span className="font-semibold">Shoulder:</span> {selectedOrder.deliveryInfo.measurements.shoulder || 'N/A'}</p>
+                        <p><span className="font-semibold">Torso:</span> {selectedOrder.deliveryInfo.measurements.torso || 'N/A'}</p>
+                      </div>
+
+                      <p className="text-[9px] font-bold uppercase tracking-wider text-green-600 mt-4 mb-2">Fit Preferences</p>
+                      <div className="grid grid-cols-2 gap-y-2 text-xs text-green-900">
+                        <p><span className="font-semibold">Preference:</span> {selectedOrder.deliveryInfo.measurements.fitPreference || 'N/A'}</p>
+                        <p><span className="font-semibold">Body Shape:</span> {selectedOrder.deliveryInfo.measurements.bodyShape || 'N/A'}</p>
+                        <p className="col-span-2"><span className="font-semibold">Concerns:</span> {selectedOrder.deliveryInfo.measurements.fitConcerns?.join(', ') || 'None'}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="w-1/3 flex flex-col items-center justify-center border-l border-green-200 pl-6 text-center">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-green-700 mb-1">AI Recommendation</p>
+                      <p className="text-3xl font-bold text-green-900">{selectedOrder.deliveryInfo.aiRecommendedSize || 'N/A'}</p>
+                      {selectedOrder.deliveryInfo.aiSecondarySize && (
+                        <p className="text-[10px] text-green-700 mt-1 uppercase tracking-wider">Backup: {selectedOrder.deliveryInfo.aiSecondarySize}</p>
+                      )}
+                      
+                      {selectedOrder.items && selectedOrder.deliveryInfo.aiRecommendedSize && (
+                        (() => {
+                          const mismatch = selectedOrder.items.some(item => item.size && item.size !== selectedOrder.deliveryInfo.aiRecommendedSize);
+                          if (mismatch) return <p className="text-xs text-red-600 font-bold mt-3 bg-red-100 px-2 py-1">⚠️ Client ordered a different size.</p>;
+                          return <p className="text-xs text-green-600 font-bold mt-3">✓ Ordered recommended size.</p>;
+                        })()
+                      )}
                     </div>
                   </div>
-                  <div className="w-1/3 flex flex-col items-center justify-center border-l border-green-200 pl-6 text-center">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-green-700 mb-1">Recommended Size</p>
-                    <p className="text-3xl font-bold text-green-900">{selectedOrder.deliveryInfo.aiRecommendedSize || 'N/A'}</p>
-                    {/* Check if any ordered item size differs from recommended */}
-                    {selectedOrder.items && selectedOrder.deliveryInfo.aiRecommendedSize && (
-                      (() => {
-                        const mismatch = selectedOrder.items.some(item => item.size && item.size !== selectedOrder.deliveryInfo.aiRecommendedSize);
-                        if (mismatch) {
-                          return <p className="text-xs text-red-600 font-bold mt-2">⚠️ Client ordered a different size.</p>;
-                        }
-                        return <p className="text-xs text-green-600 font-bold mt-2">✓ Ordered recommended size.</p>;
-                      })()
-                    )}
-                  </div>
+
+                  {selectedOrder.deliveryInfo.aiFitNotes && selectedOrder.deliveryInfo.aiFitNotes.length > 0 && (
+                    <div className="mt-2 pt-3 border-t border-green-200">
+                      <p className="text-[9px] font-bold uppercase tracking-wider text-green-800 mb-1">Tailor & Fit Notes</p>
+                      <ul className="text-xs text-green-900 list-disc list-inside">
+                        {selectedOrder.deliveryInfo.aiFitNotes.map((note, i) => (
+                          <li key={i}>{note}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               )}
 

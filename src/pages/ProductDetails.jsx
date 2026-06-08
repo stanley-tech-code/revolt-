@@ -26,27 +26,71 @@ export default function ProductDetails() {
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // AI Recommendation Logic
+  // Advanced AI Recommendation Logic (V2)
   const getAiRecommendation = () => {
     if (!currentUser?.measurements) return null;
-    const { bust, waist, hips } = currentUser.measurements;
+    const { bust, waist, hips, fitPreference, shoppingIntent, unit } = currentUser.measurements;
     const b = Number(bust);
     const w = Number(waist);
     const h = Number(hips);
     if (!b || !w || !h) return null;
 
-    const score = (b * 0.4) + (w * 0.3) + (h * 0.3);
-    let size = 'XL';
-    let conf = 90;
+    const factor = unit === 'in' ? 2.54 : 1;
+    const b_cm = b * factor;
+    const w_cm = w * factor;
+    const h_cm = h * factor;
 
-    if (score < 78) { size = 'XS'; conf = 92 - Math.abs(score - 72); }
-    else if (score < 86) { size = 'S'; conf = 94 - Math.abs(score - 82); }
-    else if (score < 96) { size = 'M'; conf = 95 - Math.abs(score - 91); }
-    else if (score < 106) { size = 'L'; conf = 93 - Math.abs(score - 101); }
-    else { size = 'XL'; conf = 91 - Math.abs(score - 111); }
+    const getDimSize = (val, thresholds) => {
+      if (val <= thresholds.xs) return 0;
+      if (val <= thresholds.s) return 1;
+      if (val <= thresholds.m) return 2;
+      if (val <= thresholds.l) return 3;
+      if (val <= thresholds.xl) return 4;
+      return 5; // XXL
+    };
 
-    const confidence = Math.max(65, Math.min(99, Math.round(conf)));
-    return { size, confidence };
+    const bustIdx = getDimSize(b_cm, { xs: 85, s: 91, m: 97, l: 105, xl: 113 });
+    const waistIdx = getDimSize(w_cm, { xs: 66, s: 71, m: 77, l: 85, xl: 93 });
+    const hipsIdx = getDimSize(h_cm, { xs: 91, s: 97, m: 103, l: 111, xl: 119 });
+
+    let recommendedIdx = Math.max(bustIdx, waistIdx, hipsIdx);
+    let notes = [];
+
+    // Simple category matching for intent
+    const category = product?.mainCategory?.toLowerCase() || '';
+    const isTop = category.includes('top') || category.includes('shirt') || category.includes('jacket');
+    const isBottom = category.includes('bottom') || category.includes('skirt') || category.includes('pant');
+
+    if (shoppingIntent === 'Top' || isTop) {
+      recommendedIdx = Math.max(bustIdx, waistIdx);
+    } else if (shoppingIntent === 'Skirt' || isBottom) {
+      recommendedIdx = Math.max(waistIdx, hipsIdx);
+    }
+
+    if (fitPreference === 'Relaxed' || fitPreference === 'Oversized') {
+      recommendedIdx = Math.min(5, recommendedIdx + 1);
+      notes.push(`Sized up for a ${fitPreference.toLowerCase()} fit.`);
+    }
+
+    const minIdx = Math.min(bustIdx, waistIdx, hipsIdx);
+    const spread = Math.max(bustIdx, waistIdx, hipsIdx) - minIdx;
+
+    if (spread >= 2) {
+      if (bustIdx > hipsIdx) notes.push("Fuller bust; tailor notes may be needed for bottoms.");
+      if (hipsIdx > bustIdx) notes.push("Fuller hips; tailor notes may be needed for tops.");
+    }
+
+    const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    const primarySize = sizes[recommendedIdx];
+    const secondarySize = recommendedIdx < 5 ? sizes[recommendedIdx + 1] : sizes[Math.max(0, recommendedIdx - 1)];
+
+    let confidence = 95;
+    if (spread === 0) confidence = 98;
+    else if (spread === 1) confidence = 89;
+    else if (spread === 2) confidence = 78;
+    else confidence = 65;
+
+    return { size: primarySize, secondarySize, confidence, notes };
   };
 
   const aiRec = getAiRecommendation();
@@ -458,16 +502,23 @@ export default function ProductDetails() {
           </div>
 
           {aiRec && aiRec.size && (
-            <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '16px' }}>✨</span>
-              <div>
-                <p style={{ fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534', marginBottom: '2px' }}>
-                  AI Recommended Size: {aiRec.size}
-                </p>
-                <p style={{ fontSize: '10px', color: '#15803d' }}>
-                  Based on your fit profile, we are <strong>{aiRec.confidence}% confident</strong> this will fit you perfectly.
-                </p>
+            <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '12px 16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '18px' }}>✨</span>
+                <div>
+                  <p style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534', marginBottom: '2px' }}>
+                    AI Recommended: {aiRec.size} <span style={{ fontSize: '9px', color: '#15803d', fontWeight: '400', letterSpacing: 'normal' }}>(Backup: {aiRec.secondarySize})</span>
+                  </p>
+                  <p style={{ fontSize: '10px', color: '#15803d' }}>
+                    Based on your fit profile, we are <strong>{aiRec.confidence}% confident</strong> this will fit you perfectly.
+                  </p>
+                </div>
               </div>
+              {aiRec.notes && aiRec.notes.length > 0 && (
+                <div style={{ marginTop: '4px', paddingTop: '8px', borderTop: '1px dashed #bbf7d0', fontSize: '10px', color: '#166534' }}>
+                  <strong>Fit Insights:</strong> {aiRec.notes.join(' ')}
+                </div>
+              )}
             </div>
           )}
 

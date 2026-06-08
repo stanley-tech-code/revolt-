@@ -77,17 +77,52 @@ export default function Checkout() {
     window.scrollTo(0, 0);
   };
 
+  // Advanced AI Recommendation Logic (V2)
   const getAiRecommendation = () => {
     if (!currentUser?.measurements) return null;
-    const { bust, waist, hips } = currentUser.measurements;
+    const { bust, waist, hips, fitPreference, shoppingIntent, unit } = currentUser.measurements;
     const b = Number(bust); const w = Number(waist); const h = Number(hips);
     if (!b || !w || !h) return null;
-    const score = (b * 0.4) + (w * 0.3) + (h * 0.3);
-    if (score < 78) return { size: 'XS' };
-    if (score < 86) return { size: 'S' };
-    if (score < 96) return { size: 'M' };
-    if (score < 106) return { size: 'L' };
-    return { size: 'XL' };
+
+    const factor = unit === 'in' ? 2.54 : 1;
+    const b_cm = b * factor; const w_cm = w * factor; const h_cm = h * factor;
+
+    const getDimSize = (val, thresholds) => {
+      if (val <= thresholds.xs) return 0;
+      if (val <= thresholds.s) return 1;
+      if (val <= thresholds.m) return 2;
+      if (val <= thresholds.l) return 3;
+      if (val <= thresholds.xl) return 4;
+      return 5;
+    };
+
+    const bustIdx = getDimSize(b_cm, { xs: 85, s: 91, m: 97, l: 105, xl: 113 });
+    const waistIdx = getDimSize(w_cm, { xs: 66, s: 71, m: 77, l: 85, xl: 93 });
+    const hipsIdx = getDimSize(h_cm, { xs: 91, s: 97, m: 103, l: 111, xl: 119 });
+
+    let recommendedIdx = Math.max(bustIdx, waistIdx, hipsIdx);
+    let notes = [];
+
+    if (shoppingIntent === 'Top') recommendedIdx = Math.max(bustIdx, waistIdx);
+    else if (shoppingIntent === 'Skirt') recommendedIdx = Math.max(waistIdx, hipsIdx);
+
+    if (fitPreference === 'Relaxed' || fitPreference === 'Oversized') {
+      recommendedIdx = Math.min(5, recommendedIdx + 1);
+      notes.push(`Sized up for a ${fitPreference.toLowerCase()} fit.`);
+    }
+
+    const minIdx = Math.min(bustIdx, waistIdx, hipsIdx);
+    const spread = Math.max(bustIdx, waistIdx, hipsIdx) - minIdx;
+    if (spread >= 2) {
+      if (bustIdx > hipsIdx) notes.push("Fuller bust; tailor notes may be needed for bottoms.");
+      if (hipsIdx > bustIdx) notes.push("Fuller hips; tailor notes may be needed for tops.");
+    }
+
+    const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    const primarySize = sizes[recommendedIdx];
+    const secondarySize = recommendedIdx < 5 ? sizes[recommendedIdx + 1] : sizes[Math.max(0, recommendedIdx - 1)];
+
+    return { size: primarySize, secondarySize, notes };
   };
 
   const handlePrevStep = () => {
@@ -141,7 +176,9 @@ export default function Checkout() {
             appliedPromo: appliedPromo || null,
             discount: discount || 0,
             measurements: currentUser?.measurements || null,
-            aiRecommendedSize: getAiRecommendation()?.size || null
+            aiRecommendedSize: getAiRecommendation()?.size || null,
+            aiSecondarySize: getAiRecommendation()?.secondarySize || null,
+            aiFitNotes: getAiRecommendation()?.notes || []
           }
         })
       });
