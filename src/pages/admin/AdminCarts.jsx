@@ -1,6 +1,29 @@
 import React, { useState, useMemo } from 'react';
 import { useCms } from '../../context/CmsContext';
 
+function formatRelativeTime(date) {
+  if (!date) return 'Unknown';
+  const now = new Date();
+  const diffInSeconds = Math.floor((now - date) / 1000);
+  
+  if (diffInSeconds < 60) return 'Just now';
+  
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes} min${diffInMinutes !== 1 ? 's' : ''} ago`;
+  
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours} hr${diffInHours !== 1 ? 's' : ''} ago`;
+  
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
+  
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) return `${diffInMonths} mo${diffInMonths !== 1 ? 's' : ''} ago`;
+  
+  const diffInYears = Math.floor(diffInDays / 365);
+  return `${diffInYears} yr${diffInYears !== 1 ? 's' : ''} ago`;
+}
+
 export default function AdminCarts() {
   const { db, sendNotification } = useCms();
   const [searchTerm, setSearchTerm] = useState('');
@@ -170,7 +193,7 @@ export default function AdminCarts() {
                       </span>
                     </td>
                     <td className="py-4 px-6 text-sm text-right">
-                      {customer.lastActivityDate.toLocaleDateString()}
+                      {formatRelativeTime(customer.lastActivityDate)}
                     </td>
                     <td className="py-4 px-6 text-right" onClick={e => e.stopPropagation()}>
                       <button 
@@ -203,7 +226,7 @@ export default function AdminCarts() {
                   <p>Registered: {new Date(selectedCustomer.createdat || selectedCustomer.createdAt).toLocaleDateString()}</p>
                   <p>Total Orders: {selectedCustomer.orderCount}</p>
                   <p>Total Spent: Ksh {selectedCustomer.totalSpent.toLocaleString()}</p>
-                  <p>Last Activity: {selectedCustomer.lastActivityDate.toLocaleDateString()}</p>
+                  <p>Last Activity: {formatRelativeTime(selectedCustomer.lastActivityDate)}</p>
                 </div>
               </div>
 
