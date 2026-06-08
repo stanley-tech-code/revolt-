@@ -33,6 +33,17 @@ export default function Account() {
     gender: currentUser?.gender || ''
   });
 
+  // Fit Profile state
+  const [measurements, setMeasurements] = useState({
+    height: currentUser?.measurements?.height || '',
+    weight: currentUser?.measurements?.weight || '',
+    bust: currentUser?.measurements?.bust || '',
+    waist: currentUser?.measurements?.waist || '',
+    hips: currentUser?.measurements?.hips || '',
+    thighs: currentUser?.measurements?.thighs || ''
+  });
+  const [isSavingMeasurements, setIsSavingMeasurements] = useState(false);
+
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     setIsUpdating(true);
@@ -74,6 +85,7 @@ export default function Account() {
 
   const tabs = [
     { id: 'profile', label: 'My Profile' },
+    { id: 'fit-profile', label: 'Fit Profile (AI)' },
     { id: 'orders', label: 'Order History' },
     { id: 'addresses', label: 'Address Book' },
     { id: 'tickets', label: 'Support Tickets' },
@@ -147,6 +159,112 @@ export default function Account() {
       console.error(err);
       alert('Failed to send reply');
     }
+  };
+
+  const handleSaveMeasurements = async (e) => {
+    e.preventDefault();
+    setIsSavingMeasurements(true);
+    await updateProfile({ measurements });
+    setIsSavingMeasurements(false);
+    alert("Fit Profile saved successfully!");
+  };
+
+  // AI Recommendation Heuristic Engine
+  const calculateRecommendation = () => {
+    const { bust, waist, hips } = measurements;
+    const b = Number(bust) || 0;
+    const w = Number(waist) || 0;
+    const h = Number(hips) || 0;
+
+    if (!b || !w || !h) return { size: null, confidence: 0 };
+
+    // Standard Women's Size mapping (Heuristic based on averages)
+    // Score based on a weighted sum of bust, waist, hips
+    const score = (b * 0.4) + (w * 0.3) + (h * 0.3);
+
+    let size = 'XL';
+    let baseConfidence = 90;
+
+    if (score < 78) {
+      size = 'XS';
+      baseConfidence = 92 - Math.abs(score - 72);
+    } else if (score < 86) {
+      size = 'S';
+      baseConfidence = 94 - Math.abs(score - 82);
+    } else if (score < 96) {
+      size = 'M';
+      baseConfidence = 95 - Math.abs(score - 91);
+    } else if (score < 106) {
+      size = 'L';
+      baseConfidence = 93 - Math.abs(score - 101);
+    } else {
+      size = 'XL';
+      baseConfidence = 91 - Math.abs(score - 111);
+    }
+
+    // Clamp confidence
+    const confidence = Math.max(65, Math.min(99, Math.round(baseConfidence)));
+
+    return { size, confidence };
+  };
+
+  const aiRec = calculateRecommendation();
+
+  // Dynamic Avatar Proportions based on measurements
+  const renderAvatar = () => {
+    const b = Number(measurements.bust) || 90;
+    const w = Number(measurements.waist) || 70;
+    const h = Number(measurements.hips) || 95;
+
+    // Normalize roughly to base values (B=90, W=70, H=95)
+    // Scale for SVG drawing (base width 100)
+    const scaleBust = Math.max(0.6, Math.min(1.5, b / 90));
+    const scaleWaist = Math.max(0.6, Math.min(1.5, w / 70));
+    const scaleHips = Math.max(0.6, Math.min(1.5, h / 95));
+
+    const cx = 100; // Center X
+    
+    // Y coordinates
+    const yShoulder = 30;
+    const yBust = 80;
+    const yWaist = 130;
+    const yHips = 180;
+    const yHem = 240;
+
+    // X offsets from center
+    const dxShoulder = 35 * scaleBust;
+    const dxBust = 40 * scaleBust;
+    const dxWaist = 30 * scaleWaist;
+    const dxHips = 45 * scaleHips;
+    const dxHem = 40 * scaleHips;
+
+    // Path string
+    const d = `
+      M ${cx - dxShoulder} ${yShoulder}
+      C ${cx - dxShoulder} ${yBust - 20}, ${cx - dxBust} ${yBust - 10}, ${cx - dxBust} ${yBust}
+      C ${cx - dxBust} ${yWaist - 20}, ${cx - dxWaist} ${yWaist - 10}, ${cx - dxWaist} ${yWaist}
+      C ${cx - dxWaist} ${yHips - 20}, ${cx - dxHips} ${yHips - 10}, ${cx - dxHips} ${yHips}
+      L ${cx - dxHem} ${yHem}
+      L ${cx + dxHem} ${yHem}
+      C ${cx + dxHips} ${yHips - 10}, ${cx + dxHips} ${yHips - 20}, ${cx + dxWaist} ${yWaist}
+      C ${cx + dxWaist} ${yWaist - 10}, ${cx + dxBust} ${yWaist - 20}, ${cx + dxBust} ${yBust}
+      C ${cx + dxBust} ${yBust - 10}, ${cx + dxShoulder} ${yBust - 20}, ${cx + dxShoulder} ${yShoulder}
+      Z
+    `;
+
+    return (
+      <div className="w-48 h-64 bg-[#f9f9f9] border border-gray-200 flex items-center justify-center relative overflow-hidden rounded-md shadow-inner">
+        {(!measurements.bust || !measurements.waist || !measurements.hips) && (
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center z-10 text-center p-4">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Enter bust, waist & hips to see your shape</p>
+          </div>
+        )}
+        <svg viewBox="0 0 200 280" className="w-full h-full text-black/10 fill-current">
+          <path d={d} stroke="black" strokeWidth="2" strokeLinejoin="round" fill="currentColor" />
+          <circle cx={cx} cy="10" r="15" stroke="black" strokeWidth="2" fill="none" />
+        </svg>
+      </div>
+    );
   };
 
   return (
@@ -255,6 +373,88 @@ export default function Account() {
                   {isUpdating ? 'Saving...' : 'Save Changes'}
                 </button>
               </form>
+            </div>
+          )}
+
+          {/* FIT PROFILE (AI) TAB */}
+          {activeTab === 'fit-profile' && (
+            <div className="animate-fade-in">
+              <h2 className="text-xl font-bold uppercase tracking-wider mb-2">AI Fit Profile</h2>
+              <p className="text-xs text-gray-500 mb-8 max-w-lg leading-relaxed">
+                Enter your measurements below. Our AI uses this data to recommend your perfect size 
+                and map your silhouette, ensuring you get the best fit every time you shop with REVOLT.
+              </p>
+
+              <div className="flex flex-col lg:flex-row gap-12">
+                {/* Form */}
+                <form onSubmit={handleSaveMeasurements} className="flex-1 space-y-6 max-w-sm">
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Height (cm)</label>
+                      <input type="number" required placeholder="e.g. 170" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={measurements.height} onChange={(e) => setMeasurements({...measurements, height: e.target.value})} />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Weight (kg)</label>
+                      <input type="number" required placeholder="e.g. 65" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={measurements.weight} onChange={(e) => setMeasurements({...measurements, weight: e.target.value})} />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Bust (cm)</label>
+                      <input type="number" required placeholder="e.g. 90" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={measurements.bust} onChange={(e) => setMeasurements({...measurements, bust: e.target.value})} />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Waist (cm)</label>
+                      <input type="number" required placeholder="e.g. 70" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={measurements.waist} onChange={(e) => setMeasurements({...measurements, waist: e.target.value})} />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Hips (cm)</label>
+                      <input type="number" required placeholder="e.g. 95" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={measurements.hips} onChange={(e) => setMeasurements({...measurements, hips: e.target.value})} />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Thighs (cm)</label>
+                      <input type="number" placeholder="Optional" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={measurements.thighs} onChange={(e) => setMeasurements({...measurements, thighs: e.target.value})} />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSavingMeasurements}
+                    className="bg-[#1a1a1a] text-white px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-black transition-colors disabled:opacity-50 mt-4 w-full"
+                  >
+                    {isSavingMeasurements ? 'Saving...' : 'Save Measurements'}
+                  </button>
+                </form>
+
+                {/* AI Visualizer & Recommendation */}
+                <div className="w-full lg:w-72 flex flex-col items-center">
+                  {renderAvatar()}
+                  
+                  <div className="mt-8 w-full border border-gray-200 bg-gray-50 p-6 text-center relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gray-300 via-black to-gray-300"></div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-500 mb-2">AI Recommendation</p>
+                    
+                    {aiRec.size ? (
+                      <>
+                        <p className="text-4xl font-bold tracking-tight">{aiRec.size}</p>
+                        <div className="mt-3 flex flex-col items-center gap-1">
+                          <p className="text-xs font-bold text-green-700">{aiRec.confidence}% Match Confidence</p>
+                          <div className="w-full bg-gray-200 h-1.5 rounded-full mt-1 overflow-hidden">
+                            <div className="bg-green-600 h-full transition-all duration-1000 ease-out" style={{ width: `${aiRec.confidence}%` }}></div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-sm text-gray-400 py-4">Awaiting measurements...</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
             </div>
           )}
 

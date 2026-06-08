@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useCms } from '../context/CmsContext';
+import { useAuth } from '../context/AuthContext';
 import ProductCard from '../components/ui/ProductCard';
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { db, isLoading } = useCms();
   const { addToCart, toggleWishlist, wishlist } = useStore();
+  const { currentUser } = useAuth();
 
   const product = db.products?.find(p => {
     if (p.id === id) return true;
@@ -23,6 +25,38 @@ export default function ProductDetails() {
     return typeof product.colors[0] === 'string' ? product.colors[0] : product.colors[0].name;
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // AI Recommendation Logic
+  const getAiRecommendation = () => {
+    if (!currentUser?.measurements) return null;
+    const { bust, waist, hips } = currentUser.measurements;
+    const b = Number(bust);
+    const w = Number(waist);
+    const h = Number(hips);
+    if (!b || !w || !h) return null;
+
+    const score = (b * 0.4) + (w * 0.3) + (h * 0.3);
+    let size = 'XL';
+    let conf = 90;
+
+    if (score < 78) { size = 'XS'; conf = 92 - Math.abs(score - 72); }
+    else if (score < 86) { size = 'S'; conf = 94 - Math.abs(score - 82); }
+    else if (score < 96) { size = 'M'; conf = 95 - Math.abs(score - 91); }
+    else if (score < 106) { size = 'L'; conf = 93 - Math.abs(score - 101); }
+    else { size = 'XL'; conf = 91 - Math.abs(score - 111); }
+
+    const confidence = Math.max(65, Math.min(99, Math.round(conf)));
+    return { size, confidence };
+  };
+
+  const aiRec = getAiRecommendation();
+
+  // Auto-select recommended size if available
+  useEffect(() => {
+    if (aiRec && aiRec.size && product?.sizes?.includes(aiRec.size)) {
+      setSelectedSize(aiRec.size);
+    }
+  }, [aiRec?.size, product?.sizes]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -422,6 +456,21 @@ export default function ProductDetails() {
             <div className="section-label" style={{marginBottom: 0}}>Size</div>
             <span className="size-guide-link">Size Guide</span>
           </div>
+
+          {aiRec && aiRec.size && (
+            <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '16px' }}>✨</span>
+              <div>
+                <p style={{ fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534', marginBottom: '2px' }}>
+                  AI Recommended Size: {aiRec.size}
+                </p>
+                <p style={{ fontSize: '10px', color: '#15803d' }}>
+                  Based on your fit profile, we are <strong>{aiRec.confidence}% confident</strong> this will fit you perfectly.
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="size-grid" style={{marginTop: '10px'}}>
             {product.sizes && product.sizes.map((size) => (
               <button 

@@ -176,6 +176,36 @@ export default function AdminOrders() {
                 )}
               </div>
 
+              {selectedOrder.deliveryInfo?.measurements && (
+                <div className="mb-8 p-4 bg-[#f0fdf4] border border-[#bbf7d0] flex gap-6 rounded-sm">
+                  <div className="flex-1">
+                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-green-800 mb-3">Client Dimensions (AI Fit)</h3>
+                    <div className="grid grid-cols-3 gap-y-2 text-sm text-green-900">
+                      <p><span className="font-semibold">Height:</span> {selectedOrder.deliveryInfo.measurements.height}cm</p>
+                      <p><span className="font-semibold">Weight:</span> {selectedOrder.deliveryInfo.measurements.weight}kg</p>
+                      <p><span className="font-semibold">Bust:</span> {selectedOrder.deliveryInfo.measurements.bust}cm</p>
+                      <p><span className="font-semibold">Waist:</span> {selectedOrder.deliveryInfo.measurements.waist}cm</p>
+                      <p><span className="font-semibold">Hips:</span> {selectedOrder.deliveryInfo.measurements.hips}cm</p>
+                      <p><span className="font-semibold">Thighs:</span> {selectedOrder.deliveryInfo.measurements.thighs || 'N/A'}cm</p>
+                    </div>
+                  </div>
+                  <div className="w-1/3 flex flex-col items-center justify-center border-l border-green-200 pl-6 text-center">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-green-700 mb-1">Recommended Size</p>
+                    <p className="text-3xl font-bold text-green-900">{selectedOrder.deliveryInfo.aiRecommendedSize || 'N/A'}</p>
+                    {/* Check if any ordered item size differs from recommended */}
+                    {selectedOrder.items && selectedOrder.deliveryInfo.aiRecommendedSize && (
+                      (() => {
+                        const mismatch = selectedOrder.items.some(item => item.size && item.size !== selectedOrder.deliveryInfo.aiRecommendedSize);
+                        if (mismatch) {
+                          return <p className="text-xs text-red-600 font-bold mt-2">⚠️ Client ordered a different size.</p>;
+                        }
+                        return <p className="text-xs text-green-600 font-bold mt-2">✓ Ordered recommended size.</p>;
+                      })()
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div className="mb-8">
                 <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Order Timeline</h3>
                 

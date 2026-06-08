@@ -77,6 +77,19 @@ export default function Checkout() {
     window.scrollTo(0, 0);
   };
 
+  const getAiRecommendation = () => {
+    if (!currentUser?.measurements) return null;
+    const { bust, waist, hips } = currentUser.measurements;
+    const b = Number(bust); const w = Number(waist); const h = Number(hips);
+    if (!b || !w || !h) return null;
+    const score = (b * 0.4) + (w * 0.3) + (h * 0.3);
+    if (score < 78) return { size: 'XS' };
+    if (score < 86) return { size: 'S' };
+    if (score < 96) return { size: 'M' };
+    if (score < 106) return { size: 'L' };
+    return { size: 'XL' };
+  };
+
   const handlePrevStep = () => {
     setStep(step - 1);
     window.scrollTo(0, 0);
@@ -126,7 +139,9 @@ export default function Checkout() {
             method: deliveryMethod,
             address: selectedAddress,
             appliedPromo: appliedPromo || null,
-            discount: discount || 0
+            discount: discount || 0,
+            measurements: currentUser?.measurements || null,
+            aiRecommendedSize: getAiRecommendation()?.size || null
           }
         })
       });
