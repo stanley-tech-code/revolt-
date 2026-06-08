@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS public.users (
   addresses jsonb DEFAULT '[]'::jsonb,
   wishlist jsonb DEFAULT '[]'::jsonb,
   cart jsonb DEFAULT '[]'::jsonb,
+  "cartUpdatedAt" timestamp with time zone DEFAULT timezone('utc'::text, now()),
   createdAt timestamp with time zone DEFAULT timezone('utc'::text, now())
 );
 
@@ -80,6 +81,9 @@ ALTER TABLE public.products DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.orders DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.logs DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.cms DISABLE ROW LEVEL SECURITY;
+
+-- Add cartUpdatedAt to users if it doesn't exist (for existing DBs)
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS "cartUpdatedAt" timestamp with time zone DEFAULT timezone('utc'::text, now());
 
 -- 6. PROMO CODES TABLE
 CREATE TABLE IF NOT EXISTS public.promos (

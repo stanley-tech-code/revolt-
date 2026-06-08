@@ -20,6 +20,7 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminReturns from './pages/admin/AdminReturns';
 import AdminCustomers from './pages/admin/AdminCustomers';
+import AdminCarts from './pages/admin/AdminCarts';
 import AdminFinance from './pages/admin/AdminFinance';
 import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminContent from './pages/admin/AdminContent';
@@ -155,6 +156,7 @@ function App() {
               <Route path="orders" element={<AdminOrders />} />
               <Route path="returns" element={<AdminReturns />} />
               <Route path="customers" element={<AdminCustomers />} />
+              <Route path="carts" element={<AdminCarts />} />
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
               <Route path="content" element={<AdminContent />} />

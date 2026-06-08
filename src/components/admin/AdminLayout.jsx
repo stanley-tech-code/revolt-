@@ -44,6 +44,7 @@ export default function AdminLayout() {
     { name: 'Orders', path: '/admin/orders', roles: ['Super Admin', 'Editor', 'Fulfillment', 'Support'] },
     { name: 'Returns', path: '/admin/returns', roles: ['Super Admin', 'Editor', 'Fulfillment', 'Support'] },
     { name: 'Customers', path: '/admin/customers', roles: ['Super Admin', 'Editor', 'Support', 'Marketing'] },
+    { name: 'Cart Management', path: '/admin/carts', roles: ['Super Admin', 'Editor', 'Support', 'Marketing'] },
     { name: 'Finance', path: '/admin/finance', roles: ['Super Admin'] },
     { name: 'Promotions', path: '/admin/promotions', roles: ['Super Admin', 'Marketing'] },
     { name: 'Content & Appearance', path: '/admin/content', roles: ['Super Admin', 'Editor'] },
