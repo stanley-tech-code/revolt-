@@ -507,7 +507,7 @@ export default function ProductDetails() {
                 <span style={{ fontSize: '18px' }}>✨</span>
                 <div>
                   <p style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534', marginBottom: '2px' }}>
-                    AI Recommended: {aiRec.size} <span style={{ fontSize: '9px', color: '#15803d', fontWeight: '400', letterSpacing: 'normal' }}>(Backup: {aiRec.secondarySize})</span>
+                    Recommended: {aiRec.size} <span style={{ fontSize: '9px', color: '#15803d', fontWeight: '400', letterSpacing: 'normal' }}>(Backup: {aiRec.secondarySize})</span>
                   </p>
                   <p style={{ fontSize: '10px', color: '#15803d' }}>
                     Based on your fit profile, we are <strong>{aiRec.confidence}% confident</strong> this will fit you perfectly.

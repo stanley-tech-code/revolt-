@@ -96,7 +96,7 @@ export default function Account() {
 
   const tabs = [
     { id: 'profile', label: 'My Profile' },
-    { id: 'fit-profile', label: 'Fit Profile (AI)' },
+    { id: 'fit-profile', label: 'Fit Profile' },
     { id: 'orders', label: 'Order History' },
     { id: 'addresses', label: 'Address Book' },
     { id: 'tickets', label: 'Support Tickets' },
@@ -369,9 +369,9 @@ export default function Account() {
           {/* FIT PROFILE (AI) TAB */}
           {activeTab === 'fit-profile' && (
             <div className="animate-fade-in max-w-2xl mx-auto">
-              <h2 className="text-xl font-bold uppercase tracking-wider mb-2 text-center">AI Fit Profile</h2>
+              <h2 className="text-xl font-bold uppercase tracking-wider mb-2 text-center">Fit Profile</h2>
               <p className="text-xs text-gray-500 mb-8 text-center max-w-lg mx-auto leading-relaxed">
-                Let's get to know you. By completing this profile, our AI will recommend your perfect size and help you avoid returns.
+                Let's get to know you. By completing this profile, we will recommend your perfect size and help you avoid returns.
               </p>
 
               {!showFitResults ? (
@@ -501,7 +501,7 @@ export default function Account() {
                 <div className="bg-white border border-gray-200 shadow-sm animate-fade-in p-8">
                   <div className="max-w-md mx-auto">
                     <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">AI Fit Analysis</h3>
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Fit Analysis</h3>
                       <button onClick={() => {setShowFitResults(false); setFitStep(1);}} className="text-[10px] font-bold uppercase tracking-widest border-b border-gray-300 pb-0.5 hover:border-black transition-colors">Edit Profile</button>
                     </div>
                     
