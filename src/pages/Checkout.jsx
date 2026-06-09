@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { kenyaGeoData } from '../data/kenyaGeoData';
 
 export default function Checkout() {
   const { cartItems, removeFromCart, clearCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
@@ -232,7 +233,7 @@ export default function Checkout() {
 
   const isStep1Valid = () => {
     if (locationMode === 'current' && locationDetected) return true;
-    if (locationMode === 'manual' && addressData.county && addressData.area) return true;
+    if (locationMode === 'manual' && addressData.county && addressData.subCounty && addressData.constituency && addressData.area) return true;
     return false;
   };
 
@@ -392,19 +393,44 @@ export default function Checkout() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">County *</label>
-                      <input type="text" value={addressData.county} onChange={e => setAddressData({...addressData, county: e.target.value})} placeholder="e.g. Nairobi" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                      <select 
+                        value={addressData.county} 
+                        onChange={e => setAddressData({...addressData, county: e.target.value, subCounty: '', constituency: ''})} 
+                        className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none bg-white"
+                      >
+                        <option value="">Select County</option>
+                        {Object.keys(kenyaGeoData).sort().map(county => (
+                          <option key={county} value={county}>{county}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Sub County</label>
-                      <input type="text" value={addressData.subCounty} onChange={e => setAddressData({...addressData, subCounty: e.target.value})} placeholder="e.g. Westlands" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Sub County *</label>
+                      <select 
+                        value={addressData.subCounty} 
+                        onChange={e => setAddressData({...addressData, subCounty: e.target.value, constituency: ''})} 
+                        disabled={!addressData.county}
+                        className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none bg-white disabled:bg-gray-100 disabled:text-gray-400"
+                      >
+                        <option value="">Select Sub County</option>
+                        {addressData.county && kenyaGeoData[addressData.county] && Object.keys(kenyaGeoData[addressData.county]).sort().map(sub => (
+                          <option key={sub} value={sub}>{sub}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Constituency</label>
-                      <input type="text" value={addressData.constituency} onChange={e => setAddressData({...addressData, constituency: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Ward (Optional)</label>
-                      <input type="text" value={addressData.ward} onChange={e => setAddressData({...addressData, ward: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Ward / Constituency *</label>
+                      <select 
+                        value={addressData.constituency} 
+                        onChange={e => setAddressData({...addressData, constituency: e.target.value})} 
+                        disabled={!addressData.subCounty}
+                        className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none bg-white disabled:bg-gray-100 disabled:text-gray-400"
+                      >
+                        <option value="">Select Ward / Constituency</option>
+                        {addressData.subCounty && kenyaGeoData[addressData.county]?.[addressData.subCounty]?.map(ward => (
+                          <option key={ward} value={ward}>{ward}</option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Estate / Area *</label>
