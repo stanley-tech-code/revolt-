@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 export default function Checkout() {
   const { cartItems, updateQuantity, removeFromCart, clearCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
@@ -21,6 +22,31 @@ export default function Checkout() {
   const [selectedAddressIdx, setSelectedAddressIdx] = useState(0);
   const [deliveryMethod, setDeliveryMethod] = useState('standard'); // standard, express, same-day
   const [deliveryFee, setDeliveryFee] = useState(500); // base standard fee in KES
+
+  // Inline Address Form State
+  const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
+  const [savingAddress, setSavingAddress] = useState(false);
+  const [newAddress, setNewAddress] = useState({
+    name: currentUser?.name || '',
+    phone: currentUser?.phone || '',
+    city: '',
+    area: '',
+    building: '',
+    mapsPin: { lat: -1.2921, lng: 36.8219 }, // Default to Nairobi
+    instructions: ''
+  });
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "MOCK_API_KEY_FOR_DEV" // User would replace this with real key
+  });
+
+  const onMapClick = useCallback((e) => {
+    setNewAddress(prev => ({
+      ...prev,
+      mapsPin: { lat: e.latLng.lat(), lng: e.latLng.lng() }
+    }));
+  }, []);
 
   // Payment State
   const [paymentMethod, setPaymentMethod] = useState('card'); // card, mpesa, airtel
@@ -69,12 +95,60 @@ export default function Checkout() {
   const handleNextStep = () => {
     if (step === 1 && cartItems.length === 0) return;
     if (step === 2 && (!currentUser?.addresses || currentUser.addresses.length === 0)) {
-      setError("Please add a delivery address in your account before proceeding.");
+      setError("Please save your delivery location before proceeding.");
       return;
     }
     setError(null);
     setStep(step + 1);
     window.scrollTo(0, 0);
+  };
+
+  const handleSaveAddress = async (e) => {
+    e.preventDefault();
+    if (!newAddress.name || !newAddress.phone || !newAddress.city || !newAddress.area) {
+      setError("Please fill in all required delivery fields.");
+      return;
+    }
+    setSavingAddress(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem('revolt_client_token');
+      const updatedAddresses = [...(currentUser?.addresses || []), {
+        name: newAddress.name,
+        phone: newAddress.phone,
+        city: newAddress.city,
+        street: newAddress.area, // Mapping area to existing street field
+        building: newAddress.building,
+        mapsPin: newAddress.mapsPin,
+        instructions: newAddress.instructions,
+        zip: '00100', // Default mock zip
+        country: 'Kenya'
+      }];
+
+      const res = await fetch('/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ addresses: updatedAddresses })
+      });
+
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      // Force context refresh by updating local user if possible, or assume it updates via AuthContext
+      setIsAddingNewAddress(false);
+      setSelectedAddressIdx(updatedAddresses.length - 1);
+      // We wait for the AuthContext to fetch the updated user in background
+      // For immediate UI update, we might need a refreshProfile method.
+      window.location.reload(); // Quick hack to refresh context if reload isn't disruptive here. Wait, reload resets cart if not persisted? StoreContext uses localStorage. So reload is fine, but UX is better without.
+      // Better: just trigger a refetch or optimistic update if the context provides it.
+      // The context has no direct 'refreshUser', so we'll just reload the page for now to ensure db sync.
+    } catch (err) {
+      setError(err.message);
+    }
+    setSavingAddress(false);
   };
 
   // Advanced AI Recommendation Logic (V2)
@@ -312,31 +386,111 @@ export default function Checkout() {
           <div className="animate-fade-in">
             <h2 className="text-xl font-bold uppercase tracking-widest mb-6">Delivery Information</h2>
             
-            <h3 className="text-xs font-bold uppercase tracking-widest mb-4">Select Address</h3>
-            {!currentUser?.addresses || currentUser.addresses.length === 0 ? (
-              <div className="border border-red-200 bg-red-50 p-6 mb-8">
-                <p className="text-sm text-red-600 mb-4">You don't have any saved addresses.</p>
-                <button onClick={() => navigate('/components/account')} className="text-xs font-bold uppercase border-b border-red-600 text-red-600 pb-1">Go to Address Book</button>
+            {(!currentUser?.addresses || currentUser.addresses.length === 0 || isAddingNewAddress) ? (
+              <div className="bg-gray-50 border border-gray-200 p-6 mb-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xs font-bold uppercase tracking-widest">Add New Delivery Location</h3>
+                  {currentUser?.addresses?.length > 0 && (
+                    <button onClick={() => setIsAddingNewAddress(false)} className="text-[10px] uppercase font-bold text-gray-500 hover:text-black">Cancel</button>
+                  )}
+                </div>
+                
+                <form onSubmit={handleSaveAddress} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Full Name *</label>
+                      <input type="text" required value={newAddress.name} onChange={e => setNewAddress({...newAddress, name: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Phone Number *</label>
+                      <input type="tel" required value={newAddress.phone} onChange={e => setNewAddress({...newAddress, phone: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">County / City *</label>
+                      <input type="text" required value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Area / Estate / Neighborhood *</label>
+                      <input type="text" required value={newAddress.area} onChange={e => setNewAddress({...newAddress, area: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black" />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Building Name / Appt / House No</label>
+                    <input type="text" value={newAddress.building} onChange={e => setNewAddress({...newAddress, building: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black" />
+                  </div>
+
+                  <div className="mt-6 mb-4 border border-gray-300 bg-white">
+                    <div className="p-4 border-b border-gray-200">
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em]">Google Maps Pin Location</label>
+                      <p className="text-[10px] text-gray-500 mt-1">Tap the map to drop a pin at your exact delivery location.</p>
+                    </div>
+                    <div className="h-64 w-full bg-gray-100">
+                      {isLoaded ? (
+                        <GoogleMap
+                          mapContainerStyle={{ width: '100%', height: '100%' }}
+                          center={newAddress.mapsPin}
+                          zoom={13}
+                          onClick={onMapClick}
+                          options={{ disableDefaultUI: true, zoomControl: true }}
+                        >
+                          <Marker position={newAddress.mapsPin} />
+                        </GoogleMap>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <p className="text-xs text-gray-400">Loading Map...</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Delivery Instructions / Notes (Optional)</label>
+                    <textarea value={newAddress.instructions} onChange={e => setNewAddress({...newAddress, instructions: e.target.value})} placeholder="e.g. Leave at reception, Call upon arrival" className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black min-h-[80px]" />
+                  </div>
+
+                  <div className="pt-4 flex justify-end">
+                    <button type="submit" disabled={savingAddress} className="bg-black text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50">
+                      {savingAddress ? 'Saving...' : 'Save Delivery Location'}
+                    </button>
+                  </div>
+                </form>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                {currentUser.addresses.map((addr, idx) => (
-                  <div 
-                    key={idx} 
-                    onClick={() => setSelectedAddressIdx(idx)}
-                    className={`border p-4 cursor-pointer transition-colors ${selectedAddressIdx === idx ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
+              <div className="mb-8">
+                <h3 className="text-xs font-bold uppercase tracking-widest mb-4">Choose a Delivery Location</h3>
+                <div className="grid grid-cols-1 gap-4">
+                  {currentUser.addresses.map((addr, idx) => (
+                    <div 
+                      key={idx} 
+                      onClick={() => setSelectedAddressIdx(idx)}
+                      className={`border p-4 cursor-pointer transition-colors ${selectedAddressIdx === idx ? 'border-black bg-gray-50 ring-1 ring-black' : 'border-gray-200 hover:border-gray-400'}`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="font-bold text-sm mb-1">{addr.name}</p>
+                          <p className="text-xs text-gray-600">{addr.building ? `${addr.building}, ` : ''}{addr.street}</p>
+                          <p className="text-xs text-gray-600">{addr.city}</p>
+                          <p className="text-[10px] text-gray-500 mt-2">📞 {addr.phone}</p>
+                          {addr.instructions && <p className="text-[10px] text-gray-500 mt-1 italic">Note: {addr.instructions}</p>}
+                        </div>
+                        {selectedAddressIdx === idx && (
+                          <span className="bg-black text-white text-[9px] uppercase tracking-widest px-2 py-1 font-bold">Selected</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  <button 
+                    onClick={() => setIsAddingNewAddress(true)}
+                    className="border border-dashed border-gray-300 p-4 text-center hover:border-black hover:bg-gray-50 transition-colors"
                   >
-                    <p className="font-bold text-sm mb-1">{addr.name}</p>
-                    <p className="text-xs text-gray-600">{addr.street}</p>
-                    <p className="text-xs text-gray-600">{addr.city}, {addr.zip}</p>
-                    <p className="text-xs text-gray-600 mb-2">{addr.country}</p>
-                    <p className="text-xs text-gray-500">📞 {addr.phone}</p>
-                  </div>
-                ))}
+                    <span className="text-xs font-bold uppercase tracking-widest">+ Add New Delivery Location</span>
+                  </button>
+                </div>
               </div>
             )}
 
-            <h3 className="text-xs font-bold uppercase tracking-widest mb-4">Delivery Method</h3>
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-4 mt-8">Delivery Method</h3>
             <div className="space-y-3 mb-8">
               <label className={`flex items-center justify-between border p-4 cursor-pointer transition-colors ${deliveryMethod === 'standard' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}>
                 <div className="flex items-center gap-3">
@@ -367,6 +521,7 @@ export default function Checkout() {
               </button>
               <button 
                 onClick={handleNextStep}
+                disabled={isAddingNewAddress}
                 className="bg-black text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50"
               >
                 Proceed to Payment
