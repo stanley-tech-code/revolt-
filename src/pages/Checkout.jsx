@@ -38,7 +38,7 @@ export default function Checkout() {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "MOCK_API_KEY_FOR_DEV" // User would replace this with real key
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "AIzaSyDIjIbkD-3tHyolYBMA9wcbVlWpWIDS5XE"
   });
 
   const onMapClick = useCallback((e) => {
