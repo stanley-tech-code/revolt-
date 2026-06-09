@@ -55,7 +55,7 @@ export default function MobileMenu({ isOpen, onClose }) {
             <Link onClick={onClose} to="/new-in/pre-order" className="text-xs text-cocoa hover:text-ink">Pre-Order</Link>
           </div>
           <Link onClick={onClose} to="/other/volume-02-preview" className="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
-            <img src="/images/campaign-1.jpg" alt="Campaign" className="w-full h-full object-cover" />
+            <img loading="lazy" src="/images/campaign-1.jpg" alt="Campaign" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
               <span className="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Volume 02 Preview</span>
             </div>
@@ -84,7 +84,7 @@ export default function MobileMenu({ isOpen, onClose }) {
             <Link onClick={onClose} to="/clothing/tees-tanks" className="text-xs text-cocoa hover:text-ink">Tees & Tanks</Link>
           </div>
           <Link onClick={onClose} to="/other/the-essentials-edit" className="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
-            <img src="/images/editorial-wide.jpg" alt="Campaign" className="w-full h-full object-cover" />
+            <img loading="lazy" src="/images/editorial-wide.jpg" alt="Campaign" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
               <span className="text-canvas text-sm font-bold uppercase tracking-[0.1em]">The Essentials Edit</span>
             </div>
@@ -110,7 +110,7 @@ export default function MobileMenu({ isOpen, onClose }) {
             <Link onClick={onClose} to="/bras/lightly-lined" className="text-xs text-cocoa hover:text-ink">Lightly Lined</Link>
           </div>
           <Link onClick={onClose} to="/other/second-skin-feel" className="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
-            <img src="/images/product-3.jpg" alt="Campaign" className="w-full h-full object-cover" />
+            <img loading="lazy" src="/images/product-3.jpg" alt="Campaign" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
               <span className="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Second-Skin Feel</span>
             </div>
@@ -132,7 +132,7 @@ export default function MobileMenu({ isOpen, onClose }) {
             <Link onClick={onClose} to="/underwear/seamless" className="text-xs text-cocoa hover:text-ink">Seamless</Link>
           </div>
           <Link onClick={onClose} to="/other/seamless-collection" className="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
-            <img src="/images/product-2.jpg" alt="Campaign" className="w-full h-full object-cover" />
+            <img loading="lazy" src="/images/product-2.jpg" alt="Campaign" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
               <span className="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Seamless Collection</span>
             </div>
@@ -154,7 +154,7 @@ export default function MobileMenu({ isOpen, onClose }) {
             <Link onClick={onClose} to="/accessories/perfumes" className="text-xs text-cocoa hover:text-ink">Perfumes</Link>
           </div>
           <Link onClick={onClose} to="/other/signature-scents" className="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
-            <img src="/images/campaign-2.jpg" alt="Campaign" className="w-full h-full object-cover" />
+            <img loading="lazy" src="/images/campaign-2.jpg" alt="Campaign" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
               <span className="text-canvas text-sm font-bold uppercase tracking-[0.1em]">Signature Scents</span>
             </div>
@@ -175,7 +175,7 @@ export default function MobileMenu({ isOpen, onClose }) {
             <Link onClick={onClose} to="/swimwear/swim-cover-ups" className="text-xs text-cocoa hover:text-ink">Swim Cover-Ups</Link>
           </div>
           <Link onClick={onClose} to="/other/the-resort-edit" className="block bg-sand aspect-[4/3] relative overflow-hidden mb-2 mt-2 rounded-sm">
-            <img src="/images/product-1.jpg" alt="Campaign" className="w-full h-full object-cover" />
+            <img loading="lazy" src="/images/product-1.jpg" alt="Campaign" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-ink/20 flex flex-col justify-end p-4">
               <span className="text-canvas text-sm font-bold uppercase tracking-[0.1em]">The Resort Edit</span>
             </div>

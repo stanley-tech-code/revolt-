@@ -26,7 +26,7 @@ export default function Home() {
             <source src={hero.videoUrl} type="video/mp4" />
           </video>
         ) : (
-          <img src="/images/hero.jpg" alt="Model in Revolt set" className="absolute inset-0 w-full h-full object-cover" />
+          <img src="/images/hero.jpg" alt="Model in Revolt set" loading="eager" fetchpriority="high" className="absolute inset-0 w-full h-full object-cover" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent md:bg-gradient-to-r md:from-ink/20 md:via-transparent md:to-transparent"></div>
         <div className="relative z-10 w-full px-4 md:px-8 lg:px-10 xl:px-12 pt-28 md:pt-32 pb-12 md:pb-16 lg:pb-20">

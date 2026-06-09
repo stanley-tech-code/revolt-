@@ -13,5 +13,17 @@ export default defineConfig({
         secure: false,
       }
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          maps: ['@react-google-maps/api'],
+          charts: ['chart.js', 'react-chartjs-2'],
+          db: ['@supabase/supabase-js']
+        }
+      }
+    }
   }
 })

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import React, { useState, Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, Outlet } from 'react-router-dom';
+
+// CRITICAL SYNCHRONOUS IMPORTS
 import AnnouncementBar from './components/ui/AnnouncementBar';
 import Navbar from './components/layout/Navbar';
 import MobileMenu from './components/layout/MobileMenu';
@@ -7,56 +9,56 @@ import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import { useCms } from './context/CmsContext';
 import { StoreProvider } from './context/StoreContext';
+import { AuthProvider } from './context/AuthContext';
 import CartDrawer from './components/ui/CartDrawer';
 import SearchModal from './components/ui/SearchModal';
 import CookieBanner from './components/ui/CookieBanner';
 import NewsletterPopup from './components/ui/NewsletterPopup';
-import { Outlet } from 'react-router-dom';
-
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminLayout from './components/admin/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminProducts from './pages/admin/AdminProducts';
-import AdminOrders from './pages/admin/AdminOrders';
-import AdminReturns from './pages/admin/AdminReturns';
-import AdminCustomers from './pages/admin/AdminCustomers';
-import AdminCarts from './pages/admin/AdminCarts';
-import AdminFinance from './pages/admin/AdminFinance';
-import AdminPromotions from './pages/admin/AdminPromotions';
-import AdminContent from './pages/admin/AdminContent';
-import AdminNotifications from './pages/admin/AdminNotifications';
-import AdminTwilio from './pages/admin/AdminTwilio';
-import AdminSettings from './pages/admin/AdminSettings';
-import AdminMessages from './pages/admin/AdminMessages';
-import AdminNewsletter from './pages/admin/AdminNewsletter';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminProtectedRoute from './components/auth/AdminProtectedRoute';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
-const AdminAnalytics = React.lazy(() => import('./pages/admin/AdminAnalytics'));
+// LAZY LOADED ADMIN ROUTES
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'));
+const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
+const AdminReturns = lazy(() => import('./pages/admin/AdminReturns'));
+const AdminCustomers = lazy(() => import('./pages/admin/AdminCustomers'));
+const AdminCarts = lazy(() => import('./pages/admin/AdminCarts'));
+const AdminFinance = lazy(() => import('./pages/admin/AdminFinance'));
+const AdminPromotions = lazy(() => import('./pages/admin/AdminPromotions'));
+const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
+const AdminNotifications = lazy(() => import('./pages/admin/AdminNotifications'));
+const AdminTwilio = lazy(() => import('./pages/admin/AdminTwilio'));
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
+const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
+const AdminNewsletter = lazy(() => import('./pages/admin/AdminNewsletter'));
+const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
 
-import OurStory from './pages/about/OurStory';
-import Sustainability from './pages/about/Sustainability';
-import Careers from './pages/about/Careers';
-import Press from './pages/about/Press';
+// LAZY LOADED STOREFRONT ROUTES
+const OurStory = lazy(() => import('./pages/about/OurStory'));
+const Sustainability = lazy(() => import('./pages/about/Sustainability'));
+const Careers = lazy(() => import('./pages/about/Careers'));
+const Press = lazy(() => import('./pages/about/Press'));
 
-import Returns from './pages/help/Returns';
-import OrderTracking from './pages/help/OrderTracking';
-import SizeGuide from './pages/help/SizeGuide';
-import Contact from './pages/help/Contact';
+const Returns = lazy(() => import('./pages/help/Returns'));
+const OrderTracking = lazy(() => import('./pages/help/OrderTracking'));
+const SizeGuide = lazy(() => import('./pages/help/SizeGuide'));
+const Contact = lazy(() => import('./pages/help/Contact'));
 
-import Account from './pages/components/Account';
-import Wishlist from './pages/components/Wishlist';
+const Account = lazy(() => import('./pages/components/Account'));
+const Wishlist = lazy(() => import('./pages/components/Wishlist'));
 
-import ProductDetails from './pages/ProductDetails';
-import CollectionPage from './pages/CollectionPage';
-import Preferences from './pages/Preferences';
-import PolicyPage from './pages/PolicyPage';
+const ProductDetails = lazy(() => import('./pages/ProductDetails'));
+const CollectionPage = lazy(() => import('./pages/CollectionPage'));
+const Preferences = lazy(() => import('./pages/Preferences'));
+const PolicyPage = lazy(() => import('./pages/PolicyPage'));
 
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import Checkout from './pages/Checkout';
+const Login = lazy(() => import('./pages/auth/Login'));
+const Register = lazy(() => import('./pages/auth/Register'));
+const Checkout = lazy(() => import('./pages/Checkout'));
 
 function ClientLayout() {
   const { db } = useCms();
@@ -72,7 +74,13 @@ function ClientLayout() {
     if (db?.seo?.title) {
       document.title = db.seo.title;
     }
-    fetch('/api/track-visit', { method: 'POST' }).catch(() => {});
+    
+    // Throttle API tracking to once per session
+    if (!sessionStorage.getItem('revolt_visit_tracked')) {
+      fetch('/api/track-visit', { method: 'POST' })
+        .then(() => sessionStorage.setItem('revolt_visit_tracked', 'true'))
+        .catch(() => {});
+    }
   }, [location.pathname, db?.seo?.title]);
 
   // Inject Custom Scripts
@@ -141,6 +149,7 @@ function App() {
     <AuthProvider>
       <StoreProvider>
         <Router>
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white"><div className="w-12 h-12 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div></div>}>
           <Routes>
             {/* ADMIN ROUTES */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -164,13 +173,7 @@ function App() {
               <Route path="newsletter" element={<AdminProtectedRoute allowedRoles={['Super Admin', 'Marketing']}><AdminNewsletter /></AdminProtectedRoute>} />
               <Route path="messages" element={<AdminMessages />} />
               <Route path="twilio" element={<AdminProtectedRoute allowedRoles={['Super Admin']}><AdminTwilio /></AdminProtectedRoute>} />
-              <Route path="analytics" element={
-                <ErrorBoundary>
-                  <React.Suspense fallback={<div className="p-10 text-center animate-pulse font-bold">Loading Analytics...</div>}>
-                    <AdminAnalytics />
-                  </React.Suspense>
-                </ErrorBoundary>
-              } />
+              <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 
@@ -220,6 +223,7 @@ function App() {
               <Route path="/:mainCategory" element={<CollectionPage />} />
             </Route>
           </Routes>
+          </Suspense>
         </Router>
       </StoreProvider>
     </AuthProvider>
