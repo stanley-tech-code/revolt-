@@ -54,13 +54,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
       <div className="w-full px-4 md:px-6 lg:px-8 h-full flex items-center justify-between">
         
         <Link to="/" className="md:hidden flex items-center h-full -ml-1">
-          <img src="/images/logo.png?v=2" alt="Revolt" className={`h-[64px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"}`} />
+          <img src="/images/logo.webp?v=2" alt="Revolt" className={`h-[64px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"}`} />
         </Link>
 
         {/* Desktop Left: Logo & Nav Links */}
         <div className="hidden md:flex items-center h-full">
           <Link to="/" className="flex items-center h-full -ml-4 -mr-8">
-            <img src="/images/logo.png?v=2" alt="Revolt" className={`h-[110px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"}`} />
+            <img src="/images/logo.webp?v=2" alt="Revolt" className={`h-[110px] w-auto object-contain transition-all duration-500 ${showSolid ? "brightness-0" : "brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"}`} />
           </Link>
           <nav className="flex items-center h-full">
             
@@ -97,7 +97,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     <div className="col-span-4 pl-12 border-l border-clay/20">
                       <Link to="/other/volume-02-preview-discover-the-next-evolution-of-our-essentials" className="group/promo block">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/campaign-1.jpg" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src="/images/campaign-1.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
                         <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Volume 02 Preview</h5>
                         <p className="text-[11px] text-cocoa leading-relaxed">Discover the next evolution of our essential collection.</p>
@@ -148,7 +148,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     <div className="col-span-4 pl-12 border-l border-clay/20">
                       <Link to="/other/the-essentials-edit-shop-the-looks-from-our-latest-campaign" className="group/promo block">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/editorial-wide.jpg" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src="/images/editorial-wide.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
                         <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">The Essentials Edit</h5>
                         <p className="text-[11px] text-cocoa leading-relaxed">Shop the looks from our latest campaign.</p>
@@ -196,7 +196,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     <div className="col-span-4 pl-12 border-l border-clay/20">
                       <Link to="/other/second-skin-feel-engineered-for-invisible-weightless-support" className="group/promo block">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/product-3.jpg" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src="/images/product-3.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
                         <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Second-Skin Feel</h5>
                         <p className="text-[11px] text-cocoa leading-relaxed">Engineered for invisible, weightless support.</p>
@@ -240,7 +240,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     <div className="col-span-4 pl-12 border-l border-clay/20">
                       <Link to="/other/seamless-collection-smooth-lines-and-ultimate-comfort-for-every-body" className="group/promo block">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/product-2.jpg" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src="/images/product-2.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
                         <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Seamless Collection</h5>
                         <p className="text-[11px] text-cocoa leading-relaxed">Smooth lines and ultimate comfort for every body.</p>
@@ -284,7 +284,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     <div className="col-span-4 pl-12 border-l border-clay/20">
                       <Link to="/other/signature-scents-complete-the-uniform-with-our-new-fragrance-line" className="group/promo block">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/campaign-2.jpg" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src="/images/campaign-2.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
                         <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Signature Scents</h5>
                         <p className="text-[11px] text-cocoa leading-relaxed">Complete the uniform with our new fragrance line.</p>
@@ -327,7 +327,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     <div className="col-span-4 pl-12 border-l border-clay/20">
                       <Link to="/other/the-resort-edit-minimal-silhouettes-ready-for-the-sun" className="group/promo block">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/product-1.jpg" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src="/images/product-1.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
                         <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">The Resort Edit</h5>
                         <p className="text-[11px] text-cocoa leading-relaxed">Minimal silhouettes ready for the sun.</p>
@@ -342,20 +342,20 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
         </div>
 
         {/* Right Side: Icons + Hamburger */}
-        <div className={`flex items-center gap-3 md:gap-5.5 transition-colors duration-500 ${
+        <div className={`flex items-center gap-1 md:gap-3 transition-colors duration-500 ${
           showSolid ? "text-[#000000]" : "text-[#FAF9F6]"
         }`}>
-          <button onClick={openSearch} aria-label="Search" className="p-1 hover:scale-110 transition-transform"><svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" strokeLinecap="round"/></svg></button>
-          <button onClick={() => navigate('/components/account')} aria-label="Account" className="p-1 hover:scale-110 transition-transform hidden sm:inline-flex"><svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
-          <button onClick={() => navigate('/components/wishlist')} aria-label="Wishlist" className="p-1 hover:scale-110 transition-transform relative">
+          <button onClick={openSearch} aria-label="Search" className="p-2 min-w-[48px] min-h-[48px] flex items-center justify-center hover:scale-110 transition-transform"><svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3" strokeLinecap="round"/></svg></button>
+          <button onClick={() => navigate('/components/account')} aria-label="Account" className="p-2 min-w-[48px] min-h-[48px] flex items-center justify-center hover:scale-110 transition-transform hidden sm:flex"><svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button>
+          <button onClick={() => navigate('/components/wishlist')} aria-label="Wishlist" className="p-2 min-w-[48px] min-h-[48px] flex items-center justify-center hover:scale-110 transition-transform relative">
             <svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.8 5.6a5.5 5.5 0 0 0-9 1.7 5.5 5.5 0 0 0-9-1.7c-2.1 2.1-2.1 5.6 0 7.7l9 9 9-9c2.1-2.1 2.1-5.6 0-7.7Z"/></svg>
-            {wishlist.length > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 text-white text-[8px] flex items-center justify-center rounded-full font-bold">{wishlist.length}</span>}
+            {wishlist.length > 0 && <span className="absolute top-1 right-1 w-3 h-3 bg-red-600 text-white text-[8px] flex items-center justify-center rounded-full font-bold">{wishlist.length}</span>}
           </button>
-          <button onClick={openCart} aria-label="Cart" className="p-1 hover:scale-110 transition-transform relative">
+          <button onClick={openCart} aria-label="Cart" className="p-2 min-w-[48px] min-h-[48px] flex items-center justify-center hover:scale-110 transition-transform relative">
             <svg className="size-[18px] md:size-[17px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 7h14l-1.5 12h-11L5 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
-            {getCartCount() > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 text-white text-[8px] flex items-center justify-center rounded-full font-bold">{getCartCount()}</span>}
+            {getCartCount() > 0 && <span className="absolute top-1 right-1 w-3 h-3 bg-red-600 text-white text-[8px] flex items-center justify-center rounded-full font-bold">{getCartCount()}</span>}
           </button>
-          <button onClick={onMenuToggle} aria-label="Menu" className={`md:hidden p-1 transition-colors duration-500 ${
+          <button onClick={onMenuToggle} aria-label="Menu" className={`md:hidden p-2 min-w-[48px] min-h-[48px] flex items-center justify-center transition-colors duration-500 ${
             showSolid ? "text-[#000000] hover:text-[#000000]/70" : "text-[#FAF9F6] hover:text-[#FAF9F6]/80"
           }`}>
             {isMenuOpen ? (

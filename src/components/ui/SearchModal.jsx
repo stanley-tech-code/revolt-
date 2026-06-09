@@ -69,7 +69,7 @@ export default function SearchModal() {
               results.map(product => (
                 <div key={product.id} className="col-span-1 group cursor-pointer" onClick={() => handleProductClick(product.id)}>
                   <div className="aspect-[3/4] bg-[#f5f3f0] overflow-hidden mb-4 relative">
-                    <img src={product.primaryImage || "/images/product-1.jpg"} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={product.primaryImage || "/images/product-1.webp"} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     {product.stock <= 3 && <div className="absolute bottom-2 left-2 bg-red-600 text-white text-[9px] uppercase tracking-wider px-2 py-1 font-bold">Low Stock</div>}
                   </div>
                   <div className="flex flex-col">

@@ -624,7 +624,7 @@ export default function Checkout() {
       {showMpesaPrompt && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white p-8 max-w-sm w-full text-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/1200px-M-PESA_LOGO-01.svg.png" alt="M-Pesa" className="h-12 mx-auto mb-6 object-contain grayscale" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/1200px-M-PESA_LOGO-01.svg.webp" alt="M-Pesa" className="h-12 mx-auto mb-6 object-contain grayscale" />
             <h3 className="font-bold uppercase tracking-widest mb-4">Complete Payment</h3>
             <p className="text-sm text-gray-600 mb-6">An STK push has been sent to <span className="font-bold">{mpesaPhone || contactInfo.phone}</span>. Please enter your PIN to complete the transaction.</p>
             <div className="w-8 h-8 border-2 border-gray-200 border-t-green-500 rounded-full animate-spin mx-auto mb-6"></div>

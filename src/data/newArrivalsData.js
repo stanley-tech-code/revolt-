@@ -5,8 +5,8 @@ export const newArrivalsGrid = [
     material: 'Ribbed Knit',
     originalPrice: 12800,
     salePrice: 8960,
-    primaryImage: '/images/product-1.jpg',
-    secondaryImage: '/images/campaign-1.jpg',
+    primaryImage: '/images/product-1.webp',
+    secondaryImage: '/images/campaign-1.webp',
     colors: ['#b09060', '#1a1a1a', '#f0ece6'],
     saleLabel: '30% OFF BI-ANNUAL SALE',
     isBestSeller: false,
@@ -18,8 +18,8 @@ export const newArrivalsGrid = [
     material: 'Seamless Jersey',
     originalPrice: 9600,
     salePrice: 6720,
-    primaryImage: '/images/product-2.jpg',
-    secondaryImage: '/images/campaign-2.jpg',
+    primaryImage: '/images/product-2.webp',
+    secondaryImage: '/images/campaign-2.webp',
     colors: ['#1a1a1a', '#c4967a', '#f0ece6'],
     saleLabel: '30% OFF BI-ANNUAL SALE',
     isBestSeller: false,
@@ -31,8 +31,8 @@ export const newArrivalsGrid = [
     material: 'Cotton Rib',
     originalPrice: 10200,
     salePrice: 7140,
-    primaryImage: '/images/product-3.jpg',
-    secondaryImage: '/images/hero-dresses.png',
+    primaryImage: '/images/product-3.webp',
+    secondaryImage: '/images/hero-dresses.webp',
     colors: ['#f5f0ea', '#c8c0b8', '#1a1a1a', '#8a2020', '#3a6080'],
     saleLabel: '30% OFF BI-ANNUAL SALE',
     isBestSeller: true,
@@ -44,8 +44,8 @@ export const newArrivalsGrid = [
     material: 'Smooth Layers',
     originalPrice: 14000,
     salePrice: 9800,
-    primaryImage: '/images/product-4.jpg',
-    secondaryImage: '/images/hero.jpg',
+    primaryImage: '/images/product-4.webp',
+    secondaryImage: '/images/hero.webp',
     colors: ['#8a2020', '#c4967a'],
     saleLabel: '30% OFF BI-ANNUAL SALE',
     isBestSeller: false,
@@ -60,7 +60,7 @@ export const newArrivalsRecommendations = [
     material: 'Woven Cotton',
     originalPrice: 20800,
     salePrice: 14560,
-    image: '/images/product-1.jpg',
+    image: '/images/product-1.webp',
     category: 'Pants'
   },
   {
@@ -69,7 +69,7 @@ export const newArrivalsRecommendations = [
     material: 'Cotton Jersey',
     originalPrice: 9600,
     salePrice: 6720,
-    image: '/images/product-2.jpg',
+    image: '/images/product-2.webp',
     category: 'Tops'
   },
   {
@@ -78,7 +78,7 @@ export const newArrivalsRecommendations = [
     material: 'Refined Knit',
     originalPrice: 15200,
     salePrice: 10640,
-    image: '/images/product-3.jpg',
+    image: '/images/product-3.webp',
     category: 'Sweaters'
   },
   {
@@ -87,7 +87,7 @@ export const newArrivalsRecommendations = [
     material: 'Iconic Swim',
     originalPrice: 11000,
     salePrice: 11000, // No sale
-    image: '/images/product-4.jpg',
+    image: '/images/product-4.webp',
     category: 'Swim'
   },
   {
@@ -96,7 +96,7 @@ export const newArrivalsRecommendations = [
     material: 'Iconic Swim',
     originalPrice: 8200,
     salePrice: 8200, // No sale
-    image: '/images/campaign-1.jpg',
+    image: '/images/campaign-1.webp',
     category: 'Swim'
   }
 ];

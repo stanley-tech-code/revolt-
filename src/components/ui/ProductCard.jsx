@@ -31,7 +31,8 @@ export default function ProductCard({ product }) {
         )}
 
         <button 
-          className="absolute top-3 right-3 z-10 p-1 flex items-center justify-center transition-transform hover:scale-110" 
+          className="absolute top-3 right-3 z-10 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center transition-transform hover:scale-110" 
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           onClick={(e) => { 
             e.preventDefault();
             e.stopPropagation(); 
@@ -63,7 +64,7 @@ export default function ProductCard({ product }) {
           </div>
         )}
         
-        <span className="text-[10px] uppercase tracking-[0.12em] text-[#888] font-medium">
+        <span className="text-[10px] uppercase tracking-[0.12em] text-gray-600 font-medium">
           {product.material || product.mainCategory}
         </span>
         
@@ -74,7 +75,7 @@ export default function ProductCard({ product }) {
         <div className="flex items-center gap-2">
           {product.originalPrice !== product.salePrice ? (
             <>
-              <span className="text-[12px] text-[#999] line-through tracking-[0.04em]">
+              <span className="text-[12px] text-gray-500 line-through tracking-[0.04em]">
                 Ksh {product.originalPrice.toLocaleString()}
               </span>
               <span className="text-[12px] font-semibold text-[#1a1a1a] tracking-[0.04em]">

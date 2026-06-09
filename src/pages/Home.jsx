@@ -26,7 +26,7 @@ export default function Home() {
             <source src={hero.videoUrl} type="video/mp4" />
           </video>
         ) : (
-          <img src="/images/hero.jpg" alt="Model in Revolt set" loading="eager" fetchpriority="high" className="absolute inset-0 w-full h-full object-cover" />
+          <img src="/images/hero.webp" alt="Model in Revolt set" loading="eager" fetchpriority="high" className="absolute inset-0 w-full h-full object-cover" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent md:bg-gradient-to-r md:from-ink/20 md:via-transparent md:to-transparent"></div>
         <div className="relative z-10 w-full px-4 md:px-8 lg:px-10 xl:px-12 pt-28 md:pt-32 pb-12 md:pb-16 lg:pb-20">
@@ -85,7 +85,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-2 md:gap-4 w-full">
             {/* Left Column */}
             <Link to={sec.mainItem?.link || "/other/shop-the-collection"} className="relative group overflow-hidden min-h-[500px] md:min-h-[850px]">
-              <img src={sec.mainItem?.image || "/images/campaign-2.jpg"} alt={sec.mainItem?.title || "Revolt curation"} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:scale-105" />
+              <img src={sec.mainItem?.image || "/images/campaign-2.webp"} alt={sec.mainItem?.title || "Revolt curation"} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
                 <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white mb-5">{sec.mainItem?.title || "The Lounge Edit"}</p>
@@ -277,11 +277,11 @@ export default function Home() {
           <h2 className="text-center text-sm font-bold uppercase tracking-widest mb-8">{sec.title}</h2>
           <div className="flex flex-col gap-4 text-left">
             <div className="border-b border-clay/20 pb-3">
-              <h4 className="text-[12px] font-bold uppercase text-ink">What is the return policy?</h4>
+              <h3 className="text-[12px] font-bold uppercase text-ink">What is the return policy?</h3>
               <p className="text-[11px] text-cocoa mt-1">{sec.text}</p>
             </div>
             <div className="border-b border-clay/20 pb-3">
-              <h4 className="text-[12px] font-bold uppercase text-ink">How do I choose my size?</h4>
+              <h3 className="text-[12px] font-bold uppercase text-ink">How do I choose my size?</h3>
               <p className="text-[11px] text-cocoa mt-1">Please refer to our Size Guide located in the help page for detailed instructions.</p>
             </div>
           </div>
@@ -334,7 +334,7 @@ export default function Home() {
           {/* Zooming background image */}
           <img 
             loading="lazy" 
-            src={sec.image || "/images/editorial-wide.jpg"} 
+            src={sec.image || "/images/editorial-wide.webp"} 
             alt={sec.title || "Campaign Banner"} 
             className="w-full h-full object-cover transition-transform duration-[8s] group-hover:scale-105" 
           />

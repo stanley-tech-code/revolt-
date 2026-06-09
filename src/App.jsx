@@ -61,7 +61,7 @@ const Register = lazy(() => import('./pages/auth/Register'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 
 function ClientLayout() {
-  const { db } = useCms();
+  const { db, isLoading } = useCms();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Close menu on route change
@@ -94,6 +94,8 @@ function ClientLayout() {
       if (content) {
         el = document.createElement('script');
         el.id = id;
+        el.async = true;
+        el.defer = true;
         el.innerHTML = content;
         target.appendChild(el);
       }
@@ -127,19 +129,29 @@ function ClientLayout() {
 
   return (
     <div className="bg-canvas text-ink min-h-screen flex flex-col" style={themeVars}>
-      <div className="fixed top-0 left-0 w-full z-[999]">
-        <AnnouncementBar />
-        <Navbar onMenuToggle={() => setMobileMenuOpen(!isMobileMenuOpen)} isMenuOpen={isMobileMenuOpen} />
-      </div>
-      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
-      <CartDrawer />
-      <SearchModal />
-      <CookieBanner />
-      <NewsletterPopup />
-      <div className={`flex-1 ${isTransparentPage ? '' : 'pt-[88px] md:pt-[108px]'}`}>
-        <Outlet />
-      </div>
-      <Footer />
+      
+      {isLoading ? (
+        <div className="flex-1 flex flex-col items-center justify-center animate-pulse mt-20">
+          <div className="w-48 h-12 bg-gray-200 rounded mb-8"></div>
+          <div className="w-full max-w-4xl h-[60vh] bg-gray-100 rounded"></div>
+        </div>
+      ) : (
+        <>
+          <div className="fixed top-0 left-0 w-full z-[999]">
+            <AnnouncementBar />
+            <Navbar onMenuToggle={() => setMobileMenuOpen(!isMobileMenuOpen)} isMenuOpen={isMobileMenuOpen} />
+          </div>
+          <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+          <CartDrawer />
+          <SearchModal />
+          <CookieBanner />
+          <NewsletterPopup />
+          <div className={`flex-1 ${isTransparentPage ? '' : 'pt-[88px] md:pt-[108px]'}`}>
+            <Outlet />
+          </div>
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
