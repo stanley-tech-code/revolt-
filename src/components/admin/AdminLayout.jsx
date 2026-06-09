@@ -3,7 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useCms } from '../../context/CmsContext';
 
 export default function AdminLayout() {
-  const { db, logoutAdmin, successNotification, errorNotification } = useCms();
+  const { db, logoutAdmin, successNotification, errorNotification, fetchDatabase } = useCms();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
@@ -26,11 +26,20 @@ export default function AdminLayout() {
     };
     if (currentUser) {
       fetchUnread();
-      // Optional: poll every 30 seconds for real-time feel
-      const interval = setInterval(fetchUnread, 30000);
-      return () => clearInterval(interval);
+      
+      const msgInterval = setInterval(fetchUnread, 30000);
+      
+      // Auto-refresh the entire admin context every 10 seconds silently
+      const dbInterval = setInterval(() => {
+        if (fetchDatabase) fetchDatabase(true);
+      }, 10000);
+      
+      return () => {
+        clearInterval(msgInterval);
+        clearInterval(dbInterval);
+      };
     }
-  }, [currentUser]);
+  }, [currentUser, fetchDatabase]);
 
   const handleLogout = () => {
     logoutAdmin();

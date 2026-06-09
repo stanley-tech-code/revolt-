@@ -66,8 +66,8 @@ export function CmsProvider({ children }) {
   };
 
   // --- FETCH WHOLE SITE DATABASE FROM BACKEND ---
-  const fetchDatabase = async () => {
-    setIsLoading(true);
+  const fetchDatabase = async (silent = false) => {
+    if (!silent) setIsLoading(true);
     try {
       // 1. Fetch ALL public CMS data & products in one single optimized batch call
       const initRes = await fetch('/api/init');
@@ -167,7 +167,7 @@ export function CmsProvider({ children }) {
       console.error('Failed to connect to Revolt database server. Verify Express server is running.', err);
       setErrorNotification('Database offline. Rendered in memory mode.');
     } finally {
-      setIsLoading(false);
+      if (!silent) setIsLoading(false);
     }
   };
 
@@ -744,7 +744,8 @@ export function CmsProvider({ children }) {
       isLoading,
       successNotification,
       errorNotification,
-      updateDraft,
+      setDb,
+      fetchDatabase,
       publishChanges,
       discardChanges,
       undo,
