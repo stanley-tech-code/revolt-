@@ -9,6 +9,7 @@ export default function Checkout() {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,11 +19,11 @@ export default function Checkout() {
   const [promoLoading, setPromoLoading] = useState(false);
 
   // Delivery State
-  const [deliveryMethod, setDeliveryMethod] = useState('deliver'); // only "deliver" now
-  const [deliveryFee, setDeliveryFee] = useState(500); 
+  const deliveryFee = 500; 
 
   // Location State
   const [locationMode, setLocationMode] = useState('manual'); // 'current' or 'manual'
+  const [locationDetected, setLocationDetected] = useState(false);
   const [addressData, setAddressData] = useState({
     county: '',
     subCounty: '',
@@ -45,9 +46,11 @@ export default function Checkout() {
       ...prev,
       mapsPin: { lat: e.latLng.lat(), lng: e.latLng.lng() }
     }));
+    setLocationDetected(true);
   }, []);
 
   const handleUseCurrentLocation = () => {
+    setLocationMode('current');
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -55,7 +58,7 @@ export default function Checkout() {
             ...prev,
             mapsPin: { lat: position.coords.latitude, lng: position.coords.longitude }
           }));
-          setLocationMode('current');
+          setLocationDetected(true);
         },
         (err) => {
           alert("Unable to retrieve your location. Please check browser permissions.");
@@ -158,11 +161,6 @@ export default function Checkout() {
       window.scrollTo(0,0);
       return;
     }
-    if (locationMode === 'manual' && (!addressData.county || !addressData.area)) {
-      setError("Please provide at least your County and Area/Estate for delivery.");
-      window.scrollTo(0,0);
-      return;
-    }
 
     setShowMpesaPrompt(false);
     setLoading(true);
@@ -176,7 +174,9 @@ export default function Checkout() {
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const fullAddress = `${addressData.building ? addressData.building + ', ' : ''}${addressData.houseNo ? addressData.houseNo + ', ' : ''}${addressData.area ? addressData.area + ', ' : ''}${addressData.county}`;
+      const fullAddress = locationMode === 'manual' 
+        ? `${addressData.building ? addressData.building + ', ' : ''}${addressData.houseNo ? addressData.houseNo + ', ' : ''}${addressData.area ? addressData.area + ', ' : ''}${addressData.county}`
+        : 'GPS Location Pin';
 
       const res = await fetch('/api/checkout/create-order', {
         method: 'POST',
@@ -193,7 +193,7 @@ export default function Checkout() {
             address: {
               name: contactInfo.fullName,
               phone: contactInfo.phone,
-              street: fullAddress || 'Current Location Pin',
+              street: fullAddress,
               city: addressData.county || 'Nairobi',
               country: 'Kenya',
               mapsPin: addressData.mapsPin,
@@ -228,6 +228,12 @@ export default function Checkout() {
     } else {
       processActualOrder();
     }
+  };
+
+  const isStep1Valid = () => {
+    if (locationMode === 'current' && locationDetected) return true;
+    if (locationMode === 'manual' && addressData.county && addressData.area) return true;
+    return false;
   };
 
   // --- ORDER CONFIRMATION VIEW ---
@@ -279,7 +285,7 @@ export default function Checkout() {
   // --- EMPTY CART VIEW ---
   if (cartItems.length === 0) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
         <h1 className="text-3xl font-bold uppercase tracking-widest mb-6">Checkout</h1>
         <p className="text-gray-500 mb-8">Your cart is empty.</p>
         <button onClick={() => navigate('/')} className="bg-black text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800">
@@ -289,280 +295,303 @@ export default function Checkout() {
     );
   }
 
-  // --- MAIN CHECKOUT VIEW ---
+  // --- MAIN CHECKOUT WIZARD VIEW ---
   return (
-    <div className="bg-gray-50 min-h-screen pb-32 lg:pb-12">
-      <div className="max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col lg:flex-row gap-8">
+    <div className="bg-gray-50 min-h-screen py-12">
+      <div className="max-w-3xl mx-auto px-4">
         
-        {/* MAIN COLUMN */}
-        <div className="flex-1 space-y-6">
-          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest mb-4">Checkout</h1>
+        <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest mb-8 text-center">Checkout</h1>
+        
+        {/* Step Indicator */}
+        <div className="flex items-center justify-center gap-4 mb-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+          <span className={step >= 1 ? 'text-black' : ''}>1. Delivery</span>
+          <span className="w-8 h-px bg-gray-300"></span>
+          <span className={step >= 2 ? 'text-black' : ''}>2. Summary</span>
+          <span className="w-8 h-px bg-gray-300"></span>
+          <span className={step >= 3 ? 'text-black' : ''}>3. Payment</span>
+        </div>
 
-          {error && (
-            <div className="bg-red-50 text-red-600 p-4 border border-red-200 text-sm">
-              {error}
+        <div className="text-center mb-8">
+          <span className="text-xs text-gray-500 font-bold uppercase tracking-widest">Step {step} of 3</span>
+        </div>
+
+        {error && (
+          <div className="bg-red-50 text-red-600 p-4 border border-red-200 text-sm mb-6">
+            {error}
+          </div>
+        )}
+
+        <div className="bg-white p-6 md:p-10 border border-gray-200 shadow-sm mb-8">
+          
+          {/* =========================================
+              STEP 1: DELIVERY ADDRESS
+          ========================================= */}
+          {step === 1 && (
+            <div className="animate-fade-in">
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Delivery Address</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <button 
+                  onClick={() => setLocationMode('manual')}
+                  className={`p-6 border-2 transition-colors text-center ${locationMode === 'manual' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
+                >
+                  <span className="text-2xl block mb-2">✍️</span>
+                  <span className="block font-bold text-sm uppercase tracking-wider">Enter Manually</span>
+                  <span className="block text-[10px] text-gray-500 mt-1">Type your address details</span>
+                </button>
+
+                <button 
+                  onClick={handleUseCurrentLocation}
+                  className={`p-6 border-2 transition-colors text-center ${locationMode === 'current' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
+                >
+                  <span className="text-2xl block mb-2">📍</span>
+                  <span className="block font-bold text-sm uppercase tracking-wider">Use Current Location</span>
+                  <span className="block text-[10px] text-gray-500 mt-1">Recommended for accuracy</span>
+                </button>
+              </div>
+
+              {locationMode === 'current' && (
+                <div className="animate-fade-in mb-8">
+                  <div className="bg-blue-50 border border-blue-200 p-4 text-blue-800 text-sm flex items-center gap-3">
+                    <span className="text-xl">📍</span>
+                    {locationDetected ? (
+                      <span>Location detected: {addressData.mapsPin.lat.toFixed(4)}, {addressData.mapsPin.lng.toFixed(4)}</span>
+                    ) : (
+                      <span>Waiting for location permission...</span>
+                    )}
+                  </div>
+                  
+                  {/* Small Map Preview */}
+                  {locationDetected && (
+                    <div className="mt-4 h-48 w-full bg-gray-100 border border-gray-200">
+                      {isLoaded ? (
+                        <GoogleMap
+                          mapContainerStyle={{ width: '100%', height: '100%' }}
+                          center={addressData.mapsPin}
+                          zoom={15}
+                          onClick={onMapClick}
+                          options={{ disableDefaultUI: true, zoomControl: true }}
+                        >
+                          <Marker position={addressData.mapsPin} />
+                        </GoogleMap>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">Loading Map...</div>
+                      )}
+                    </div>
+                  )}
+                  
+                  <div className="mt-6">
+                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Delivery Instructions / Notes (Optional)</label>
+                    <textarea value={addressData.instructions} onChange={e => setAddressData({...addressData, instructions: e.target.value})} placeholder="e.g. Leave at reception" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none min-h-[80px]" />
+                  </div>
+                </div>
+              )}
+
+              {locationMode === 'manual' && (
+                <div className="space-y-4 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">County *</label>
+                      <input type="text" value={addressData.county} onChange={e => setAddressData({...addressData, county: e.target.value})} placeholder="e.g. Nairobi" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Sub County</label>
+                      <input type="text" value={addressData.subCounty} onChange={e => setAddressData({...addressData, subCounty: e.target.value})} placeholder="e.g. Westlands" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Constituency</label>
+                      <input type="text" value={addressData.constituency} onChange={e => setAddressData({...addressData, constituency: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Ward (Optional)</label>
+                      <input type="text" value={addressData.ward} onChange={e => setAddressData({...addressData, ward: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Estate / Area *</label>
+                      <input type="text" value={addressData.area} onChange={e => setAddressData({...addressData, area: e.target.value})} placeholder="e.g. Kileleshwa" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Building / Apartment</label>
+                      <input type="text" value={addressData.building} onChange={e => setAddressData({...addressData, building: e.target.value})} placeholder="e.g. Sunset Apts" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">House / Unit No.</label>
+                      <input type="text" value={addressData.houseNo} onChange={e => setAddressData({...addressData, houseNo: e.target.value})} placeholder="e.g. B4" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Additional Instructions</label>
+                    <textarea value={addressData.instructions} onChange={e => setAddressData({...addressData, instructions: e.target.value})} placeholder="e.g. Leave at reception" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none min-h-[80px]" />
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
-          {/* STEP 1: DELIVERY METHOD */}
-          <section className="bg-white p-6 md:p-8 border border-gray-200 shadow-sm">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Step 1: Delivery Method</h2>
-            <div className="border-2 border-black p-6 cursor-pointer bg-gray-50 relative">
-              <div className="absolute top-4 right-4 w-5 h-5 rounded-full border-4 border-black bg-white"></div>
-              <p className="text-lg font-bold mb-1">🚚 Deliver to My Location</p>
-              <p className="text-xs text-gray-500">Fast, secure delivery to your doorstep.</p>
+          {/* =========================================
+              STEP 2: ORDER SUMMARY / ITEMS
+          ========================================= */}
+          {step === 2 && (
+            <div className="animate-fade-in">
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Order Summary</h2>
+              
+              <div className="space-y-4 mb-8">
+                {cartItems.map((item, idx) => (
+                  <div key={idx} className="flex gap-4 border border-gray-200 p-4">
+                    <img src={item.primaryImage || item.image} alt={item.name} className="w-20 h-24 object-cover bg-gray-100" />
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <p className="text-sm font-bold uppercase line-clamp-2">{item.name}</p>
+                        <p className="text-xs text-gray-500 mt-1">Size: {item.size} | Qty: {item.quantity}</p>
+                      </div>
+                      <p className="text-sm font-bold mt-2">Ksh {((item.salePrice || item.originalPrice || item.price) * item.quantity).toLocaleString()}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border border-gray-200 p-6 bg-gray-50 space-y-3 mb-6">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Product Subtotal</span>
+                  <span>Ksh {subtotal.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Delivery Fee</span>
+                  <span>Ksh {deliveryFee.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Tax (VAT 16%)</span>
+                  <span>Ksh {tax.toLocaleString()}</span>
+                </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-sm text-green-600 font-bold">
+                    <span>Discount</span>
+                    <span>-Ksh {discount.toLocaleString()}</span>
+                  </div>
+                )}
+                
+                <div className="border-t border-gray-200 pt-4 flex justify-between items-center mt-4">
+                  <span className="font-bold uppercase tracking-widest">Total</span>
+                  <span className="text-xl font-bold">Ksh {total.toLocaleString()}</span>
+                </div>
+              </div>
+
+              {/* Promo Code */}
+              <div className="mb-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest mb-2">Promo Code</p>
+                {!appliedPromo ? (
+                  <div className="flex gap-2">
+                    <input type="text" value={promoInput} onChange={e => setPromoInput(e.target.value.toUpperCase())} placeholder="Enter code" className="flex-1 border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                    <button onClick={handleApplyPromo} disabled={promoLoading} className="bg-black text-white px-6 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50">
+                      Apply
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex justify-between items-center bg-green-50 text-green-800 p-4 text-sm border border-green-200">
+                    <span className="font-bold">✓ {appliedPromo.code} Applied</span>
+                    <button onClick={removePromo} className="underline hover:no-underline">Remove</button>
+                  </div>
+                )}
+                {promoError && <p className="text-red-500 text-[10px] mt-2">{promoError}</p>}
+              </div>
+
             </div>
-          </section>
+          )}
 
-          {/* STEP 2: LOCATION SELECTION */}
-          <section className="bg-white p-6 md:p-8 border border-gray-200 shadow-sm">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Step 2: Location Selection</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              <button 
-                onClick={handleUseCurrentLocation}
-                className={`p-6 border-2 transition-colors text-center ${locationMode === 'current' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
-              >
-                <span className="text-2xl block mb-2">📍</span>
-                <span className="block font-bold text-sm uppercase tracking-wider">Use Current Location</span>
-                <span className="block text-[10px] text-gray-500 mt-1">Recommended for accuracy</span>
-              </button>
-
-              <button 
-                onClick={() => setLocationMode('manual')}
-                className={`p-6 border-2 transition-colors text-center ${locationMode === 'manual' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
-              >
-                <span className="text-2xl block mb-2">✍️</span>
-                <span className="block font-bold text-sm uppercase tracking-wider">Enter Manually</span>
-                <span className="block text-[10px] text-gray-500 mt-1">Type your address details</span>
-              </button>
-            </div>
-
-            {locationMode === 'manual' && (
-              <div className="space-y-4 animate-fade-in border border-gray-100 p-6 bg-gray-50/50">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">County *</label>
-                    <input type="text" value={addressData.county} onChange={e => setAddressData({...addressData, county: e.target.value})} placeholder="e.g. Nairobi" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Sub County</label>
-                    <input type="text" value={addressData.subCounty} onChange={e => setAddressData({...addressData, subCounty: e.target.value})} placeholder="e.g. Westlands" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Constituency</label>
-                    <input type="text" value={addressData.constituency} onChange={e => setAddressData({...addressData, constituency: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Ward (Optional)</label>
-                    <input type="text" value={addressData.ward} onChange={e => setAddressData({...addressData, ward: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Estate / Area *</label>
-                    <input type="text" value={addressData.area} onChange={e => setAddressData({...addressData, area: e.target.value})} placeholder="e.g. Kileleshwa" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Building / Apartment</label>
-                    <input type="text" value={addressData.building} onChange={e => setAddressData({...addressData, building: e.target.value})} placeholder="e.g. Sunset Apts" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">House / Unit No.</label>
-                    <input type="text" value={addressData.houseNo} onChange={e => setAddressData({...addressData, houseNo: e.target.value})} placeholder="e.g. B4" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-                  </div>
+          {/* =========================================
+              STEP 3: PAYMENT / CONFIRMATION
+          ========================================= */}
+          {step === 3 && (
+            <div className="animate-fade-in">
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Contact & Payment</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Full Name *</label>
+                  <input type="text" value={contactInfo.fullName} onChange={e => setContactInfo({...contactInfo, fullName: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Additional Instructions</label>
-                  <textarea value={addressData.instructions} onChange={e => setAddressData({...addressData, instructions: e.target.value})} placeholder="e.g. Leave at reception" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none min-h-[80px]" />
+                  <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Phone Number *</label>
+                  <input type="tel" value={contactInfo.phone} onChange={e => setContactInfo({...contactInfo, phone: e.target.value})} placeholder="07XXXXXXXX" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Email Address *</label>
+                  <input type="email" value={contactInfo.email} onChange={e => setContactInfo({...contactInfo, email: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
                 </div>
               </div>
-            )}
-          </section>
 
-          {/* STEP 3: MAP PREVIEW */}
-          <section className="bg-white p-6 md:p-8 border border-gray-200 shadow-sm relative overflow-hidden">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Step 3: Map Confirmation</h2>
-            
-            <div className="flex flex-col md:flex-row gap-6 bg-gray-50 border border-gray-200 p-4 rounded-lg">
-              <div className="w-full md:w-1/2 h-48 bg-gray-200 rounded overflow-hidden">
-                {isLoaded ? (
-                  <GoogleMap
-                    mapContainerStyle={{ width: '100%', height: '100%' }}
-                    center={addressData.mapsPin}
-                    zoom={15}
-                    onClick={onMapClick}
-                    options={{ disableDefaultUI: true, zoomControl: true }}
-                  >
-                    <Marker position={addressData.mapsPin} />
-                  </GoogleMap>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">Loading Map...</div>
-                )}
-              </div>
-              <div className="w-full md:w-1/2 flex flex-col justify-center">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Pin Location</p>
-                <p className="font-bold text-sm mb-4">
-                  {locationMode === 'current' ? 'Using Live GPS Coordinates' : (addressData.area ? `${addressData.area}, ${addressData.county}` : 'Manual Address Pending')}
-                </p>
-                
-                <div className="flex justify-between border-t border-gray-200 pt-4 mb-2">
-                  <span className="text-xs text-gray-600">Estimated Time</span>
-                  <span className="text-xs font-bold">2-3 Days</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-xs text-gray-600">Delivery Fee</span>
-                  <span className="text-xs font-bold">Ksh {deliveryFee}</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* STEP 4: CONTACT INFO */}
-          <section className="bg-white p-6 md:p-8 border border-gray-200 shadow-sm">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Step 4: Contact Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Full Name *</label>
-                <input type="text" value={contactInfo.fullName} onChange={e => setContactInfo({...contactInfo, fullName: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-              </div>
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Phone Number *</label>
-                <input type="tel" value={contactInfo.phone} onChange={e => setContactInfo({...contactInfo, phone: e.target.value})} placeholder="07XXXXXXXX" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-[10px] font-bold uppercase tracking-widest mb-2 text-gray-700">Email Address *</label>
-                <input type="email" value={contactInfo.email} onChange={e => setContactInfo({...contactInfo, email: e.target.value})} className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none" />
-              </div>
-            </div>
-          </section>
-
-          {/* STEP 6: PAYMENT METHOD */}
-          <section className="bg-white p-6 md:p-8 border border-gray-200 shadow-sm">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Step 5: Payment Method</h2>
-            
-            <div className="space-y-4">
-              {/* M-PESA */}
-              <label className={`block border p-4 cursor-pointer transition-colors ${paymentMethod === 'mpesa' ? 'border-[#4CAF50] bg-green-50' : 'border-gray-200 hover:border-gray-400'}`}>
-                <div className="flex items-center gap-3">
-                  <input type="radio" name="payment" checked={paymentMethod === 'mpesa'} onChange={() => setPaymentMethod('mpesa')} className="text-[#4CAF50] focus:ring-[#4CAF50]" />
-                  <span className="font-bold text-sm tracking-wider">M-PESA (Default)</span>
-                </div>
-                {paymentMethod === 'mpesa' && (
-                  <div className="mt-4 pl-7 animate-fade-in">
-                    <p className="text-xs text-gray-600 mb-2">We will send an STK push to this number when you place the order.</p>
-                    <input type="tel" value={mpesaPhone} onChange={e => setMpesaPhone(e.target.value)} placeholder="07XXXXXXXX" className="w-full md:w-1/2 border border-green-300 p-2 text-sm focus:border-[#4CAF50] outline-none bg-white" />
+              <h3 className="text-xs font-bold uppercase tracking-widest mb-4">Payment Method</h3>
+              <div className="space-y-4">
+                {/* M-PESA */}
+                <label className={`block border p-4 cursor-pointer transition-colors ${paymentMethod === 'mpesa' ? 'border-[#4CAF50] bg-green-50' : 'border-gray-200 hover:border-gray-400'}`}>
+                  <div className="flex items-center gap-3">
+                    <input type="radio" name="payment" checked={paymentMethod === 'mpesa'} onChange={() => setPaymentMethod('mpesa')} className="text-[#4CAF50] focus:ring-[#4CAF50]" />
+                    <span className="font-bold text-sm tracking-wider">M-PESA (Default)</span>
                   </div>
-                )}
-              </label>
+                  {paymentMethod === 'mpesa' && (
+                    <div className="mt-4 pl-7 animate-fade-in">
+                      <p className="text-xs text-gray-600 mb-2">We will send an STK push to this number when you place the order.</p>
+                      <input type="tel" value={mpesaPhone} onChange={e => setMpesaPhone(e.target.value)} placeholder="07XXXXXXXX" className="w-full md:w-1/2 border border-green-300 p-2 text-sm focus:border-[#4CAF50] outline-none bg-white" />
+                    </div>
+                  )}
+                </label>
 
-              {/* CARD */}
-              <label className={`block border p-4 cursor-pointer transition-colors ${paymentMethod === 'card' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}>
-                <div className="flex items-center gap-3">
-                  <input type="radio" name="payment" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="text-black focus:ring-black" />
-                  <span className="font-bold text-sm tracking-wider">Credit / Debit Card</span>
-                </div>
-              </label>
+                {/* CARD */}
+                <label className={`block border p-4 cursor-pointer transition-colors ${paymentMethod === 'card' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}>
+                  <div className="flex items-center gap-3">
+                    <input type="radio" name="payment" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="text-black focus:ring-black" />
+                    <span className="font-bold text-sm tracking-wider">Credit / Debit Card</span>
+                  </div>
+                </label>
 
-              {/* COD */}
-              <label className={`block border p-4 cursor-pointer transition-colors ${paymentMethod === 'cod' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}>
-                <div className="flex items-center gap-3">
-                  <input type="radio" name="payment" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="text-black focus:ring-black" />
-                  <span className="font-bold text-sm tracking-wider">Cash on Delivery</span>
-                </div>
-              </label>
+                {/* COD */}
+                <label className={`block border p-4 cursor-pointer transition-colors ${paymentMethod === 'cod' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}>
+                  <div className="flex items-center gap-3">
+                    <input type="radio" name="payment" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="text-black focus:ring-black" />
+                    <span className="font-bold text-sm tracking-wider">Cash on Delivery</span>
+                  </div>
+                </label>
+              </div>
+
             </div>
-          </section>
+          )}
 
         </div>
 
-        {/* RIGHT COLUMN: STICKY ORDER SUMMARY */}
-        <div className="w-full lg:w-[380px] flex-shrink-0">
-          <div className="sticky top-24 bg-white border border-gray-200 shadow-sm p-6 mb-8">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Order Summary</h2>
-            
-            <div className="space-y-4 mb-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-              {cartItems.map((item, idx) => (
-                <div key={idx} className="flex gap-4">
-                  <img src={item.primaryImage || item.image} alt={item.name} className="w-16 h-20 object-cover bg-gray-100" />
-                  <div className="flex-1">
-                    <p className="text-xs font-bold uppercase line-clamp-2">{item.name}</p>
-                    <p className="text-[10px] text-gray-500 mt-1">Size: {item.size} | Qty: {item.quantity}</p>
-                    <p className="text-xs font-bold mt-1">Ksh {((item.salePrice || item.originalPrice || item.price) * item.quantity).toLocaleString()}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="border-t border-gray-200 pt-4 space-y-3 mb-6">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Product Subtotal</span>
-                <span>Ksh {subtotal.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Delivery Fee</span>
-                <span>Ksh {deliveryFee.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Tax (VAT 16%)</span>
-                <span>Ksh {tax.toLocaleString()}</span>
-              </div>
-              {discount > 0 && (
-                <div className="flex justify-between text-sm text-green-600 font-bold">
-                  <span>Discount</span>
-                  <span>-Ksh {discount.toLocaleString()}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Promo Code */}
-            <div className="mb-6">
-              <p className="text-[10px] font-bold uppercase tracking-widest mb-2">Promo Code</p>
-              {!appliedPromo ? (
-                <div className="flex gap-2">
-                  <input type="text" value={promoInput} onChange={e => setPromoInput(e.target.value.toUpperCase())} placeholder="Enter code" className="flex-1 border border-gray-300 p-2 text-sm focus:border-black outline-none" />
-                  <button onClick={handleApplyPromo} disabled={promoLoading} className="bg-black text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50">
-                    Apply
-                  </button>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center bg-green-50 text-green-800 p-3 text-xs border border-green-200">
-                  <span className="font-bold">✓ {appliedPromo.code}</span>
-                  <button onClick={removePromo} className="underline hover:no-underline">Remove</button>
-                </div>
-              )}
-              {promoError && <p className="text-red-500 text-[10px] mt-2">{promoError}</p>}
-            </div>
-
-            <div className="border-t border-gray-200 pt-4 flex justify-between items-center mb-6">
-              <span className="font-bold uppercase tracking-widest">Total</span>
-              <span className="text-xl font-bold">Ksh {total.toLocaleString()}</span>
-            </div>
-
-            {/* Desktop Place Order Button (hidden on mobile, shown in bottom bar instead) */}
+        {/* =========================================
+            NAVIGATION BUTTONS
+        ========================================= */}
+        <div className="flex justify-between items-center border-t border-gray-200 pt-6">
+          {step > 1 ? (
+            <button 
+              onClick={() => { setStep(step - 1); window.scrollTo(0,0); }} 
+              className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black flex items-center gap-2"
+            >
+              <span>←</span> Previous
+            </button>
+          ) : (
+            <div></div> // Spacer to keep Next button on the right
+          )}
+          
+          {step < 3 ? (
+            <button 
+              onClick={() => { setStep(step + 1); window.scrollTo(0,0); }}
+              disabled={step === 1 && !isStep1Valid()}
+              className="bg-black text-white px-8 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              Next Step <span>→</span>
+            </button>
+          ) : (
             <button 
               onClick={handlePlaceOrderClick}
               disabled={loading}
-              className="hidden lg:flex w-full bg-black text-white py-4 justify-center items-center gap-2 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors disabled:opacity-50"
+              className="bg-black text-white px-10 py-4 text-[12px] font-bold uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50 flex items-center gap-2"
             >
               {loading ? 'Processing...' : 'Place Order'}
             </button>
-          </div>
+          )}
         </div>
 
-      </div>
-
-      {/* MOBILE FIXED BOTTOM BAR */}
-      <div className="lg:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50 flex justify-between items-center">
-        <div>
-          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Total Amount</p>
-          <p className="text-lg font-bold">Ksh {total.toLocaleString()}</p>
-        </div>
-        <button 
-          onClick={handlePlaceOrderClick}
-          disabled={loading}
-          className="bg-black text-white px-8 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 disabled:opacity-50"
-        >
-          {loading ? 'Processing...' : 'Place Order'}
-        </button>
       </div>
 
       {/* MPESA PROMPT MODAL */}
