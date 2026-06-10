@@ -11,36 +11,14 @@ export function AnalyticsProvider({ children }) {
     // 1. Check existing consent state
     const hasConsent = localStorage.getItem('REVOLT_COOKIE_CONSENT') === 'true';
 
-    // 2. Initialize window.dataLayer and gtag function
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-    window.gtag = gtag;
-
-    // 3. Set Default Consent (before the tag loads)
-    // If they already consented, grant it. Otherwise, deny it.
-    gtag('consent', 'default', {
-      ad_storage: hasConsent ? 'granted' : 'denied',
-      analytics_storage: hasConsent ? 'granted' : 'denied',
-      ad_user_data: hasConsent ? 'granted' : 'denied',
-      ad_personalization: hasConsent ? 'granted' : 'denied',
-      wait_for_update: 500
-    });
-
-    // 4. Load the GA script dynamically
-    const scriptId = 'ga4-script';
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-      document.head.appendChild(script);
-
-      // 5. Initialize config
-      gtag('js', new Date());
-      gtag('config', measurementId, {
-        send_page_view: false // We will handle page views manually to support SPA routing
+    // 2. We skip script injection because it is now directly in index.html
+    // but we can update consent if it was already granted
+    if (hasConsent && window.gtag) {
+      window.gtag('consent', 'update', {
+        ad_storage: 'granted',
+        analytics_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted'
       });
     }
   }, [measurementId]);
