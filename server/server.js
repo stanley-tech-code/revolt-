@@ -1285,8 +1285,15 @@ app.post('/api/analytics/ping', async (req, res) => {
       const { data: trafficDoc } = await supabase.from('cms').select('data').eq('type', 'traffic').maybeSingle();
       let traffic = trafficDoc?.data || {};
       
-      if (!traffic[today]) {
-        traffic[today] = { total: 0, registered: 0, guest: 0, hours: {}, devices: { mobile: 0, desktop: 0 } };
+      if (!traffic[today] || typeof traffic[today] !== 'object') {
+        const legacyTotal = typeof traffic[today] === 'number' ? traffic[today] : 0;
+        traffic[today] = { 
+          total: legacyTotal, 
+          registered: 0, 
+          guest: legacyTotal, // Assume legacy traffic was guest
+          hours: {}, 
+          devices: { mobile: 0, desktop: legacyTotal } 
+        };
       }
       
       traffic[today].total += 1;

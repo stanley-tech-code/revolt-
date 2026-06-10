@@ -101,7 +101,15 @@ export default function AdminAnalytics() {
   last30Days.forEach(dateStr => {
     const d = new Date(dateStr);
     historyLabels.push(`${d.getMonth()+1}/${d.getDate()}`);
-    const dayData = historical[dateStr] || { total: 0, registered: 0, guest: 0 };
+    let dayData = historical[dateStr];
+    
+    // Handle legacy numeric data gracefully
+    if (typeof dayData === 'number') {
+      dayData = { total: dayData, registered: 0, guest: dayData };
+    } else if (!dayData) {
+      dayData = { total: 0, registered: 0, guest: 0 };
+    }
+    
     historyTotal.push(dayData.total);
     historyRegistered.push(dayData.registered);
     historyGuest.push(dayData.guest);
@@ -132,7 +140,8 @@ export default function AdminAnalytics() {
     const diffWeeks = Math.floor(diffTime / msPerWeek);
     if (diffWeeks < 5) {
       const idx = 4 - diffWeeks;
-      wowData[idx] += (historical[dateStr]?.total || 0);
+      const val = typeof historical[dateStr] === 'number' ? historical[dateStr] : (historical[dateStr]?.total || 0);
+      wowData[idx] += val;
     }
   });
 
