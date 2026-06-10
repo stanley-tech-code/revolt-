@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useCms } from '../../context/CmsContext';
+import { useAnalytics } from '../../context/AnalyticsContext';
 
 export default function CookieBanner() {
   const { db } = useCms();
+  const { updateConsent } = useAnalytics();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -17,6 +19,7 @@ export default function CookieBanner() {
 
   const acceptCookies = () => {
     localStorage.setItem('REVOLT_COOKIE_CONSENT', 'true');
+    updateConsent(true);
     setIsVisible(false);
   };
 

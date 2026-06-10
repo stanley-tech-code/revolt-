@@ -3,10 +3,12 @@ import { useStore } from '../../context/StoreContext';
 import { useCms } from '../../context/CmsContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { performSearch } from '../../utils/searchUtils';
+import { useAnalytics } from '../../context/AnalyticsContext';
 
 export default function SearchModal() {
   const { isSearchOpen, closeSearch } = useStore();
   const { db } = useCms();
+  const { trackEvent } = useAnalytics();
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -22,6 +24,18 @@ export default function SearchModal() {
   const handleProductClick = (id) => {
     closeSearch();
     navigate(`/product/${id}`);
+  };
+
+  const handleSearchSubmit = () => {
+    if (query.trim()) {
+      trackEvent('search', { search_term: query.trim() });
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearchSubmit();
+    }
   };
 
   if (!isSearchOpen) return null;
@@ -46,8 +60,9 @@ export default function SearchModal() {
               className="w-full text-[28px] md:text-[42px] font-bold uppercase tracking-wider outline-none bg-transparent placeholder-gray-300"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
-            <button className="absolute right-0 bottom-4 p-2">
+            <button onClick={handleSearchSubmit} className="absolute right-0 bottom-4 p-2">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2">
                 <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/>
               </svg>

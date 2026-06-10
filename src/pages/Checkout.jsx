@@ -2,17 +2,29 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
+import { useAnalytics } from '../context/AnalyticsContext';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { kenyaGeoData } from '../data/kenyaGeoData';
 
 export default function Checkout() {
   const { cartItems, removeFromCart, clearCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
   const { currentUser } = useAuth();
+  const { trackEvent } = useAnalytics();
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      trackEvent('begin_checkout', {
+        currency: 'KES',
+        value: getCartTotal(),
+        items: cartItems.map(item => ({ item_id: item.id, item_name: item.name, price: item.price, quantity: item.quantity }))
+      });
+    }
+  }, []);
 
   // Promo State
   const [promoInput, setPromoInput] = useState('');
@@ -212,6 +224,13 @@ export default function Checkout() {
 
       const data = await res.json();
       if (!data.success) throw new Error(data.error || 'Checkout failed');
+
+      trackEvent('purchase', {
+        transaction_id: data.order.id,
+        currency: 'KES',
+        value: total,
+        items: cartItems.map(item => ({ item_id: item.id, item_name: item.name, price: item.price, quantity: item.quantity }))
+      });
 
       setOrderConfirmed(data.order);
       clearCart();

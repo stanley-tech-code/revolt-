@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import { useCms } from './context/CmsContext';
 import { StoreProvider } from './context/StoreContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { AnalyticsProvider, useAnalytics } from './context/AnalyticsContext';
 import CartDrawer from './components/ui/CartDrawer';
 import SearchModal from './components/ui/SearchModal';
 import CookieBanner from './components/ui/CookieBanner';
@@ -63,6 +64,7 @@ const Checkout = lazy(() => import('./pages/Checkout'));
 function ClientLayout() {
   const { db, isLoading } = useCms();
   const { currentUser } = useAuth();
+  const { trackPageView, setUserProperties } = useAnalytics();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Close menu on route change
@@ -74,6 +76,19 @@ function ClientLayout() {
     window.scrollTo(0, 0);
     if (db?.seo?.title) {
       document.title = db.seo.title;
+    }
+
+    // GA4 Page View Tracking
+    trackPageView(location.pathname);
+    
+    // GA4 User Properties Sync
+    if (currentUser) {
+      setUserProperties({
+        user_type: 'registered',
+        registration_date: currentUser.created_at || new Date().toISOString()
+      });
+    } else {
+      setUserProperties({ user_type: 'guest' });
     }
     
     // Handle Live Analytics Telemetry
@@ -178,8 +193,9 @@ function ClientLayout() {
 function App() {
   return (
     <AuthProvider>
-      <StoreProvider>
-        <Router>
+      <AnalyticsProvider>
+        <StoreProvider>
+          <Router>
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white"><div className="w-12 h-12 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div></div>}>
           <Routes>
             {/* ADMIN ROUTES */}
@@ -256,8 +272,9 @@ function App() {
             </Route>
           </Routes>
           </Suspense>
-        </Router>
-      </StoreProvider>
+          </Router>
+        </StoreProvider>
+      </AnalyticsProvider>
     </AuthProvider>
   );
 }

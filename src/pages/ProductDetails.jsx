@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useCms } from '../context/CmsContext';
 import { useAuth } from '../context/AuthContext';
+import { useAnalytics } from '../context/AnalyticsContext';
 import ProductCard from '../components/ui/ProductCard';
 
 export default function ProductDetails() {
@@ -10,6 +11,7 @@ export default function ProductDetails() {
   const { db, isLoading } = useCms();
   const { addToCart, toggleWishlist, wishlist } = useStore();
   const { currentUser } = useAuth();
+  const { trackEvent } = useAnalytics();
 
   const product = db.products?.find(p => {
     if (p.id === id) return true;
@@ -103,6 +105,16 @@ export default function ProductDetails() {
   }, [aiRec?.size, product?.sizes]);
 
   useEffect(() => {
+    if (product) {
+      trackEvent('view_item', {
+        currency: 'KES',
+        value: product.price,
+        items: [{ item_id: product.id, item_name: product.name, price: product.price, item_category: product.mainCategory }]
+      });
+    }
+  }, [product?.id]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
     if (product) {
       const defaultColor = product.colors && product.colors.length > 0 
@@ -150,6 +162,13 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     if (!selectedSize) return;
+    
+    trackEvent('add_to_cart', {
+      currency: 'KES',
+      value: product.price,
+      items: [{ item_id: product.id, item_name: product.name, price: product.price, item_category: product.mainCategory }]
+    });
+
     addToCart({
       id: product.id,
       name: product.name,

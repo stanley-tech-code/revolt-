@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useAnalytics } from '../../context/AnalyticsContext';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ export default function Register() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
+  const { trackEvent } = useAnalytics();
   const navigate = useNavigate();
 
   // Simple password strength calculation
@@ -59,6 +61,7 @@ export default function Register() {
     
     if (res.success) {
       setIsSuccess(true);
+      trackEvent('sign_up', { method: 'email' });
       setTimeout(() => {
         navigate('/account');
       }, 2000);

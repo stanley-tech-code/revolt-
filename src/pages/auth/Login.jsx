@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useAnalytics } from '../../context/AnalyticsContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const { trackEvent } = useAnalytics();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,6 +22,7 @@ export default function Login() {
 
     const res = await login(email, password);
     if (res.success) {
+      trackEvent('login', { method: 'email' });
       navigate(from, { replace: true });
     } else {
       setError(res.error || 'Failed to login');
