@@ -9,7 +9,7 @@ import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import { useCms } from './context/CmsContext';
 import { StoreProvider } from './context/StoreContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import CartDrawer from './components/ui/CartDrawer';
 import SearchModal from './components/ui/SearchModal';
 import CookieBanner from './components/ui/CookieBanner';
@@ -62,6 +62,7 @@ const Checkout = lazy(() => import('./pages/Checkout'));
 
 function ClientLayout() {
   const { db, isLoading } = useCms();
+  const { currentUser } = useAuth();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Close menu on route change
@@ -75,13 +76,31 @@ function ClientLayout() {
       document.title = db.seo.title;
     }
     
-    // Throttle API tracking to once per session
-    if (!sessionStorage.getItem('revolt_visit_tracked')) {
-      fetch('/api/track-visit', { method: 'POST' })
-        .then(() => sessionStorage.setItem('revolt_visit_tracked', 'true'))
-        .catch(() => {});
+    // Handle Live Analytics Telemetry
+    let sessionId = sessionStorage.getItem('revolt_session_id');
+    if (!sessionId) {
+      sessionId = Math.random().toString(36).substring(2) + Date.now().toString(36);
+      sessionStorage.setItem('revolt_session_id', sessionId);
     }
-  }, [location.pathname, db?.seo?.title]);
+
+    const trackVisit = () => {
+      fetch('/api/analytics/ping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId,
+          isRegistered: !!currentUser,
+          path: location.pathname,
+          device: /Mobile|Android|iP(ad|hone|od)/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
+        })
+      }).catch(() => {});
+    };
+
+    trackVisit(); // Ping on route change
+    const interval = setInterval(trackVisit, 30000); // Ping every 30s
+    
+    return () => clearInterval(interval);
+  }, [location.pathname, db?.seo?.title, currentUser]);
 
   // Inject Custom Scripts
   React.useEffect(() => {
@@ -173,6 +192,7 @@ function App() {
             }>
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="products" element={<AdminProducts />} />
               <Route path="orders" element={<AdminOrders />} />
               <Route path="returns" element={<AdminReturns />} />

@@ -21,6 +21,17 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const JWT_SECRET = 'REVOLT_ELITE_SECRET_JWT_KEY_992';
 
+// --- LIVE ANALYTICS MEMORY STORE ---
+const activeSessions = new Map();
+setInterval(() => {
+  const now = Date.now();
+  for (const [sessionId, data] of activeSessions.entries()) {
+    if (now - data.lastSeen > 5 * 60 * 1000) { // 5 minutes inactive
+      activeSessions.delete(sessionId);
+    }
+  }
+}, 60000);
+
 // Ensure public upload directories exist (Local dev only)
 const UPLOADS_DIR = process.env.VERCEL ? '/tmp/uploads' : path.join(__dirname, '../public/uploads');
 try {
@@ -1252,15 +1263,83 @@ app.put('/api/seo', verifyToken, async (req, res) => {
 });
 
 // --- ANALYTICS AND TRAFFIC ---
-app.post('/api/track-visit', async (req, res) => {
-  const today = new Date().toISOString().split('T')[0];
+app.post('/api/analytics/ping', async (req, res) => {
+  const { sessionId, isRegistered, path, device } = req.body;
+  if (!sessionId) return res.status(400).json({ success: false });
+
+  const now = Date.now();
+  const isNewSession = !activeSessions.has(sessionId);
+  
+  activeSessions.set(sessionId, {
+    lastSeen: now,
+    isRegistered: !!isRegistered,
+    path: path || '/',
+    device: device || 'desktop'
+  });
+
+  if (isNewSession) {
+    const today = new Date().toISOString().split('T')[0];
+    const hour = new Date().getHours().toString();
+    
+    try {
+      const { data: trafficDoc } = await supabase.from('cms').select('data').eq('type', 'traffic').maybeSingle();
+      let traffic = trafficDoc?.data || {};
+      
+      if (!traffic[today]) {
+        traffic[today] = { total: 0, registered: 0, guest: 0, hours: {}, devices: { mobile: 0, desktop: 0 } };
+      }
+      
+      traffic[today].total += 1;
+      if (isRegistered) {
+        traffic[today].registered += 1;
+      } else {
+        traffic[today].guest += 1;
+      }
+      
+      traffic[today].hours[hour] = (traffic[today].hours[hour] || 0) + 1;
+      
+      const deviceKey = device === 'mobile' ? 'mobile' : 'desktop';
+      traffic[today].devices[deviceKey] = (traffic[today].devices[deviceKey] || 0) + 1;
+      
+      await supabase.from('cms').upsert({ type: 'traffic', data: traffic });
+    } catch (err) {
+      console.error('Error updating traffic stats:', err);
+    }
+  }
+
+  return res.json({ success: true });
+});
+
+app.get('/api/admin/live-analytics', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin' && req.user.role !== 'Editor') {
+    return res.status(403).json({ success: false, error: 'Unauthorized' });
+  }
+  
+  const activeCount = activeSessions.size;
+  let activeRegistered = 0;
+  let activeGuest = 0;
+  
+  for (const data of activeSessions.values()) {
+    if (data.isRegistered) activeRegistered++;
+    else activeGuest++;
+  }
+  
   try {
-    const { data: trafficDoc } = await supabase.from('cms').select('data').eq('type', 'traffic').single();
-    let traffic = trafficDoc?.data || {};
-    traffic[today] = (traffic[today] || 0) + 1;
-    await supabase.from('cms').upsert({ type: 'traffic', data: traffic });
-    return res.json({ success: true });
-  } catch(err) {
+    const { data: trafficDoc } = await supabase.from('cms').select('data').eq('type', 'traffic').maybeSingle();
+    const { data: users } = await supabase.from('users').select('created_at').eq('role', 'client');
+    
+    return res.json({
+      success: true,
+      live: {
+        total: activeCount,
+        registered: activeRegistered,
+        guest: activeGuest
+      },
+      historical: trafficDoc?.data || {},
+      users: users || []
+    });
+  } catch (err) {
+    console.error('Live analytics error:', err);
     return res.status(500).json({ success: false });
   }
 });
