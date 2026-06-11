@@ -10,10 +10,10 @@ export default function ProductEditor({ product, onClose }) {
 
   // Define Category Hierarchy
   const CATEGORY_MAP = {
-    'new-in': ['all-new-arrivals', 'back-in-stock', 'coming-soon', 'pre-order'],
-    clothing: ['dresses', 'hoodies', 'sweatshirts', 'leggings', 'maternity', 'tops-bodysuits', 'pants', 'pajamas', 'shorts', 'skirts', 'tees-tanks'],
-    bras: ['t-shirt-bras', 'strapless', 'full-coverage', 'maternity', 'lined', 'push-up', 'unlined', 'lightly-lined'],
-    underwear: ['thongs', 'cheeky', 'maternity', 'seamless'],
+    'new-in': ['all-new-arrivals', 'the-editorial-edit', 'trend-guide', 'back-in-stock', 'coming-soon', 'pre-order'],
+    clothing: ['all-clothing', 'two-piece-matching-sets', 'clothing-guide', 'dresses', 'hoodies', 'sweatshirts', 'leggings', 'maternity', 'tops-bodysuits', 'pants', 'pajamas', 'shorts', 'skirts', 'tees-tanks'],
+    bras: ['all-bras', 'everyday-comfort', 'bra-fit-guide', 't-shirt-bras', 'strapless', 'full-coverage', 'maternity', 'lined', 'push-up', 'unlined', 'lightly-lined'],
+    underwear: ['all-underwear', 'multi-packs', 'underwear-guide', 'thongs', 'cheeky', 'maternity', 'seamless'],
     accessories: ['bags', 'glasses-shades', 'belts', 'perfumes'],
     swimwear: ['bikinis', 'swimsuits', 'swim-cover-ups']
   };
