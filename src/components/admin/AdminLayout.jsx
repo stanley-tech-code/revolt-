@@ -62,6 +62,7 @@ export default function AdminLayout() {
     { name: 'Newsletter', path: '/admin/newsletter', roles: ['Super Admin', 'Marketing'] },
     { name: 'Twilio Settings', path: '/admin/twilio', roles: ['Super Admin'] },
     { name: 'Settings', path: '/admin/settings', roles: ['Super Admin'] },
+    { name: 'System Backups', path: '/admin/backups', roles: ['Super Admin'] },
   ];
 
   return (

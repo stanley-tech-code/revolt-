@@ -11,6 +11,7 @@ import twilio from 'twilio';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
+import { exec } from 'child_process';
 
 dotenv.config();
 
@@ -785,6 +786,93 @@ app.post('/api/factory-reset', verifyToken, async (req, res) => {
     return res.status(500).json({ success: false, error: 'Factory reset failed.' });
   }
 });
+
+// --- NEW SYSTEM BACKUPS & RESTORE ---
+app.get('/api/system-backups', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
+  try {
+    const backupDir = path.join(__dirname, 'db', 'backups');
+    if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+    
+    const files = fs.readdirSync(backupDir).filter(f => f.endsWith('.json'));
+    const backups = files.map(f => {
+      const stats = fs.statSync(path.join(backupDir, f));
+      // filename format: backup-2026-06-11T13-10-52-630Z-manual.json or backup-timestamp.json
+      const parts = f.replace('.json', '').split('-');
+      const trigger = parts.length > 5 ? parts[parts.length - 1] : 'manual';
+      
+      return {
+        filename: f,
+        size: stats.size,
+        createdAt: stats.birthtime,
+        trigger: trigger === 'manual' || trigger === 'auto' ? trigger : 'manual'
+      };
+    }).sort((a, b) => b.createdAt - a.createdAt);
+
+    // Get restoration history
+    const { data: logs } = await supabase
+      .from('logs')
+      .select('*')
+      .like('action', 'Restored database from backup file:%')
+      .order('timestamp', { ascending: false });
+
+    return res.json({ success: true, backups, history: logs || [] });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Failed to list backups.' });
+  }
+});
+
+app.post('/api/system-backups/create', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
+  try {
+    exec('node backup_db.cjs manual', { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Backup creation failed:', error);
+        return res.status(500).json({ success: false, error: 'Backup process failed.' });
+      }
+      return res.json({ success: true, message: 'Backup created successfully.' });
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Backup request failed.' });
+  }
+});
+
+app.post('/api/system-backups/restore', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
+  const { filename } = req.body;
+  if (!filename) return res.status(400).json({ success: false, error: 'Filename required.' });
+  try {
+    const backupPath = `server/db/backups/${filename}`;
+    exec(`node restore_db_full.cjs "${backupPath}" "${req.user.username}"`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Restore failed:', error);
+        return res.status(500).json({ success: false, error: 'Restore process failed.' });
+      }
+      return res.json({ success: true, message: 'Database restored successfully.' });
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Restore request failed.' });
+  }
+});
+
+app.get('/api/system-backups/download/:filename', verifyToken, async (req, res) => {
+  if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
+  const { filename } = req.params;
+  const filePath = path.join(__dirname, 'db', 'backups', filename);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ success: false, error: 'File not found.' });
+  }
+  res.download(filePath, filename);
+});
+
+// Auto-backup interval (every 24 hours)
+setInterval(() => {
+  console.log('Running daily automatic backup...');
+  exec('node backup_db.cjs auto', { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+    if (error) console.error('Auto backup failed:', error);
+    else console.log('Auto backup success.');
+  });
+}, 24 * 60 * 60 * 1000);
 
 // --- CRUD PRODUCTS INVENTORY ROUTERS ---
 app.get('/api/products', async (req, res) => {
