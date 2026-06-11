@@ -58,6 +58,13 @@ const CollectionPage = lazy(() => import('./pages/CollectionPage'));
 const Preferences = lazy(() => import('./pages/Preferences'));
 const PolicyPage = lazy(() => import('./pages/PolicyPage'));
 
+// LAZY LOADED GUIDES
+const TrendGuide = lazy(() => import('./pages/guides/TrendGuide'));
+const ClothingGuide = lazy(() => import('./pages/guides/ClothingGuide'));
+const BraFitGuide = lazy(() => import('./pages/guides/BraFitGuide'));
+const UnderwearGuide = lazy(() => import('./pages/guides/UnderwearGuide'));
+const SwimFitGuide = lazy(() => import('./pages/guides/SwimFitGuide'));
+
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
 const Checkout = lazy(() => import('./pages/Checkout'));
@@ -266,6 +273,13 @@ function App() {
                   <Checkout />
                 </ProtectedRoute>
               } />
+
+              {/* GUIDES (Explicit routes placed before catch-all dynamic paths) */}
+              <Route path="/new-in/trend-guide" element={<TrendGuide />} />
+              <Route path="/clothing/clothing-guide" element={<ClothingGuide />} />
+              <Route path="/bras/bra-fit-guide" element={<BraFitGuide />} />
+              <Route path="/underwear/underwear-guide" element={<UnderwearGuide />} />
+              <Route path="/swimwear/swim-fit-guide" element={<SwimFitGuide />} />
 
               {/* DYNAMIC PAGES */}
               <Route path="/product/:id" element={<ProductDetails />} />
