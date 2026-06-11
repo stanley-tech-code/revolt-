@@ -791,30 +791,21 @@ app.post('/api/factory-reset', verifyToken, async (req, res) => {
 app.get('/api/system-backups', verifyToken, async (req, res) => {
   if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
   try {
-    const backupDir = path.join(__dirname, 'db', 'backups');
-    if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+    const { data: files, error } = await supabase.storage.from('backups').list();
+    if (error) throw error;
     
-    const files = fs.readdirSync(backupDir).filter(f => f.endsWith('.json'));
-    const backups = files.map(f => {
-      const stats = fs.statSync(path.join(backupDir, f));
-      // filename format: backup-2026-06-11T13-10-52-630Z-manual.json or backup-timestamp.json
-      const parts = f.replace('.json', '').split('-');
+    const backups = (files || []).filter(f => f.name.endsWith('.json')).map(f => {
+      const parts = f.name.replace('.json', '').split('-');
       const trigger = parts.length > 5 ? parts[parts.length - 1] : 'manual';
-      
       return {
-        filename: f,
-        size: stats.size,
-        createdAt: stats.birthtime,
+        filename: f.name,
+        size: f.metadata?.size || 0,
+        createdAt: f.created_at,
         trigger: trigger === 'manual' || trigger === 'auto' ? trigger : 'manual'
       };
-    }).sort((a, b) => b.createdAt - a.createdAt);
+    }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    // Get restoration history
-    const { data: logs } = await supabase
-      .from('logs')
-      .select('*')
-      .like('action', 'Restored database from backup file:%')
-      .order('timestamp', { ascending: false });
+    const { data: logs } = await supabase.from('logs').select('*').like('action', 'Restored database from backup file:%').order('timestamp', { ascending: false });
 
     return res.json({ success: true, backups, history: logs || [] });
   } catch (err) {
@@ -825,15 +816,26 @@ app.get('/api/system-backups', verifyToken, async (req, res) => {
 app.post('/api/system-backups/create', verifyToken, async (req, res) => {
   if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
   try {
-    exec(`"${process.execPath}" backup_db.cjs manual`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
-      if (error) {
-        console.error('Backup creation failed:', error, stderr, stdout);
-        return res.status(500).json({ success: false, error: `Backup process failed: ${stderr || error.message}` });
-      }
-      return res.json({ success: true, message: 'Backup created successfully.' });
-    });
+    const trigger = 'manual';
+    const tables = ['users', 'products', 'orders', 'logs', 'cms', 'promos'];
+    const backupData = {};
+    for (const table of tables) {
+      const { data, error } = await supabase.from(table).select('*').limit(10000);
+      if (error) throw new Error(`Error fetching ${table}: ${error.message}`);
+      backupData[table] = data;
+    }
+    
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `backup-${timestamp}-${trigger}.json`;
+    const jsonStr = JSON.stringify(backupData);
+    
+    const { error: uploadError } = await supabase.storage.from('backups').upload(filename, jsonStr, { contentType: 'application/json' });
+    if (uploadError) throw new Error(`Upload failed: ${uploadError.message}`);
+
+    return res.json({ success: true, message: 'Backup created successfully.' });
   } catch (err) {
-    return res.status(500).json({ success: false, error: `Backup request failed: ${err.message}` });
+    console.error('Backup creation failed:', err);
+    return res.status(500).json({ success: false, error: `Backup process failed: ${err.message}` });
   }
 });
 
@@ -842,36 +844,71 @@ app.post('/api/system-backups/restore', verifyToken, async (req, res) => {
   const { filename } = req.body;
   if (!filename) return res.status(400).json({ success: false, error: 'Filename required.' });
   try {
-    const backupPath = `server/db/backups/${filename}`;
-    exec(`"${process.execPath}" restore_db_full.cjs "${backupPath}" "${req.user.username}"`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
-      if (error) {
-        console.error('Restore failed:', error, stderr, stdout);
-        return res.status(500).json({ success: false, error: `Restore process failed: ${stderr || error.message}` });
+    const { data, error: downloadError } = await supabase.storage.from('backups').download(filename);
+    if (downloadError) throw new Error(`Download failed: ${downloadError.message}`);
+    
+    const raw = await data.text();
+    const backupData = JSON.parse(raw);
+    
+    const tables = ['users', 'products', 'orders', 'logs', 'cms', 'promos'];
+    for (const table of tables) {
+      const records = backupData[table];
+      if (!records || records.length === 0) continue;
+      
+      const pk = table === 'cms' ? 'type' : 'id';
+      const { error: deleteError } = await supabase.from(table).delete().neq(pk, table === 'cms' ? 'unknown_type_xxx' : '00000000-0000-0000-0000-000000000000');
+      if (deleteError) throw new Error(`Failed to clear ${table}: ${deleteError.message}`);
+      
+      const BATCH_SIZE = 50;
+      for (let i = 0; i < records.length; i += BATCH_SIZE) {
+        const batch = records.slice(i, i + BATCH_SIZE);
+        const { error: insertError } = await supabase.from(table).insert(batch);
+        if (insertError) throw new Error(`Failed to insert batch into ${table}: ${insertError.message}`);
       }
-      return res.json({ success: true, message: 'Database restored successfully.' });
-    });
+    }
+    
+    await addLog(req.user.username, `Restored database from backup file: ${filename}`);
+    
+    return res.json({ success: true, message: 'Database restored successfully.' });
   } catch (err) {
-    return res.status(500).json({ success: false, error: `Restore request failed: ${err.message}` });
+    console.error('Restore failed:', err);
+    return res.status(500).json({ success: false, error: `Restore process failed: ${err.message}` });
   }
 });
 
 app.get('/api/system-backups/download/:filename', verifyToken, async (req, res) => {
   if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
   const { filename } = req.params;
-  const filePath = path.join(__dirname, 'db', 'backups', filename);
-  if (!fs.existsSync(filePath)) {
+  try {
+    const { data, error } = await supabase.storage.from('backups').download(filename);
+    if (error) throw error;
+    
+    const buffer = Buffer.from(await data.arrayBuffer());
+    res.setHeader('Content-disposition', `attachment; filename=${filename}`);
+    res.setHeader('Content-type', 'application/json');
+    res.send(buffer);
+  } catch (err) {
     return res.status(404).json({ success: false, error: 'File not found.' });
   }
-  res.download(filePath, filename);
 });
 
 // Auto-backup interval (every 24 hours)
-setInterval(() => {
+setInterval(async () => {
   console.log('Running daily automatic backup...');
-  exec(`"${process.execPath}" backup_db.cjs auto`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
-    if (error) console.error('Auto backup failed:', error);
-    else console.log('Auto backup success.');
-  });
+  try {
+    const tables = ['users', 'products', 'orders', 'logs', 'cms', 'promos'];
+    const backupData = {};
+    for (const table of tables) {
+      const { data, error } = await supabase.from(table).select('*').limit(10000);
+      if (!error) backupData[table] = data;
+    }
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `backup-${timestamp}-auto.json`;
+    await supabase.storage.from('backups').upload(filename, JSON.stringify(backupData), { contentType: 'application/json' });
+    console.log('Auto backup success.');
+  } catch (err) {
+    console.error('Auto backup failed:', err);
+  }
 }, 24 * 60 * 60 * 1000);
 
 // --- CRUD PRODUCTS INVENTORY ROUTERS ---
