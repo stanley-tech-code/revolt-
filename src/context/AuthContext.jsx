@@ -69,6 +69,24 @@ export function AuthProvider({ children }) {
     window.location.href = '/login';
   };
 
+  const forgotPassword = async (email) => {
+    const res = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    return res.json();
+  };
+
+  const resetPassword = async (email, token, newPassword) => {
+    const res = await fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, token, newPassword })
+    });
+    return res.json();
+  };
+
   const updateProfile = async (updates) => {
     const token = localStorage.getItem('revolt_client_token');
     const res = await fetch('/api/auth/profile', {
@@ -113,7 +131,9 @@ export function AuthProvider({ children }) {
       register,
       logout,
       updateProfile,
-      updateAddresses
+      updateAddresses,
+      forgotPassword,
+      resetPassword
     }}>
       {children}
     </AuthContext.Provider>

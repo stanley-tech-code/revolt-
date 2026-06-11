@@ -186,8 +186,13 @@ app.get('/api/auth/me', verifyToken, async (req, res) => {
 app.post('/api/auth/register', async (req, res) => {
   const { fullName, email, password, phone, dateOfBirth, gender } = req.body;
 
-  if (!fullName || !email || !password) {
-    return res.status(400).json({ success: false, error: 'Full name, email, and password are required.' });
+  if (!fullName || !email || !password || !phone) {
+    return res.status(400).json({ success: false, error: 'Full name, email, password, and phone number are required.' });
+  }
+
+  // Basic phone validation (e.g. length > 6, mostly numbers/+)
+  if (!/^\+?[\d\s\-()]{7,20}$/.test(phone)) {
+    return res.status(400).json({ success: false, error: 'Please enter a valid phone number.' });
   }
 
   try {
@@ -229,8 +234,115 @@ app.post('/api/auth/register', async (req, res) => {
       user: newUser
     });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, error: 'Server error during registration.' });
+    console.error('Registration Error', err);
+    return res.status(500).json({ success: false, error: 'Internal server error.' });
+  }
+});
+
+// --- FORGOT PASSWORD ---
+app.post('/api/auth/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ success: false, error: 'Email is required' });
+
+  try {
+    const targetEmail = email.toLowerCase();
+    const { data: user } = await supabase.from('users').select('id, fullName').eq('email', targetEmail).maybeSingle();
+
+    if (!user) {
+      // Return success anyway to prevent email enumeration
+      return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
+    }
+
+    // Generate token
+    const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const expires = Date.now() + 1000 * 60 * 60; // 1 hour
+
+    // Fetch existing password resets from cms
+    const { data: resetsDoc } = await supabase.from('cms').select('data').eq('type', 'password_resets').maybeSingle();
+    
+    let resets = resetsDoc?.data || {};
+    
+    // Clean up expired tokens while we're here
+    const now = Date.now();
+    for (const key in resets) {
+      if (resets[key].expires < now) {
+        delete resets[key];
+      }
+    }
+
+    resets[targetEmail] = { token, expires };
+
+    if (resetsDoc) {
+      await supabase.from('cms').update({ data: resets }).eq('type', 'password_resets');
+    } else {
+      await supabase.from('cms').insert([{ type: 'password_resets', data: resets }]);
+    }
+
+    const resetUrl = `${process.env.PUBLIC_URL || req.headers.origin || 'http://localhost:5173'}/reset-password?token=${token}&email=${encodeURIComponent(targetEmail)}`;
+
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="text-transform: uppercase; letter-spacing: 2px;">Password Reset Request</h2>
+        <p>Hi ${user.fullName},</p>
+        <p>We received a request to reset your password for your Revolt Elite account. If you didn't make this request, you can safely ignore this email.</p>
+        <p>Click the link below to set a new password. This link will expire in 1 hour.</p>
+        <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #000; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; margin-top: 20px;">Reset Password</a>
+      </div>
+    `;
+
+    await sendEmail(targetEmail, 'Reset Your Revolt Password', html);
+
+    return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
+  } catch (err) {
+    console.error('Forgot password error:', err);
+    return res.status(500).json({ success: false, error: 'Internal server error.' });
+  }
+});
+
+// --- RESET PASSWORD ---
+app.post('/api/auth/reset-password', async (req, res) => {
+  const { email, token, newPassword } = req.body;
+
+  if (!email || !token || !newPassword) {
+    return res.status(400).json({ success: false, error: 'Missing required fields' });
+  }
+
+  try {
+    const targetEmail = email.toLowerCase();
+    const { data: resetsDoc } = await supabase.from('cms').select('data').eq('type', 'password_resets').maybeSingle();
+
+    console.log('reset-password debug:', { targetEmail, resetsDoc: !!resetsDoc, dataKeys: resetsDoc ? Object.keys(resetsDoc.data || {}) : [] });
+
+    if (!resetsDoc || !resetsDoc.data || !resetsDoc.data[targetEmail]) {
+      return res.status(400).json({ success: false, error: 'Invalid or expired reset token. (Not found)' });
+    }
+
+    const resetData = resetsDoc.data[targetEmail];
+
+    console.log('reset-password debug 2:', { tokenProvided: token, tokenStored: resetData.token, expires: resetData.expires, now: Date.now() });
+
+    if (resetData.token !== token || resetData.expires < Date.now()) {
+      return res.status(400).json({ success: false, error: 'Invalid or expired reset token. (Mismatch/Expired)' });
+    }
+
+    // Token is valid. Update password.
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    const { error: updateError } = await supabase.from('users').update({ password: hashedPassword }).eq('email', targetEmail);
+
+    if (updateError) throw updateError;
+
+    // Delete token
+    const newResets = { ...resetsDoc.data };
+    delete newResets[targetEmail];
+    await supabase.from('cms').update({ data: newResets }).eq('type', 'password_resets');
+
+    return res.json({ success: true, message: 'Password has been reset successfully.' });
+
+  } catch (err) {
+    console.error('Reset password error:', err);
+    return res.status(500).json({ success: false, error: 'Internal server error.' });
   }
 });
 

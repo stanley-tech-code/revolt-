@@ -62,9 +62,7 @@ export default function Register() {
     if (res.success) {
       setIsSuccess(true);
       trackEvent('sign_up', { method: 'email' });
-      setTimeout(() => {
-        navigate('/account');
-      }, 2000);
+      navigate('/account');
     } else {
       setError(res.error || 'Registration failed');
       setIsLoading(false);
@@ -162,12 +160,15 @@ export default function Register() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a] mb-2">Phone Number</label>
+              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a] mb-2">Phone Number *</label>
               <input
                 type="tel"
                 name="phone"
+                required
+                pattern="\+?[\d\s\-()]{7,20}"
+                title="Please enter a valid phone number"
                 className="w-full border-b border-gray-300 bg-transparent py-3 text-sm focus:outline-none focus:border-black transition-colors"
-                placeholder="Phone (optional)"
+                placeholder="Phone number"
                 value={formData.phone}
                 onChange={handleChange}
               />

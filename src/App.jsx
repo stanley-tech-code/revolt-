@@ -68,6 +68,8 @@ const SwimFitGuide = lazy(() => import('./pages/guides/SwimFitGuide'));
 
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
+const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/auth/ResetPassword'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 
 function ClientLayout() {
@@ -243,6 +245,8 @@ function App() {
               {/* AUTH PAGES */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               
               {/* STATIC PAGES */}
               <Route path="/about/our-story" element={<OurStory />} />
