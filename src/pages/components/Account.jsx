@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useCms } from '../../context/CmsContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function Account() {
   const { currentUser, logout, updateProfile, updateAddresses } = useAuth();
+  const { db } = useCms();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
   const [isUpdating, setIsUpdating] = useState(false);
@@ -598,7 +600,7 @@ export default function Account() {
                       {order.tracking && (
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <p className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
-                            Tracking: <a href={`https://track.revolt.com/${order.tracking}`} target="_blank" rel="noreferrer" className="underline">{order.tracking}</a>
+                            Tracking: <a href={`${db.settings?.shipping?.trackingUrlBase || 'https://track.revolt.com/'}${order.tracking}`} target="_blank" rel="noreferrer" className="underline">{order.tracking}</a>
                           </p>
                         </div>
                       )}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
+import { useCms } from '../context/CmsContext';
 import { useAnalytics } from '../context/AnalyticsContext';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { kenyaGeoData } from '../data/kenyaGeoData';
@@ -9,6 +10,7 @@ import { kenyaGeoData } from '../data/kenyaGeoData';
 export default function Checkout() {
   const { cartItems, removeFromCart, clearCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
   const { currentUser } = useAuth();
+  const { db } = useCms();
   const { trackEvent } = useAnalytics();
   const navigate = useNavigate();
 
@@ -31,9 +33,6 @@ export default function Checkout() {
   const [promoError, setPromoError] = useState('');
   const [promoLoading, setPromoLoading] = useState(false);
 
-  // Delivery State
-  const deliveryFee = 500; 
-
   // Location State
   const [locationMode, setLocationMode] = useState('manual'); // 'current' or 'manual'
   const [locationDetected, setLocationDetected] = useState(false);
@@ -48,6 +47,15 @@ export default function Checkout() {
     instructions: '',
     mapsPin: { lat: -1.2921, lng: 36.8219 } // Default Nairobi
   });
+
+  // Dynamic Delivery Fee
+  const deliveryFee = React.useMemo(() => {
+    if (!db.settings?.shipping?.zones || db.settings.shipping.zones.length === 0) return 500;
+    const matchedZone = db.settings.shipping.zones.find(z => 
+      z.name.toLowerCase() === (addressData.county || '').toLowerCase()
+    );
+    return matchedZone ? Number(matchedZone.fee) : 500;
+  }, [db.settings?.shipping?.zones, addressData.county]);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -105,7 +113,8 @@ export default function Checkout() {
     }
   }
   const discountedSubtotal = Math.max(0, subtotal - discount);
-  const tax = discountedSubtotal * 0.16; // 16% VAT
+  const taxRate = db.settings?.payments?.taxRate ? Number(db.settings.payments.taxRate) / 100 : 0.16;
+  const tax = discountedSubtotal * taxRate; // Dynamic VAT
   const total = discountedSubtotal + tax + deliveryFee;
 
   const [orderConfirmed, setOrderConfirmed] = useState(null);
@@ -501,11 +510,11 @@ export default function Checkout() {
                   <span>Ksh {subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Delivery Fee</span>
+                  <span className="text-gray-600">{db.copy?.checkout?.deliveryLabel || 'Delivery Fee'}</span>
                   <span>Ksh {deliveryFee.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Tax (VAT 16%)</span>
+                  <span className="text-gray-600">{db.copy?.checkout?.taxLabel || 'Tax (VAT)'}</span>
                   <span>Ksh {tax.toLocaleString()}</span>
                 </div>
                 {discount > 0 && (
@@ -643,7 +652,7 @@ export default function Checkout() {
       {showMpesaPrompt && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white p-8 max-w-sm w-full text-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/1200px-M-PESA_LOGO-01.svg.webp" alt="M-Pesa" className="h-12 mx-auto mb-6 object-contain grayscale" />
+            <img src={db.copy?.checkout?.mpesaLogo || "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/1200px-M-PESA_LOGO-01.svg.webp"} alt="M-Pesa" className="h-12 mx-auto mb-6 object-contain grayscale" />
             <h3 className="font-bold uppercase tracking-widest mb-4">Complete Payment</h3>
             <p className="text-sm text-gray-600 mb-6">An STK push has been sent to <span className="font-bold">{mpesaPhone || contactInfo.phone}</span>. Please enter your PIN to complete the transaction.</p>
             <div className="w-8 h-8 border-2 border-gray-200 border-t-green-500 rounded-full animate-spin mx-auto mb-6"></div>

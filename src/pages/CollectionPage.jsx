@@ -38,10 +38,19 @@ export default function CollectionPage() {
   if (sortBy === 'PRICE') {
     sortedProducts.sort((a, b) => a.salePrice - b.salePrice);
   } else if (sortBy === 'NEWEST') {
-    // Mock sort, assuming higher ID is newer
-    sortedProducts.sort((a, b) => b.id.localeCompare(a.id));
+    sortedProducts.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      if (dateA !== dateB) return dateB - dateA;
+      return b.id.localeCompare(a.id);
+    });
   } else if (sortBy === 'OLDEST') {
-    sortedProducts.sort((a, b) => a.id.localeCompare(b.id));
+    sortedProducts.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      if (dateA !== dateB) return dateA - dateB;
+      return a.id.localeCompare(b.id);
+    });
   } else if (sortBy === 'COLOR') {
     sortedProducts.sort((a, b) => {
       const colorA = a.colors && a.colors[0] ? a.colors[0].name : '';

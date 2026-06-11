@@ -30,6 +30,20 @@ export default function AdminContent() {
     }));
   };
 
+  // --- COPY HANDLERS ---
+  const handleCopyChange = (category, field, value) => {
+    updateDraft(prev => ({
+      ...prev,
+      copy: {
+        ...prev.copy,
+        [category]: {
+          ...(prev.copy?.[category] || {}),
+          [field]: value
+        }
+      }
+    }));
+  };
+
   // --- SOCIAL & SCRIPTS HANDLERS ---
   const handleSocialChange = (e) => {
     const { name, value } = e.target;
@@ -189,6 +203,7 @@ export default function AdminContent() {
       { id: 'sections', label: 'Homepage Layout' },
       { id: 'seo', label: 'SEO & Integrations' },
       { id: 'assets', label: 'Media Library' },
+      { id: 'copy', label: 'Global Copy & Text' },
       { id: 'productSeo', label: 'Product SEO' },
     ];
 
@@ -541,6 +556,56 @@ export default function AdminContent() {
               </div>
             </div>
             <p className="text-xs text-[#000000]/50 italic mt-6">Note: For new image uploads, please use the Product Editor's image upload functionality which automatically saves to Supabase Storage, and copy the URLs here.</p>
+          </div>
+        )}
+
+        {/* --- GLOBAL COPY & TEXT --- */}
+        {activeTab === 'copy' && (
+          <div className="space-y-6 max-w-4xl">
+            <h2 className="text-lg font-bold uppercase tracking-wider border-b border-[#000000]/10 pb-2">Global Copy & Text</h2>
+            <p className="text-sm text-[#000000]/60">Customize the text of buttons, navigation, and core labels throughout the site.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4 p-4 border border-[#000000]/10 bg-[#f9f9f9]">
+                <h3 className="text-sm font-bold uppercase tracking-wider">Navigation Links</h3>
+                {Object.entries(draftDb.copy?.navbar || {}).map(([key, value]) => (
+                  <div key={key}>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">{key}</label>
+                    <input type="text" value={value} onChange={(e) => handleCopyChange('navbar', key, e.target.value)} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-4 p-4 border border-[#000000]/10 bg-[#f9f9f9]">
+                <h3 className="text-sm font-bold uppercase tracking-wider">Action Buttons</h3>
+                {Object.entries(draftDb.copy?.buttons || {}).map(([key, value]) => (
+                  <div key={key}>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">{key}</label>
+                    <input type="text" value={value} onChange={(e) => handleCopyChange('buttons', key, e.target.value)} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-4 p-4 border border-[#000000]/10 bg-[#f9f9f9]">
+                <h3 className="text-sm font-bold uppercase tracking-wider">Checkout Labels</h3>
+                {Object.entries(draftDb.copy?.checkout || {}).map(([key, value]) => (
+                  <div key={key}>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">{key}</label>
+                    <input type="text" value={value} onChange={(e) => handleCopyChange('checkout', key, e.target.value)} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-4 p-4 border border-[#000000]/10 bg-[#f9f9f9]">
+                <h3 className="text-sm font-bold uppercase tracking-wider">Support & Contact Info</h3>
+                {Object.entries(draftDb.copy?.support || {}).map(([key, value]) => (
+                  <div key={key}>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider mb-1 text-[#000000]/60">{key}</label>
+                    <input type="text" value={value} onChange={(e) => handleCopyChange('support', key, e.target.value)} className="w-full bg-white border border-[#000000]/20 px-3 py-1.5 text-sm outline-none" />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 

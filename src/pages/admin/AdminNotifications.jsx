@@ -471,7 +471,7 @@ export default function AdminNotifications() {
                   {/* Mock audience for visual purposes */}
                   {[1,2,3].map(i => (
                     <tr key={i}>
-                      <td className="px-4 py-3 font-medium text-xs">customer_mock_${i}@example.com</td>
+                      <td className="px-4 py-3 font-medium text-xs">{`customer_mock_${i}@example.com`}</td>
                       <td className="px-4 py-3 text-center"><input type="checkbox" defaultChecked /></td>
                       <td className="px-4 py-3 text-center"><input type="checkbox" defaultChecked /></td>
                       <td className="px-4 py-3 text-center"><input type="checkbox" /></td>

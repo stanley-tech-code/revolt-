@@ -558,7 +558,7 @@ export default function ProductDetails() {
             {!selectedSize ? (
               <button className="btn-select-size" disabled>SELECT A SIZE</button>
             ) : (
-              <button className="btn-add-to-cart" onClick={handleAddToCart}>ADD TO CART</button>
+              <button className="btn-add-to-cart" onClick={handleAddToCart}>{db.copy?.buttons?.addToCart?.toUpperCase() || 'ADD TO CART'}</button>
             )}
           </div>
         </div>

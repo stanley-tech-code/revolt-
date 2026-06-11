@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCms } from '../../context/CmsContext';
 
 export default function Returns() {
+  const { db } = useCms();
+  const whatsappNumberRaw = db.settings?.localization?.supportPhones?.[0] || db.settings?.localization?.supportPhone || '254700000000';
+  const whatsappNumber = whatsappNumberRaw.replace(/[^0-9]/g, '');
   const [activeTab, setActiveTab] = useState('policy'); // 'policy' | 'request'
   const [formState, setFormState] = useState('idle'); // 'idle' | 'submitting' | 'success'
   const [returnId, setReturnId] = useState('');
@@ -135,7 +139,7 @@ export default function Returns() {
 
             <div className="text-center pt-6">
               <a 
-                href="https://wa.me/254700000000?text=Hi,%20I%20want%20to%20return%20Order%20%23" 
+                href={`https://wa.me/${whatsappNumber}?text=Hi,%20I%20want%20to%20return%20Order%20%23`} 
                 target="_blank" 
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 font-bold uppercase text-sm tracking-wider hover:bg-[#1ebe5d] transition-colors rounded-sm shadow-md"

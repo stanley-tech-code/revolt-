@@ -25,6 +25,12 @@ export function CmsProvider({ children }) {
       sectionPadding: '4rem'
     },
     assets: { logo: '', favicon: '' },
+    copy: {
+      navbar: { shop: 'Shop', collections: 'Collections', newArrivals: 'New In', about: 'About', contact: 'Contact' },
+      buttons: { addToCart: 'Add to Cart', buyNow: 'Buy it Now', checkout: 'Proceed to Checkout', viewDetails: 'View Details', applyPromo: 'Apply' },
+      checkout: { deliveryLabel: 'Delivery Fee', taxLabel: 'Tax (VAT)', mpesaLogo: '' },
+      support: { whatsappNumber: '+254700000000', email: 'hello@revolt.com', whatsappText: 'Hi, I need help with my order' }
+    },
     social: { instagram: '', tiktok: '', facebook: '', twitter: '', youtube: '', pinterest: '' },
     scripts: { header: '', footer: '' },
     notifications: { templates: [], campaigns: [], automations: [], segments: [] },
@@ -142,6 +148,7 @@ export function CmsProvider({ children }) {
         seo: initData.data.seo || db.seo,
         theme: initData.data.theme || db.theme,
         assets: initData.data.assets || db.assets,
+        copy: initData.data.copy || db.copy,
         social: initData.data.social || db.social,
         scripts: initData.data.scripts || db.scripts,
         notifications: initData.data.notifications || db.notifications,
@@ -231,6 +238,7 @@ export function CmsProvider({ children }) {
       await Promise.all([
         fetch('/api/cms/theme', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.theme }) }),
         fetch('/api/cms/assets', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.assets }) }),
+        fetch('/api/cms/copy', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.copy }) }),
         fetch('/api/cms/social', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.social }) }),
         fetch('/api/cms/scripts', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.scripts }) }),
         fetch('/api/cms/notifications', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.notifications }) }),
