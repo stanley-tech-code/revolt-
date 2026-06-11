@@ -386,7 +386,8 @@ app.get('/api/init', async (req, res) => {
       { data: notifDoc },
       { data: settingsDoc },
       { data: twilioDoc },
-      { data: copyDoc }
+      { data: copyDoc },
+      { data: pagesDoc }
     ] = await Promise.all([
       supabase.from('cms').select('data').eq('type', 'sections').maybeSingle(),
       supabase.from('cms').select('data').eq('type', 'hero').maybeSingle(),
