@@ -825,15 +825,15 @@ app.get('/api/system-backups', verifyToken, async (req, res) => {
 app.post('/api/system-backups/create', verifyToken, async (req, res) => {
   if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Access denied' });
   try {
-    exec('node backup_db.cjs manual', { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+    exec(`"${process.execPath}" backup_db.cjs manual`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
       if (error) {
-        console.error('Backup creation failed:', error);
-        return res.status(500).json({ success: false, error: 'Backup process failed.' });
+        console.error('Backup creation failed:', error, stderr, stdout);
+        return res.status(500).json({ success: false, error: `Backup process failed: ${stderr || error.message}` });
       }
       return res.json({ success: true, message: 'Backup created successfully.' });
     });
   } catch (err) {
-    return res.status(500).json({ success: false, error: 'Backup request failed.' });
+    return res.status(500).json({ success: false, error: `Backup request failed: ${err.message}` });
   }
 });
 
@@ -843,15 +843,15 @@ app.post('/api/system-backups/restore', verifyToken, async (req, res) => {
   if (!filename) return res.status(400).json({ success: false, error: 'Filename required.' });
   try {
     const backupPath = `server/db/backups/${filename}`;
-    exec(`node restore_db_full.cjs "${backupPath}" "${req.user.username}"`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+    exec(`"${process.execPath}" restore_db_full.cjs "${backupPath}" "${req.user.username}"`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
       if (error) {
-        console.error('Restore failed:', error);
-        return res.status(500).json({ success: false, error: 'Restore process failed.' });
+        console.error('Restore failed:', error, stderr, stdout);
+        return res.status(500).json({ success: false, error: `Restore process failed: ${stderr || error.message}` });
       }
       return res.json({ success: true, message: 'Database restored successfully.' });
     });
   } catch (err) {
-    return res.status(500).json({ success: false, error: 'Restore request failed.' });
+    return res.status(500).json({ success: false, error: `Restore request failed: ${err.message}` });
   }
 });
 
@@ -868,7 +868,7 @@ app.get('/api/system-backups/download/:filename', verifyToken, async (req, res) 
 // Auto-backup interval (every 24 hours)
 setInterval(() => {
   console.log('Running daily automatic backup...');
-  exec('node backup_db.cjs auto', { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+  exec(`"${process.execPath}" backup_db.cjs auto`, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
     if (error) console.error('Auto backup failed:', error);
     else console.log('Auto backup success.');
   });
