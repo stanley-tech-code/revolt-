@@ -194,8 +194,8 @@ export default function MobileMenu({ isOpen, onClose }) {
         </AccordionItem>
 
         <hr className="border-clay/40 my-2" />
-        <Link onClick={onClose} to="/components/account" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink">Account</Link>
-        <Link onClick={onClose} to="/components/wishlist" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink pb-4">Wishlist</Link>
+        <Link onClick={onClose} to="/account" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink">Account</Link>
+        <Link onClick={onClose} to="/wishlist" className="text-xs font-medium uppercase tracking-[0.18em] text-cocoa hover:text-ink pb-4">Wishlist</Link>
       </div>
     </div>
   );

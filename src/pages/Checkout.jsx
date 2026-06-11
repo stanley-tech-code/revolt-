@@ -300,7 +300,7 @@ export default function Checkout() {
         </div>
         
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button onClick={() => navigate('/components/account')} className="bg-black text-white px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors">
+          <button onClick={() => navigate('/account')} className="bg-black text-white px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors">
             Track Order
           </button>
           <button onClick={() => navigate('/')} className="border border-gray-300 text-black px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors">

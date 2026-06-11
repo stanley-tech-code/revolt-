@@ -283,7 +283,7 @@ export default function Account() {
               </button>
             ))}
             <button
-              onClick={() => navigate('/components/wishlist')}
+              onClick={() => navigate('/wishlist')}
               className="text-left px-4 py-3 text-[11px] font-bold uppercase tracking-[0.15em] text-gray-600 hover:bg-gray-100 transition-colors"
             >
               Wishlist

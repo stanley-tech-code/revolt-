@@ -262,13 +262,13 @@ function App() {
               <Route path="/policies/:slug" element={<PolicyPage />} />
               <Route path="/preferences" element={<Preferences />} />
 
-              <Route path="/components/account" element={
+              <Route path="/account" element={
                 <ProtectedRoute>
                   <Account />
                 </ProtectedRoute>
               } />
               
-              <Route path="/components/wishlist" element={
+              <Route path="/wishlist" element={
                 <ProtectedRoute>
                   <Wishlist />
                 </ProtectedRoute>
