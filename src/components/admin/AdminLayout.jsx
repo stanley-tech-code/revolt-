@@ -57,6 +57,7 @@ export default function AdminLayout() {
     { name: 'Finance', path: '/admin/finance', roles: ['Super Admin'] },
     { name: 'Promotions', path: '/admin/promotions', roles: ['Super Admin', 'Marketing'] },
     { name: 'Content & Appearance', path: '/admin/content', roles: ['Super Admin', 'Editor'] },
+    { name: 'Page Content', path: '/admin/pages', roles: ['Super Admin', 'Editor', 'Marketing'] },
     { name: 'Customer Messages', path: '/admin/messages', roles: ['Super Admin', 'Support', 'Editor', 'Marketing', 'Fulfillment'] },
     { name: 'Notifications & CRM', path: '/admin/notifications', roles: ['Super Admin', 'Editor', 'Marketing', 'Support'] },
     { name: 'Newsletter', path: '/admin/newsletter', roles: ['Super Admin', 'Marketing'] },

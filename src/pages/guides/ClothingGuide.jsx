@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useCms } from '../../context/CmsContext';
 
 export default function ClothingGuide() {
+  const { db } = useCms();
+  const content = db?.pages?.clothingGuide || {};
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -11,12 +15,12 @@ export default function ClothingGuide() {
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] md:h-[60vh] bg-[#f5f5f5] flex items-center justify-center border-b border-[#000000]/10">
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto flex flex-col items-center">
-          <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-ink/60 mb-6 block">Fit & Fabrication</span>
+          <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-ink/60 mb-6 block">{content.heroEyebrow || 'Fit & Fabrication'}</span>
           <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-6">
-            Clothing Guide
+            {content.heroTitle || 'Clothing Guide'}
           </h1>
-          <p className="text-sm text-cocoa max-w-xl mx-auto leading-relaxed">
-            Understanding our fits, finding your perfect size, and caring for your garments to ensure they last a lifetime.
+          <p className="text-sm text-cocoa max-w-xl mx-auto leading-relaxed whitespace-pre-wrap">
+            {content.heroDesc || 'Understanding our fits, finding your perfect size, and caring for your garments to ensure they last a lifetime.'}
           </p>
         </div>
       </section>
@@ -99,30 +103,30 @@ export default function ClothingGuide() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="space-y-4 text-center">
-            <div className="aspect-[3/4] bg-sand mb-6">
-               <img src="/images/product-2.webp" alt="Form Fitting" className="w-full h-full object-cover" />
+            <div className="aspect-[3/4] bg-sand mb-6 overflow-hidden">
+               <img src={content.fit1Image || "/images/product-2.webp"} alt={content.fit1Title || "Form Fitting"} className="w-full h-full object-cover" />
             </div>
-            <h3 className="text-lg font-bold uppercase tracking-widest text-ink">Form-Fitting</h3>
-            <p className="text-xs text-cocoa leading-relaxed">
-              Designed to sit close to the body, contouring your natural shape. We recommend your true size. If you prefer a bit of breathing room, size up.
+            <h3 className="text-lg font-bold uppercase tracking-widest text-ink">{content.fit1Title || 'Form-Fitting'}</h3>
+            <p className="text-xs text-cocoa leading-relaxed whitespace-pre-wrap">
+              {content.fit1Desc || "Designed to sit close to the body, contouring your natural shape. We recommend your true size. If you prefer a bit of breathing room, size up."}
             </p>
           </div>
           <div className="space-y-4 text-center">
-            <div className="aspect-[3/4] bg-[#ececec] mb-6">
-               <img src="/images/product-1.webp" alt="Relaxed Fit" className="w-full h-full object-cover" />
+            <div className="aspect-[3/4] bg-[#ececec] mb-6 overflow-hidden">
+               <img src={content.fit2Image || "/images/product-1.webp"} alt={content.fit2Title || "Relaxed Fit"} className="w-full h-full object-cover" />
             </div>
-            <h3 className="text-lg font-bold uppercase tracking-widest text-ink">Relaxed Fit</h3>
-            <p className="text-xs text-cocoa leading-relaxed">
-              Our standard fit. Not too tight, not too loose. Drapes effortlessly. Stick to your true size for the intended aesthetic.
+            <h3 className="text-lg font-bold uppercase tracking-widest text-ink">{content.fit2Title || 'Relaxed Fit'}</h3>
+            <p className="text-xs text-cocoa leading-relaxed whitespace-pre-wrap">
+              {content.fit2Desc || "Our standard fit. Not too tight, not too loose. Drapes effortlessly. Stick to your true size for the intended aesthetic."}
             </p>
           </div>
           <div className="space-y-4 text-center">
-            <div className="aspect-[3/4] bg-sand mb-6">
-               <img src="/images/product-3.webp" alt="Oversized" className="w-full h-full object-cover" />
+            <div className="aspect-[3/4] bg-sand mb-6 overflow-hidden">
+               <img src={content.fit3Image || "/images/product-3.webp"} alt={content.fit3Title || "Oversized"} className="w-full h-full object-cover" />
             </div>
-            <h3 className="text-lg font-bold uppercase tracking-widest text-ink">Oversized</h3>
-            <p className="text-xs text-cocoa leading-relaxed">
-              Exaggerated proportions with dropped shoulders and extra volume. Take your normal size for a baggy look, or size down for a standard fit.
+            <h3 className="text-lg font-bold uppercase tracking-widest text-ink">{content.fit3Title || 'Oversized'}</h3>
+            <p className="text-xs text-cocoa leading-relaxed whitespace-pre-wrap">
+              {content.fit3Desc || "Exaggerated proportions with dropped shoulders and extra volume. Take your normal size for a baggy look, or size down for a standard fit."}
             </p>
           </div>
         </div>
@@ -132,9 +136,9 @@ export default function ClothingGuide() {
       <section className="py-24 bg-ink text-canvas px-6">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
-            <h2 className="text-2xl font-bold uppercase tracking-widest mb-8">Care Instructions</h2>
-            <p className="text-sm text-canvas/70 leading-relaxed mb-6">
-              Our garments are constructed from premium fabrics designed to last. Proper care extends their lifespan significantly.
+            <h2 className="text-2xl font-bold uppercase tracking-widest mb-8">{content.careTitle || 'Care Instructions'}</h2>
+            <p className="text-sm text-canvas/70 leading-relaxed mb-6 whitespace-pre-wrap">
+              {content.careDesc || 'Our garments are constructed from premium fabrics designed to last. Proper care extends their lifespan significantly.'}
             </p>
             <ul className="space-y-6">
               <li className="flex gap-4 items-start">

@@ -38,6 +38,7 @@ const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
 const AdminNewsletter = lazy(() => import('./pages/admin/AdminNewsletter'));
 const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
 const AdminBackups = lazy(() => import('./pages/admin/AdminBackups'));
+const AdminPages = lazy(() => import('./pages/admin/AdminPages'));
 
 // LAZY LOADED STOREFRONT ROUTES
 const OurStory = lazy(() => import('./pages/about/OurStory'));
@@ -231,6 +232,7 @@ function App() {
               <Route path="twilio" element={<AdminProtectedRoute allowedRoles={['Super Admin']}><AdminTwilio /></AdminProtectedRoute>} />
               <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="settings" element={<AdminSettings />} />
+              <Route path="pages" element={<AdminPages />} />
               <Route path="backups" element={<AdminProtectedRoute allowedRoles={['Super Admin']}><AdminBackups /></AdminProtectedRoute>} />
             </Route>
 

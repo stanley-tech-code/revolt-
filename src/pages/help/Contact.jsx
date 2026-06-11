@@ -3,6 +3,7 @@ import { useCms } from '../../context/CmsContext';
 
 export default function Contact() {
   const { db } = useCms();
+  const content = db?.pages?.contact || {};
   const [formState, setFormState] = useState('idle');
   
   // Extract contact info, handling backward compatibility with older string fields
@@ -58,19 +59,44 @@ export default function Contact() {
     <main className="bg-canvas min-h-screen text-ink pb-20 pt-10">
       <section className="max-w-7xl mx-auto px-6">
         
-        <div className="text-center mb-16 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-4">Contact Us</h1>
-          <p className="text-cocoa text-sm md:text-base max-w-xl mx-auto">
-            Whether you have a question about our collections, sizing, or an existing order, our dedicated team is here to assist you.
-          </p>
+        <div className="space-y-12 pr-0 lg:pr-12 mb-16">
+          <div>
+            <h1 className="text-3xl font-bold uppercase tracking-widest text-[#000000] mb-4">{content.title || 'Contact Support'}</h1>
+            <p className="text-sm text-[#000000]/70 leading-relaxed whitespace-pre-wrap">
+              {content.subtitle || 'Need help with an order, fit advice, or just want to say hi? Fill out the form below or reach us directly. Our team typically responds within 24-48 hours.'}
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="text-xl pt-1">✉️</div>
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-1">Email</h3>
+                <a href={`mailto:${content.email || 'hello@revolt.com'}`} className="text-sm font-medium hover:underline">{content.email || 'hello@revolt.com'}</a>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-4">
+              <div className="text-xl pt-1">📱</div>
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-1">Phone / WhatsApp</h3>
+                <a href={`tel:${content.phone || '+254700000000'}`} className="text-sm font-medium hover:underline">{content.phone || '+254 700 000 000'}</a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="text-xl pt-1">⏰</div>
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-1">Hours of Operation</h3>
+                <p className="text-sm font-medium">{content.hours || 'Mon - Fri, 9am - 6pm EAT'}</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
           
-          {/* CONTACT INFO PANEL */}
           <div className="space-y-10 animate-fade-in" style={{ animationDelay: '100ms' }}>
-            
-            {/* Email Section */}
             {emails.length > 0 && (
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-widest text-cocoa mb-4 flex items-center gap-3">
@@ -86,7 +112,6 @@ export default function Contact() {
               </div>
             )}
 
-            {/* Phone Section */}
             {phones.length > 0 && (
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-widest text-cocoa mb-4 flex items-center gap-3">

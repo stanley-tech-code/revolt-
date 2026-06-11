@@ -49,6 +49,7 @@ export function CmsProvider({ children }) {
       messagingServiceSid: '',
       testMode: true
     },
+    pages: {},
     admin: { currentUser: null, logs: [] }
   });
 
@@ -154,6 +155,7 @@ export function CmsProvider({ children }) {
         notifications: initData.data.notifications || db.notifications,
         settings: initData.data.settings || db.settings,
         twilio_settings: initData.data.twilio_settings || db.twilio_settings,
+        pages: initData.data.pages || db.pages,
         orders,
         customers,
         promos,
@@ -243,7 +245,8 @@ export function CmsProvider({ children }) {
         fetch('/api/cms/scripts', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.scripts }) }),
         fetch('/api/cms/notifications', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.notifications }) }),
         fetch('/api/cms/settings', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.settings }) }),
-        fetch('/api/cms/twilio_settings', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.twilio_settings }) })
+        fetch('/api/cms/twilio_settings', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.twilio_settings }) }),
+        fetch('/api/cms/pages', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ data: draftDb.pages }) })
       ]);
 
       if (secData.success && seoData.success) {

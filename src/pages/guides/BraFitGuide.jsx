@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useCms } from '../../context/CmsContext';
 
 export default function BraFitGuide() {
+  const { db } = useCms();
+  const content = db?.pages?.braFitGuide || {};
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -9,88 +13,72 @@ export default function BraFitGuide() {
   return (
     <main className="animate-fade-in pb-32">
       {/* Hero Section */}
-      <section className="relative w-full h-[50vh] md:h-[60vh] bg-sand flex items-center justify-center">
+      <section className="relative w-full h-[60vh] bg-sand flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="/images/editorial-wide.webp" 
-            alt="Bra Fit Guide" 
-            className="w-full h-full object-cover opacity-60 mix-blend-multiply"
+            src={content.heroImage || "/images/editorial-wide.webp"} 
+            alt="Bra Fit Guide Hero" 
+            className="w-full h-full object-cover opacity-80"
           />
         </div>
-        <div className="relative z-10 text-center px-6 max-w-3xl mx-auto flex flex-col items-center">
-          <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-ink/80 mb-6 block bg-canvas/80 px-4 py-2">The Intimates Edit</span>
-          <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-6 bg-canvas/90 px-6 py-2">
-            Bra Fit Guide
+        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
+          <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-ink/80 mb-6 block bg-canvas/90 px-4 py-2">{content.heroEyebrow || 'The Intimates Edit'}</span>
+          <h1 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter text-ink mb-6 bg-canvas/90 px-6 py-2">
+            {content.heroTitle || 'Bra Fit Guide'}
           </h1>
-          <p className="text-sm text-ink max-w-xl mx-auto leading-relaxed bg-canvas/90 px-6 py-4 font-medium">
-            Find your perfect fit. A supportive, comfortable bra starts with the right measurements.
+          <p className="text-sm md:text-base text-ink font-medium max-w-2xl bg-canvas/90 px-6 py-4 leading-relaxed whitespace-pre-wrap">
+            {content.heroDesc || 'Find your perfect fit. A supportive, comfortable bra is the foundation of any wardrobe.'}
           </p>
         </div>
       </section>
 
-      {/* How to Measure */}
-      <section className="py-24 px-6 max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-2xl font-bold uppercase tracking-widest text-ink mb-4">How To Measure</h2>
-          <p className="text-sm text-cocoa max-w-2xl mx-auto">
-            Grab a soft measuring tape and wear an unlined, non-padded bra. Follow these two simple steps.
-          </p>
-        </div>
-        
+      {/* Measuring Guide */}
+      <section className="py-24 px-6 max-w-5xl mx-auto border-b border-[#000000]/10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-12">
-            <div className="flex gap-6 items-start">
-              <span className="text-4xl font-bold text-[#e8e6e1]">01</span>
-              <div>
-                <h3 className="text-lg font-bold uppercase tracking-widest text-ink mb-2">Measure Your Band</h3>
-                <p className="text-sm text-cocoa leading-relaxed">
-                  Wrap the measuring tape snugly around your ribcage, directly under your bust. Make sure the tape is level all the way around. If you get an odd number, round up to the next even number. This is your band size (e.g., 34).
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-6 items-start">
-              <span className="text-4xl font-bold text-[#e8e6e1]">02</span>
-              <div>
-                <h3 className="text-lg font-bold uppercase tracking-widest text-ink mb-2">Measure Your Bust</h3>
-                <p className="text-sm text-cocoa leading-relaxed">
-                  Wrap the measuring tape somewhat loosely around the fullest part of your bust. Again, keep the tape level. Round to the nearest whole number.
-                </p>
-              </div>
-            </div>
-            <div className="bg-sand p-6 border-l-4 border-ink">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Calculate Your Cup Size</h4>
-              <p className="text-xs text-cocoa leading-relaxed">
-                Subtract your band size (Step 1) from your bust measurement (Step 2). The difference determines your cup size.<br/><br/>
-                1" = A | 2" = B | 3" = C | 4" = D | 5" = DD | 6" = DDD
+          <div className="aspect-[4/5] bg-sand overflow-hidden">
+            <img src={content.measureImage || "/images/product-3.webp"} alt="Measuring Guide" className="w-full h-full object-cover" />
+          </div>
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold uppercase tracking-widest text-ink mb-4">{content.measureTitle || 'How To Measure'}</h2>
+              <p className="text-sm text-cocoa leading-relaxed whitespace-pre-wrap">
+                {content.measureDesc || 'Grab a soft measuring tape and wear an unlined (non-padded) bra that fits you well.'}
               </p>
             </div>
-          </div>
-          <div className="aspect-square bg-[#f9f9f9] border border-[#000000]/10 flex items-center justify-center p-12">
-             <img src="/images/product-3.webp" alt="Measuring Guide" className="w-full h-full object-cover" />
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <span className="text-2xl font-bold text-[#e8e6e1]">01</span>
+                <p className="text-sm text-cocoa">{content.stepOne || 'Measure under your bust for your band size.'}</p>
+              </div>
+              <div className="flex gap-4">
+                <span className="text-2xl font-bold text-[#e8e6e1]">02</span>
+                <p className="text-sm text-cocoa">{content.stepTwo || 'Measure the fullest part of your bust for your cup size.'}</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Sister Sizing */}
-      <section className="py-24 bg-ink text-canvas px-6 text-center">
-        <h2 className="text-2xl font-bold uppercase tracking-widest mb-6">Sister Sizing</h2>
-        <p className="text-sm text-canvas/70 max-w-2xl mx-auto mb-12">
-          If your recommended size feels slightly off, try a sister size. If you go up a band size, go down a cup size (and vice versa) to maintain the same cup volume.
+      <section className="py-24 px-6 max-w-3xl mx-auto text-center border-b border-[#000000]/10">
+        <h2 className="text-2xl font-bold uppercase tracking-widest text-ink mb-6">{content.sisterTitle || 'Sister Sizing'}</h2>
+        <p className="text-sm text-cocoa leading-relaxed mb-10 whitespace-pre-wrap">
+          {content.sisterDesc || 'If your recommended size feels slightly off, try a sister size. Sister sizes hold the same cup volume but vary by band size.'}
         </p>
         <div className="max-w-3xl mx-auto overflow-x-auto">
-          <table className="w-full text-left text-sm whitespace-nowrap border border-canvas/20">
-            <thead className="bg-canvas/10 text-[10px] font-bold uppercase tracking-[0.2em] text-canvas">
+          <table className="w-full text-left text-sm whitespace-nowrap border border-ink/20">
+            <thead className="bg-ink text-[10px] font-bold uppercase tracking-[0.2em] text-canvas">
               <tr>
                 <th className="px-6 py-4">If your band is too tight</th>
                 <th className="px-6 py-4">Current Size</th>
                 <th className="px-6 py-4">If your band is too loose</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-canvas/20 text-canvas/80">
-              <tr><td className="px-6 py-4">Try 36A</td><td className="px-6 py-4 font-bold text-white">34B</td><td className="px-6 py-4">Try 32C</td></tr>
-              <tr><td className="px-6 py-4">Try 36B</td><td className="px-6 py-4 font-bold text-white">34C</td><td className="px-6 py-4">Try 32D</td></tr>
-              <tr><td className="px-6 py-4">Try 36C</td><td className="px-6 py-4 font-bold text-white">34D</td><td className="px-6 py-4">Try 32DD</td></tr>
-              <tr><td className="px-6 py-4">Try 38B</td><td className="px-6 py-4 font-bold text-white">36C</td><td className="px-6 py-4">Try 34D</td></tr>
+            <tbody className="divide-y divide-ink/10 text-ink">
+              <tr><td className="px-6 py-4">Try 36A</td><td className="px-6 py-4 font-bold">34B</td><td className="px-6 py-4">Try 32C</td></tr>
+              <tr><td className="px-6 py-4">Try 36B</td><td className="px-6 py-4 font-bold">34C</td><td className="px-6 py-4">Try 32D</td></tr>
+              <tr><td className="px-6 py-4">Try 36C</td><td className="px-6 py-4 font-bold">34D</td><td className="px-6 py-4">Try 32DD</td></tr>
+              <tr><td className="px-6 py-4">Try 38B</td><td className="px-6 py-4 font-bold">36C</td><td className="px-6 py-4">Try 34D</td></tr>
             </tbody>
           </table>
         </div>

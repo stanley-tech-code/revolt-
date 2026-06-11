@@ -399,7 +399,8 @@ app.get('/api/init', async (req, res) => {
       supabase.from('cms').select('data').eq('type', 'notifications').maybeSingle(),
       supabase.from('cms').select('data').eq('type', 'settings').maybeSingle(),
       supabase.from('cms').select('data').eq('type', 'twilio_settings').maybeSingle(),
-      supabase.from('cms').select('data').eq('type', 'copy').maybeSingle()
+      supabase.from('cms').select('data').eq('type', 'copy').maybeSingle(),
+      supabase.from('cms').select('data').eq('type', 'pages').maybeSingle()
     ]);
 
     const defaultHero = { headline: 'Welcome', subheadline: '', ctaText: 'Shop Now', ctaLink: '/', image: '/images/hero.jpg' };
@@ -421,7 +422,8 @@ app.get('/api/init', async (req, res) => {
         notifications: notifDoc?.data || null,
         settings: settingsDoc?.data || null,
         twilio_settings: twilioDoc?.data || null,
-        copy: copyDoc?.data || null
+        copy: copyDoc?.data || null,
+        pages: pagesDoc?.data || null
       }
     });
   } catch(err) {
@@ -460,6 +462,22 @@ app.put('/api/sections', verifyToken, async (req, res) => {
     return res.json({ success: true, message: 'Layout updated successfully' });
   } catch(err) {
     return res.status(500).json({ success: false, error: 'Failed to create notification.' });
+  }
+});
+
+app.put('/api/cms/:type', verifyToken, async (req, res) => {
+  const { type } = req.params;
+  const { data } = req.body;
+  if (!['theme', 'assets', 'copy', 'social', 'scripts', 'notifications', 'settings', 'twilio_settings', 'pages'].includes(type)) {
+    return res.status(400).json({ success: false, error: 'Invalid config type.' });
+  }
+
+  try {
+    await supabase.from('cms').upsert({ type, data });
+    await addLog(req.user.username, `Updated CMS configuration: ${type}`);
+    return res.json({ success: true });
+  } catch(err) {
+    return res.status(500).json({ success: false, error: `Failed to update ${type}.` });
   }
 });
 
