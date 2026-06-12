@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from '../../context/StoreContext';
+import { useCms } from '../../context/CmsContext';
 
 export default function Navbar({ onMenuToggle, isMenuOpen }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -8,6 +9,8 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { openCart, openSearch, getCartCount, wishlist } = useStore();
+  const { db } = useCms();
+  const navContent = db?.pages?.navbar || {};
   const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing';
 
   useEffect(() => {
@@ -95,13 +98,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     </div>
                     {/* Right: Promo */}
                     <div className="col-span-4 pl-12 border-l border-clay/20">
-                      <Link to="/other/volume-02-preview-discover-the-next-evolution-of-our-essentials" className="group/promo block">
+                      <div className="group/promo block cursor-default">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/campaign-1.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src={navContent.newInImage || "/images/campaign-1.webp"} alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Volume 02 Preview</h5>
-                        <p className="text-[11px] text-cocoa leading-relaxed">Discover the next evolution of our essential collection.</p>
-                      </Link>
+                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">{navContent.newInTitle || "Volume 02 Preview"}</h5>
+                        <p className="text-[11px] text-cocoa leading-relaxed">{navContent.newInDesc || "Discover the next evolution of our essentials."}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -146,13 +149,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     </div>
                     {/* Right: Promo */}
                     <div className="col-span-4 pl-12 border-l border-clay/20">
-                      <Link to="/other/the-essentials-edit-shop-the-looks-from-our-latest-campaign" className="group/promo block">
+                      <div className="group/promo block cursor-default">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/editorial-wide.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src={navContent.clothingImage || "/images/editorial-wide.webp"} alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">The Essentials Edit</h5>
-                        <p className="text-[11px] text-cocoa leading-relaxed">Shop the looks from our latest campaign.</p>
-                      </Link>
+                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">{navContent.clothingTitle || "The Essentials Edit"}</h5>
+                        <p className="text-[11px] text-cocoa leading-relaxed">{navContent.clothingDesc || "Shop the looks from our latest campaign."}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -194,13 +197,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     </div>
                     {/* Right: Promo */}
                     <div className="col-span-4 pl-12 border-l border-clay/20">
-                      <Link to="/other/second-skin-feel-engineered-for-invisible-weightless-support" className="group/promo block">
+                      <div className="group/promo block cursor-default">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/product-3.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src={navContent.brasImage || "/images/product-3.webp"} alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Second-Skin Feel</h5>
-                        <p className="text-[11px] text-cocoa leading-relaxed">Engineered for invisible, weightless support.</p>
-                      </Link>
+                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">{navContent.brasTitle || "Second-Skin Feel"}</h5>
+                        <p className="text-[11px] text-cocoa leading-relaxed">{navContent.brasDesc || "Engineered for invisible, weightless support."}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -238,13 +241,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     </div>
                     {/* Right: Promo */}
                     <div className="col-span-4 pl-12 border-l border-clay/20">
-                      <Link to="/other/seamless-collection-smooth-lines-and-ultimate-comfort-for-every-body" className="group/promo block">
+                      <div className="group/promo block cursor-default">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/product-2.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src={navContent.underwearImage || "/images/product-2.webp"} alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Seamless Collection</h5>
-                        <p className="text-[11px] text-cocoa leading-relaxed">Smooth lines and ultimate comfort for every body.</p>
-                      </Link>
+                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">{navContent.underwearTitle || "Seamless Collection"}</h5>
+                        <p className="text-[11px] text-cocoa leading-relaxed">{navContent.underwearDesc || "Smooth lines and ultimate comfort for every body."}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -282,13 +285,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     </div>
                     {/* Right: Promo */}
                     <div className="col-span-4 pl-12 border-l border-clay/20">
-                      <Link to="/other/signature-scents-complete-the-uniform-with-our-new-fragrance-line" className="group/promo block">
+                      <div className="group/promo block cursor-default">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/campaign-2.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src={navContent.accessoriesImage || "/images/campaign-2.webp"} alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">Signature Scents</h5>
-                        <p className="text-[11px] text-cocoa leading-relaxed">Complete the uniform with our new fragrance line.</p>
-                      </Link>
+                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">{navContent.accessoriesTitle || "Signature Scents"}</h5>
+                        <p className="text-[11px] text-cocoa leading-relaxed">{navContent.accessoriesDesc || "Complete the uniform with our new fragrance line."}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -325,13 +328,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
                     </div>
                     {/* Right: Promo */}
                     <div className="col-span-4 pl-12 border-l border-clay/20">
-                      <Link to="/other/the-resort-edit-minimal-silhouettes-ready-for-the-sun" className="group/promo block">
+                      <div className="group/promo block cursor-default">
                         <div className="aspect-[16/10] bg-sand mb-3 overflow-hidden">
-                          <img loading="lazy" src="/images/product-1.webp" alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
+                          <img loading="lazy" src={navContent.swimwearImage || "/images/product-1.webp"} alt="Campaign" className="w-full h-full object-cover transition-transform duration-700 group-hover/promo:scale-105" />
                         </div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">The Resort Edit</h5>
-                        <p className="text-[11px] text-cocoa leading-relaxed">Minimal silhouettes ready for the sun.</p>
-                      </Link>
+                        <h5 className="text-[11px] font-bold uppercase tracking-[0.15em] text-ink mb-2">{navContent.swimwearTitle || "The Resort Edit"}</h5>
+                        <p className="text-[11px] text-cocoa leading-relaxed">{navContent.swimwearDesc || "Minimal silhouettes ready for the sun."}</p>
+                      </div>
                     </div>
                   </div>
                 </div>

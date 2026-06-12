@@ -123,7 +123,66 @@ const PAGE_SCHEMA = {
   orderTracking: { title: 'Order Tracking Help', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   sizeGuide: { title: 'Size Guide', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   contact: { title: 'Contact Us', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
-  policyPage: { title: 'Dynamic Policies (Terms, Privacy)', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] }
+  policyPage: { title: 'Dynamic Policies (Terms, Privacy)', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
+  navbar: {
+    title: 'Navigation Bar',
+    sections: [
+      {
+        id: 'newIn',
+        label: 'New In Dropdown',
+        fields: [
+          { name: 'newInImage', label: 'Dropdown Image URL', type: 'image', default: '/images/campaign-1.webp' },
+          { name: 'newInTitle', label: 'Image Title', type: 'text', default: 'Volume 02 Preview' },
+          { name: 'newInDesc', label: 'Image Description', type: 'text', default: 'Discover the next evolution of our essentials.' }
+        ]
+      },
+      {
+        id: 'clothing',
+        label: 'Clothing Dropdown',
+        fields: [
+          { name: 'clothingImage', label: 'Dropdown Image URL', type: 'image', default: '/images/editorial-wide.webp' },
+          { name: 'clothingTitle', label: 'Image Title', type: 'text', default: 'The Essentials Edit' },
+          { name: 'clothingDesc', label: 'Image Description', type: 'text', default: 'Shop the looks from our latest campaign.' }
+        ]
+      },
+      {
+        id: 'bras',
+        label: 'Bras Dropdown',
+        fields: [
+          { name: 'brasImage', label: 'Dropdown Image URL', type: 'image', default: '/images/product-3.webp' },
+          { name: 'brasTitle', label: 'Image Title', type: 'text', default: 'Second-Skin Feel' },
+          { name: 'brasDesc', label: 'Image Description', type: 'text', default: 'Engineered for invisible, weightless support.' }
+        ]
+      },
+      {
+        id: 'underwear',
+        label: 'Underwear Dropdown',
+        fields: [
+          { name: 'underwearImage', label: 'Dropdown Image URL', type: 'image', default: '/images/product-2.webp' },
+          { name: 'underwearTitle', label: 'Image Title', type: 'text', default: 'Seamless Collection' },
+          { name: 'underwearDesc', label: 'Image Description', type: 'text', default: 'Smooth lines and ultimate comfort for every body.' }
+        ]
+      },
+      {
+        id: 'accessories',
+        label: 'Accessories Dropdown',
+        fields: [
+          { name: 'accessoriesImage', label: 'Dropdown Image URL', type: 'image', default: '/images/campaign-2.webp' },
+          { name: 'accessoriesTitle', label: 'Image Title', type: 'text', default: 'Signature Scents' },
+          { name: 'accessoriesDesc', label: 'Image Description', type: 'text', default: 'Complete the uniform with our new fragrance line.' }
+        ]
+      },
+      {
+        id: 'swimwear',
+        label: 'Swimwear Dropdown',
+        fields: [
+          { name: 'swimwearImage', label: 'Dropdown Image URL', type: 'image', default: '/images/product-1.webp' },
+          { name: 'swimwearTitle', label: 'Image Title', type: 'text', default: 'The Resort Edit' },
+          { name: 'swimwearDesc', label: 'Image Description', type: 'text', default: 'Minimal silhouettes ready for the sun.' }
+        ]
+      }
+    ]
+  }
 };
 
 export default function AdminPages() {
