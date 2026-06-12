@@ -34,6 +34,7 @@ const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
 const AdminNewsletter = lazy(() => import('./pages/admin/AdminNewsletter'));
+const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
 const AdminBackups = lazy(() => import('./pages/admin/AdminBackups'));
 const AdminPages = lazy(() => import('./pages/admin/AdminPages'));
 
