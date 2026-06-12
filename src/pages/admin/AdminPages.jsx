@@ -24,7 +24,7 @@ const PAGE_SCHEMA = {
           { name: 'heroBtnText', label: 'Button Text', type: 'text', default: 'Shop Now' },
           { name: 'heroBtnLink', label: 'Button Link', type: 'text', default: '/new-in/all-new-arrivals' },
           { name: 'heroImage', label: 'Background Image URL', type: 'image', default: '/images/hero.webp' },
-          { name: 'heroVideo', label: 'Background Video URL (optional)', type: 'text' }
+          { name: 'heroVideo', label: 'Background Video (optional)', type: 'video' }
         ]
       },
       {
@@ -218,7 +218,7 @@ const PAGE_SCHEMA = {
 };
 
 export default function AdminPages() {
-  const { db, draftDb, updateDraft, publishChanges, isLoading } = useCms();
+  const { db, draftDb, updateDraft, publishChanges, isLoading, uploadFile } = useCms();
   const [activePage, setActivePage] = useState('home');
   const [openSections, setOpenSections] = useState({});
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -239,6 +239,13 @@ export default function AdminPages() {
       return { ...prev, pages: nextPages };
     });
     setHasUnsavedChanges(true);
+  };
+
+  const handleFileUpload = async (fieldName, file) => {
+    const result = await uploadFile(file);
+    if (result.success) {
+      handleFieldChange(fieldName, result.url);
+    }
   };
 
   const handlePublish = async () => {
@@ -358,7 +365,69 @@ export default function AdminPages() {
                                   className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors min-h-[100px] whitespace-pre-wrap font-mono"
                                   placeholder={`Enter ${field.label.toLowerCase()}`}
                                 />
-                              ) : field.type === 'text' || field.type === 'image' ? (
+                              ) : field.type === 'image' || field.type === 'video' ? (
+                                <div className="space-y-3">
+                                  <div 
+                                    className="border-2 border-dashed border-clay/60 hover:border-ink transition-colors rounded p-6 flex flex-col items-center justify-center cursor-pointer text-center group bg-canvas"
+                                    onDragOver={(e) => e.preventDefault()}
+                                    onDrop={(e) => {
+                                      e.preventDefault();
+                                      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                                        handleFileUpload(field.name, e.dataTransfer.files[0]);
+                                      }
+                                    }}
+                                    onClick={() => document.getElementById(`upload-${field.name}`).click()}
+                                  >
+                                    <input 
+                                      id={`upload-${field.name}`}
+                                      type="file" 
+                                      accept={field.type === 'image' ? "image/*" : "video/*"}
+                                      className="hidden" 
+                                      onChange={(e) => {
+                                        if (e.target.files && e.target.files.length > 0) {
+                                          handleFileUpload(field.name, e.target.files[0]);
+                                        }
+                                      }} 
+                                    />
+                                    <div className="w-10 h-10 rounded-full bg-sand flex items-center justify-center mb-3 group-hover:bg-ink group-hover:text-white transition-colors">
+                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                    </div>
+                                    <p className="text-xs font-bold uppercase tracking-wider text-ink mb-1">
+                                      Drag & Drop or Click to Upload {field.type}
+                                    </p>
+                                    <p className="text-[10px] text-cocoa">
+                                      Supports {field.type === 'image' ? 'JPG, PNG, WEBP' : 'MP4, WEBM'} (max 4.5MB)
+                                    </p>
+                                  </div>
+                                  
+                                  <div className="flex items-center gap-3">
+                                    <div className="flex-1 relative">
+                                      <input
+                                        type="text"
+                                        value={val}
+                                        onChange={(e) => handleFieldChange(field.name, e.target.value)}
+                                        className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors"
+                                        placeholder={`Or enter ${field.label.toLowerCase()} URL`}
+                                      />
+                                    </div>
+                                    {field.type === 'image' && val && (
+                                      <div className="shrink-0 w-20 h-12 bg-sand border border-clay/30 overflow-hidden relative group">
+                                        <img src={val} alt="Preview" className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                          <a href={val} target="_blank" rel="noreferrer" className="text-white hover:text-sand" onClick={(e) => e.stopPropagation()}>
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                          </a>
+                                        </div>
+                                      </div>
+                                    )}
+                                    {field.type === 'video' && val && (
+                                      <div className="shrink-0 w-20 h-12 bg-sand border border-clay/30 overflow-hidden relative">
+                                        <video src={val} className="w-full h-full object-cover" />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              ) : field.type === 'text' ? (
                                 <div className="relative">
                                   <input
                                     type="text"
@@ -367,11 +436,6 @@ export default function AdminPages() {
                                     className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors"
                                     placeholder={`Enter ${field.label.toLowerCase()}`}
                                   />
-                                  {field.type === 'image' && val && (
-                                    <div className="mt-3 relative w-32 h-20 bg-sand border border-clay/30 overflow-hidden">
-                                      <img src={val} alt="Preview" className="w-full h-full object-cover" />
-                                    </div>
-                                  )}
                                 </div>
                               ) : null}
                             </div>
