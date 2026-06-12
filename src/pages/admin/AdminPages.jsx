@@ -18,37 +18,114 @@ const PAGE_SCHEMA = {
         id: 'hero',
         label: 'Hero Section',
         fields: [
+          { name: 'heroVisible', label: 'Show Section', type: 'boolean', default: true },
           { name: 'heroTitle', label: 'Title', type: 'text', default: 'Refined Luxury Essentials' },
-          { name: 'heroTagline', label: 'Tagline', type: 'text', default: 'New Arrivals' },
           { name: 'heroDesc', label: 'Description', type: 'textarea', default: 'Discover the latest collection of premium essentials designed for modern living.' },
           { name: 'heroBtnText', label: 'Button Text', type: 'text', default: 'Shop Now' },
           { name: 'heroBtnLink', label: 'Button Link', type: 'text', default: '/new-in/all-new-arrivals' },
-          { name: 'heroImage', label: 'Background Image URL', type: 'text', default: '/images/hero-1.webp' },
-          { name: 'heroVideo', label: 'Background Video URL (optional)', type: 'text' },
-          { name: 'heroVisible', label: 'Show Section', type: 'boolean', default: true }
+          { name: 'heroImage', label: 'Background Image URL', type: 'image', default: '/images/hero.webp' },
+          { name: 'heroVideo', label: 'Background Video URL (optional)', type: 'text' }
         ]
       },
       {
-        id: 'featuredCategory',
-        label: 'Featured Category',
+        id: 'ethos',
+        label: 'Ethos Block',
         fields: [
-          { name: 'featCatTitle', label: 'Section Title', type: 'text', default: 'The Essentials' },
-          { name: 'featCatImage', label: 'Background Image URL', type: 'text', default: '/images/category-1.webp' },
-          { name: 'featCatBtnText', label: 'Button Text', type: 'text', default: 'Explore' },
-          { name: 'featCatBtnLink', label: 'Button Link', type: 'text', default: '/clothing' },
-          { name: 'featCatVisible', label: 'Show Section', type: 'boolean', default: true }
+          { name: 'ethosVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'ethosTitle', label: 'Title', type: 'text', default: 'Ethos' },
+          { name: 'ethosDesc', label: 'Description', type: 'textarea', default: 'We believe in designing products that perform and endure.' }
+        ]
+      },
+      {
+        id: 'curation',
+        label: 'Curated For You',
+        fields: [
+          { name: 'curationVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'curationTitle', label: 'Section Title', type: 'text', default: 'Curated For You' },
+          { name: 'curationMainImage', label: 'Main Curation Image', type: 'image', default: '/images/campaign-2.webp' },
+          { name: 'curationMainTitle', label: 'Main Curation Title', type: 'text', default: 'The Lounge Edit' },
+          { name: 'curationMainLink', label: 'Main Curation Link', type: 'text', default: '/other/shop-the-collection' },
+          { name: 'curationSub1Image', label: 'Sub Item 1 Image', type: 'image', default: '/images/product-2.webp' },
+          { name: 'curationSub1Title', label: 'Sub Item 1 Title', type: 'text', default: 'Seamless Tops' },
+          { name: 'curationSub1Link', label: 'Sub Item 1 Link', type: 'text', default: '/other/view' },
+          { name: 'curationSub2Image', label: 'Sub Item 2 Image', type: 'image', default: '/images/product-3.webp' },
+          { name: 'curationSub2Title', label: 'Sub Item 2 Title', type: 'text', default: 'Performance Leggings' },
+          { name: 'curationSub2Link', label: 'Sub Item 2 Link', type: 'text', default: '/other/view' }
+        ]
+      },
+      {
+        id: 'products',
+        label: 'Most Wanted Categories',
+        fields: [
+          { name: 'productsVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'productsTitle', label: 'Section Title', type: 'text', default: 'Most Wanted' },
+          { name: 'cat1Image', label: 'Category 1 Image', type: 'image', default: '/images/product-1.webp' },
+          { name: 'cat1Title', label: 'Category 1 Title', type: 'text', default: 'Category 1' },
+          { name: 'cat1Link', label: 'Category 1 Link', type: 'text', default: '/clothing' },
+          { name: 'cat2Image', label: 'Category 2 Image', type: 'image', default: '/images/product-2.webp' },
+          { name: 'cat2Title', label: 'Category 2 Title', type: 'text', default: 'Category 2' },
+          { name: 'cat2Link', label: 'Category 2 Link', type: 'text', default: '/clothing' },
+          { name: 'cat3Image', label: 'Category 3 Image', type: 'image', default: '/images/product-3.webp' },
+          { name: 'cat3Title', label: 'Category 3 Title', type: 'text', default: 'Category 3' },
+          { name: 'cat3Link', label: 'Category 3 Link', type: 'text', default: '/clothing' },
+          { name: 'cat4Image', label: 'Category 4 Image', type: 'image', default: '/images/product-4.webp' },
+          { name: 'cat4Title', label: 'Category 4 Title', type: 'text', default: 'Category 4' },
+          { name: 'cat4Link', label: 'Category 4 Link', type: 'text', default: '/clothing' }
+        ]
+      },
+      {
+        id: 'newArrivals',
+        label: 'New Arrivals Product Ribbon',
+        fields: [
+          { name: 'newArrivalsVisible', label: 'Show Section', type: 'boolean', default: true }
+        ]
+      },
+      {
+        id: 'newsletter',
+        label: 'Newsletter Signup',
+        fields: [
+          { name: 'newsletterVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'newsletterTitle', label: 'Title', type: 'text', default: 'Join the Club' },
+          { name: 'newsletterDesc', label: 'Description', type: 'textarea', default: 'Sign up for exclusive offers and early access.' }
+        ]
+      },
+      {
+        id: 'testimonials',
+        label: 'Testimonials Quote',
+        fields: [
+          { name: 'testimonialsVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'testimonialsDesc', label: 'Quote', type: 'textarea', default: 'The best basics I have ever worn.' },
+          { name: 'testimonialsTitle', label: 'Author/Source', type: 'text', default: 'Vogue' }
+        ]
+      },
+      {
+        id: 'faq',
+        label: 'FAQ Block',
+        fields: [
+          { name: 'faqVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'faqTitle', label: 'Title', type: 'text', default: 'Frequently Asked Questions' },
+          { name: 'faqDesc', label: 'Return Policy Text', type: 'textarea', default: 'You can return any unworn items within 30 days.' }
+        ]
+      },
+      {
+        id: 'contact',
+        label: 'Contact Info',
+        fields: [
+          { name: 'contactVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'contactTitle', label: 'Title', type: 'text', default: 'Contact Us' },
+          { name: 'contactDesc', label: 'Description', type: 'textarea', default: 'Need help? We\'re here for you.' }
         ]
       },
       {
         id: 'editorial',
         label: 'Editorial Feature',
         fields: [
+          { name: 'editorialVisible', label: 'Show Section', type: 'boolean', default: true },
           { name: 'editorialTitle', label: 'Title', type: 'text', default: 'Behind the Design' },
           { name: 'editorialDesc', label: 'Description', type: 'textarea', default: 'A look into our meticulous design process.' },
-          { name: 'editorialImage', label: 'Image URL', type: 'text', default: '/images/editorial-1.webp' },
+          { name: 'editorialImage', label: 'Image URL', type: 'image', default: '/images/editorial-wide.webp' },
           { name: 'editorialBtnText', label: 'Button Text', type: 'text', default: 'Read More' },
-          { name: 'editorialBtnLink', label: 'Button Link', type: 'text', default: '/about/our-story' },
-          { name: 'editorialVisible', label: 'Show Section', type: 'boolean', default: true }
+          { name: 'editorialBtnLink', label: 'Button Link', type: 'text', default: '/about/our-story' }
         ]
       }
     ]

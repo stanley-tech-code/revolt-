@@ -5,40 +5,28 @@ import ProductCard from '../components/ui/ProductCard';
 
 export default function Home() {
   const { db } = useCms();
-
-  const currentUser = null;
-  const isEditMode = false;
   const content = db?.pages?.home || {};
+  const newArrivals = db?.products?.filter(p => p.isNewArrival) || [];
 
   const handleQuickPurchase = async (e, p) => {
     e.preventDefault();
     e.stopPropagation();
     if (p.stock <= 0) return;
-
     const randomNames = ['Amelia Clark', 'Charlotte Evans', 'Isabella Hall', 'Mia Jenkins', 'Harper Kelly'];
     const randomCustomer = randomNames[Math.floor(Math.random() * randomNames.length)];
-
     try {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer: randomCustomer,
-          total: p.price,
-          items: `1x ${p.name}`
-        })
+      const res = await fetch('/api/orders', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ customer: randomCustomer, total: p.price, items: `1x ${p.name}` }) 
       });
       const data = await res.json();
       if (data.success) {
         alert(`✓ Purchase complete!\nOrder #${data.order.id} placed for $${p.price.toFixed(2)}.\nProduct stock decremented & admin dashboard updated in real-time!`);
         window.location.reload();
       }
-    } catch (err) {
-      alert('Failed to place storefront checkout order.');
-    }
+    } catch (err) { alert('Failed to place storefront checkout order.'); }
   };
-
-  const newArrivals = db.products.filter(p => p.isNewArrival);
 
   return (
     <main className="w-full overflow-x-hidden relative animate-fade-in" style={{ paddingBottom: '0' }}>
@@ -66,65 +54,166 @@ export default function Home() {
         </section>
       )}
 
-      {/* Featured Category Section */}
-      {content.featCatVisible !== false && (
-        <section className="w-full py-6 md:py-8 bg-canvas overflow-hidden">
-          <div className="w-full px-2 md:px-4 lg:px-6">
-            <div className="mb-6 px-2 md:px-0">
-              <h2 className="h2-fluid font-semibold uppercase tracking-tight">{content.featCatTitle || "The Essentials"}</h2>
+      {/* Ethos Block Section */}
+      {content.ethosVisible !== false && (
+        <section className="py-12 md:py-16 bg-canvas border-t border-clay/10 transition-all">
+          <div className="w-full px-4 md:px-6 text-center relative">
+            <div className="w-full">
+              <h2 className="h2-fluid font-semibold uppercase mb-6 tracking-[-0.04em] leading-[0.9]">{content.ethosTitle || 'Ethos'}</h2>
+              <p className="text-base md:text-lg lg:text-xl text-[#000000] max-w-xl mx-auto leading-relaxed font-bold uppercase tracking-wider">{content.ethosDesc || 'We believe in designing products that perform and endure.'}</p>
             </div>
-            <Link to={content.featCatBtnLink || "/clothing"} className="relative block group overflow-hidden min-h-[500px] md:min-h-[850px]">
-              <img src={content.featCatImage || "/images/campaign-2.webp"} alt={content.featCatTitle} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-              <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
-                <span className="inline-block bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] py-4 px-10 transition-all duration-700 group-hover:bg-black group-hover:text-white">{content.featCatBtnText || "Explore"}</span>
-              </div>
-            </Link>
           </div>
         </section>
       )}
 
-      {/* New Arrivals Section (Dynamic based on Products) */}
-      <section className="py-6 md:py-8 bg-canvas border-y border-clay/10 overflow-hidden">
-        <div className="w-full px-4 md:px-6 mb-6 flex items-end justify-between">
-          <div>
-            <h2 className="h2-fluid font-semibold uppercase tracking-tight">New Arrivals</h2>
-          </div>
-          <Link to="/new-in/all-new-arrivals" className="text-[9px] font-bold uppercase tracking-[0.4em] text-cocoa hover:text-ink transition-colors border-b border-ink/20 hover:border-ink pb-1">Shop Collection</Link>
-        </div>
-        
-        <div className="overflow-x-auto scrollbar-none cursor-grab active:cursor-grabbing">
-          <div className="flex gap-4 px-4">
-            {newArrivals.slice(0, 10).map((p, idx) => (
-              <div key={p.id} className="shrink-0 w-[60vw] sm:w-[35vw] md:w-[25vw] lg:w-[20vw] xl:w-[16vw]">
-                <ProductCard product={p} />
+      {/* Curation Section */}
+      {content.curationVisible !== false && (
+        <section className="w-full py-6 md:py-8 bg-canvas overflow-hidden">
+          <div className="w-full px-2 md:px-4 lg:px-6">
+            <div className="mb-6 px-2 md:px-0">
+              <h2 className="h2-fluid font-semibold uppercase tracking-tight">{content.curationTitle || "Curated For You"}</h2>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-2 md:gap-4 w-full">
+              <Link to={content.curationMainLink || "/other/shop-the-collection"} className="relative group overflow-hidden min-h-[500px] md:min-h-[850px]">
+                <img src={content.curationMainImage || "/images/campaign-2.webp"} alt="Revolt curation" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white mb-5">{content.curationMainTitle || "The Lounge Edit"}</p>
+                  <span className="inline-block bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] py-4 px-10 transition-all duration-700 group-hover:bg-black group-hover:text-white">Shop Now</span>
+                </div>
+              </Link>
+              <div className="grid grid-cols-1 gap-2 md:gap-4">
+                <Link to={content.curationSub1Link || "/other/view"} className="relative group overflow-hidden min-h-[400px]">
+                  <img src={content.curationSub1Image || "/images/product-2.webp"} alt="Item" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-8 left-8">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white mb-4">{content.curationSub1Title || "Seamless Tops"}</p>
+                    <span className="inline-block bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] py-3 px-8 transition-all duration-700 group-hover:bg-black group-hover:text-white">Shop Now</span>
+                  </div>
+                </Link>
+                <Link to={content.curationSub2Link || "/other/view"} className="relative group overflow-hidden min-h-[400px]">
+                  <img src={content.curationSub2Image || "/images/product-3.webp"} alt="Item" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-8 left-8">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white mb-4">{content.curationSub2Title || "Performance Leggings"}</p>
+                    <span className="inline-block bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] py-3 px-8 transition-all duration-700 group-hover:bg-black group-hover:text-white">Shop Now</span>
+                  </div>
+                </Link>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Editorial Feature Section */}
+      {/* Most Wanted Categories Section */}
+      {content.productsVisible !== false && (
+        <section className="py-6 md:py-8 bg-canvas border-y border-clay/10">
+          <div className="w-full px-4 md:px-6 mb-8 flex items-end justify-between">
+            <div><h2 className="h2-fluid font-semibold uppercase tracking-tight">{content.productsTitle || "Most Wanted"}</h2></div>
+          </div>
+          <div className="w-full px-0">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 w-full">
+              {[1, 2, 3, 4].map((num) => (
+                <Link to={content[`cat${num}Link`] || "/clothing"} key={num} className="group block w-full text-left">
+                  <div className="aspect-[4/5] bg-canvas overflow-hidden relative mb-3">
+                    <img loading="lazy" src={content[`cat${num}Image`] || `/images/product-${num}.webp`} alt="Category" className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
+                  </div>
+                  <h3 className="text-[10px] md:text-[11px] lg:text-[12px] font-bold uppercase tracking-[0.25em] text-left text-[#000000] navbar-brand-font group-hover:text-[#000000]/70 transition-colors mt-2">
+                    {content[`cat${num}Title`] || `Category ${num}`}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* New Arrivals Section */}
+      {content.newArrivalsVisible !== false && (
+        <section className="py-6 md:py-8 bg-canvas border-y border-clay/10 overflow-hidden">
+          <div className="w-full px-4 md:px-6 mb-6 flex items-end justify-between">
+            <div><h2 className="h2-fluid font-semibold uppercase tracking-tight">New Arrivals</h2></div>
+            <Link to="/new-in/all-new-arrivals" className="text-[9px] font-bold uppercase tracking-[0.4em] text-cocoa hover:text-ink transition-colors border-b border-ink/20 hover:border-ink pb-1">Shop Collection</Link>
+          </div>
+          <div className="overflow-x-auto scrollbar-none cursor-grab active:cursor-grabbing">
+            <div className="flex gap-4 px-4">
+              {newArrivals.slice(0, 10).map((p) => (
+                <div key={p.id} className="shrink-0 w-[60vw] sm:w-[35vw] md:w-[25vw] lg:w-[20vw] xl:w-[16vw]">
+                  <ProductCard product={p} onQuickPurchase={handleQuickPurchase} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Newsletter Section */}
+      {content.newsletterVisible !== false && (
+        <section className="py-12 md:py-20 bg-sand/30 border-y border-clay/10 transition-all">
+          <div className="max-w-2xl mx-auto px-4 text-center relative">
+            <h2 className="text-xl md:text-2xl font-bold uppercase tracking-tight mb-4">{content.newsletterTitle || "Join the Club"}</h2>
+            <p className="text-sm text-cocoa mb-6 max-w-md mx-auto leading-relaxed">{content.newsletterDesc || "Sign up for exclusive offers and early access."}</p>
+            <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto justify-center">
+              <input type="email" placeholder="Enter your email" className="px-4 py-3 bg-canvas border border-clay/40 rounded text-xs focus:outline-none focus:border-ink flex-1" />
+              <button className="bg-ink text-canvas py-3 px-8 text-[9px] uppercase tracking-wider font-bold hover:bg-cocoa transition-colors">Subscribe</button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Testimonials Section */}
+      {content.testimonialsVisible !== false && (
+        <section className="py-6 md:py-8 bg-canvas border-t border-clay/10 text-center transition-all">
+          <div className="max-w-3xl mx-auto px-4 relative">
+            <span className="text-[24px] text-clay">“</span>
+            <p className="text-base md:text-lg font-serif italic text-cocoa max-w-xl mx-auto mb-4">{content.testimonialsDesc || "The best basics I have ever worn."}</p>
+            <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-ink">{content.testimonialsTitle || "Vogue"}</span>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ Section */}
+      {content.faqVisible !== false && (
+        <section className="py-6 md:py-8 bg-canvas border-y border-clay/10 transition-all">
+          <div className="max-w-2xl mx-auto px-4 relative">
+            <h2 className="text-center text-sm font-bold uppercase tracking-widest mb-8">{content.faqTitle || "Frequently Asked Questions"}</h2>
+            <div className="flex flex-col gap-4 text-left">
+              <div className="border-b border-clay/20 pb-3">
+                <h4 className="text-[12px] font-bold uppercase text-ink">What is the return policy?</h4>
+                <p className="text-[11px] text-cocoa mt-1">{content.faqDesc || "You can return any unworn items within 30 days."}</p>
+              </div>
+              <div className="border-b border-clay/20 pb-3">
+                <h4 className="text-[12px] font-bold uppercase text-ink">How do I choose my size?</h4>
+                <p className="text-[11px] text-cocoa mt-1">Please refer to our Size Guide located in the help page for detailed instructions.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Contact Section */}
+      {content.contactVisible !== false && (
+        <section className="py-6 md:py-8 bg-sand/20 border-t border-clay/10 text-center transition-all">
+          <div className="max-w-2xl mx-auto px-4 relative">
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-4">{content.contactTitle || "Contact Us"}</h2>
+            <p className="text-xs text-cocoa mb-6">{content.contactDesc || "Need help? We're here for you."}</p>
+            <div className="flex justify-center gap-4 text-[11px] font-bold uppercase tracking-wide text-ink">
+              <span>Instagram: @revolt_uniform</span>
+              <span>Support: support@revolt.com</span>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Editorial Section */}
       {content.editorialVisible !== false && (
         <section className="w-full zoomed-h-screen overflow-hidden bg-canvas transition-all relative">
           <div className="relative w-full h-full group">
-            <img 
-              loading="lazy" 
-              src={content.editorialImage || "/images/editorial-wide.webp"} 
-              alt={content.editorialTitle} 
-              className="w-full h-full object-cover transition-transform duration-[8s] group-hover:scale-105" 
-            />
+            <img loading="lazy" src={content.editorialImage || "/images/editorial-wide.webp"} alt={content.editorialTitle || "Editorial"} className="w-full h-full object-cover transition-transform duration-[8s] group-hover:scale-105" />
             <div className="absolute inset-0 bg-ink/15 flex flex-col items-start justify-end text-left px-6 md:px-10 lg:px-14 pb-8 md:pb-12 lg:pb-16">
-              <p className="text-[10px] uppercase tracking-[0.5em] text-canvas mb-3 drop-shadow-sm font-medium">
-                {content.editorialTitle || "Behind the Design"}
-              </p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight text-canvas mb-6 max-w-xl leading-none drop-shadow-md">
-                {content.editorialDesc || "A look into our meticulous design process."}
-              </h2>
-              <Link 
-                to={content.editorialBtnLink || "/about/our-story"} 
-                className="bg-canvas text-ink hover:bg-ink hover:text-canvas text-[9px] font-bold uppercase tracking-[0.4em] px-8 py-3.5 shadow-lg transition-all duration-300 transform active:scale-95 z-10"
-              >
+              <p className="text-[10px] uppercase tracking-[0.5em] text-canvas mb-3 drop-shadow-sm font-medium">{content.editorialTitle || "Behind the Design"}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight text-canvas mb-6 max-w-xl leading-none drop-shadow-md">{content.editorialDesc || "A look into our meticulous design process."}</h2>
+              <Link to={content.editorialBtnLink || "/about/our-story"} className="bg-canvas text-ink hover:bg-ink hover:text-canvas text-[9px] font-bold uppercase tracking-[0.4em] px-8 py-3.5 shadow-lg transition-all duration-300 transform active:scale-95 z-10">
                 {content.editorialBtnText || "Read More"}
               </Link>
             </div>
