@@ -5,6 +5,9 @@ import { useCms } from '../../context/CmsContext';
 export default function OurStory() {
   const { db } = useCms();
   const content = db?.pages?.ourStory || {};
+
+  if (content.visible === false) return null;
+
   return (
     <main>
       <section className="py-32 bg-canvas min-h-[60vh] flex items-center justify-center">

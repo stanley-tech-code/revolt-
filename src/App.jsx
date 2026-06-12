@@ -34,8 +34,8 @@ const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
 const AdminNewsletter = lazy(() => import('./pages/admin/AdminNewsletter'));
-const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
 const AdminBackups = lazy(() => import('./pages/admin/AdminBackups'));
+const AdminPages = lazy(() => import('./pages/admin/AdminPages'));
 
 // LAZY LOADED STOREFRONT ROUTES
 const OurStory = lazy(() => import('./pages/about/OurStory'));
@@ -225,6 +225,7 @@ function App() {
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
               <Route path="content" element={<AdminContent />} />
+              <Route path="pages" element={<AdminProtectedRoute allowedRoles={['Super Admin', 'Editor', 'Marketing']}><AdminPages /></AdminProtectedRoute>} />
               <Route path="newsletter" element={<AdminProtectedRoute allowedRoles={['Super Admin', 'Marketing']}><AdminNewsletter /></AdminProtectedRoute>} />
               <Route path="messages" element={<AdminMessages />} />
               <Route path="analytics" element={<AdminAnalytics />} />

@@ -13,7 +13,8 @@ export default function TrendGuide() {
   return (
     <main className="animate-fade-in pb-32">
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] md:h-[80vh] bg-sand flex items-center justify-center overflow-hidden">
+      {content.heroVisible !== false && (
+        <section className="relative w-full h-[60vh] md:h-[80vh] bg-sand flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src={content.heroImage || "/images/campaign-1.webp"} 
@@ -31,9 +32,11 @@ export default function TrendGuide() {
           </p>
         </div>
       </section>
+      )}
 
       {/* Intro Text */}
-      <section className="py-24 px-6 max-w-3xl mx-auto text-center border-b border-[#000000]/10">
+      {content.introVisible !== false && (
+        <section className="py-24 px-6 max-w-3xl mx-auto text-center border-b border-[#000000]/10">
         <h2 className="text-2xl font-bold uppercase tracking-widest text-ink mb-8">{content.introTitle || 'The Shift in Proportions'}</h2>
         <p className="text-cocoa text-sm md:text-base leading-loose mb-12 whitespace-pre-wrap">
           {content.introText || "This season is defined by a distinct shift towards relaxed architectural forms and hyper-tactile materials. We are moving away from restrictive fits into an era of confident, oversized silhouettes that don't compromise on tailoring. It's about how garments interact with the body in motion."}
@@ -42,11 +45,13 @@ export default function TrendGuide() {
           {content.introBtnText || 'Shop New Arrivals'}
         </Link>
       </section>
+      )}
 
       {/* Trend Breakdowns */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto space-y-32">
         
         {/* Trend 1 */}
+        {content.trend1Visible !== false && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1 aspect-[4/5] bg-sand overflow-hidden group">
             <img src={content.trend1Image || "/images/editorial-wide.webp"} alt={content.trend1Title || "Oversized Tailoring"} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
@@ -64,8 +69,10 @@ export default function TrendGuide() {
             </div>
           </div>
         </div>
+        )}
 
         {/* Trend 2 */}
+        {content.trend2Visible !== false && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 md:pr-12">
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-cocoa">Trend 02</span>
@@ -89,11 +96,13 @@ export default function TrendGuide() {
             <img src={content.trend2Image || "/images/product-3.webp"} alt={content.trend2Title || "Neutral Palette"} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
           </div>
         </div>
+        )}
 
       </section>
 
       {/* Footer CTA */}
-      <section className="py-24 bg-ink text-canvas text-center px-6">
+      {content.ctaVisible !== false && (
+        <section className="py-24 bg-ink text-canvas text-center px-6">
         <h2 className="text-3xl font-bold uppercase tracking-widest mb-6">{content.ctaTitle || 'Ready to Update Your Wardrobe?'}</h2>
         <p className="text-sm text-canvas/70 max-w-xl mx-auto mb-10 whitespace-pre-wrap">
           {content.ctaDesc || 'Shop the pieces featured in this guide and explore our curated selection of seasonal essentials.'}
@@ -102,6 +111,7 @@ export default function TrendGuide() {
           {content.ctaBtnText || 'Shop The Collection'}
         </Link>
       </section>
+      )}
     </main>
   );
 }
