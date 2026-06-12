@@ -31,14 +31,11 @@ const AdminCarts = lazy(() => import('./pages/admin/AdminCarts'));
 const AdminFinance = lazy(() => import('./pages/admin/AdminFinance'));
 const AdminPromotions = lazy(() => import('./pages/admin/AdminPromotions'));
 const AdminContent = lazy(() => import('./pages/admin/AdminContent'));
-const AdminNotifications = lazy(() => import('./pages/admin/AdminNotifications'));
-const AdminTwilio = lazy(() => import('./pages/admin/AdminTwilio'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
 const AdminNewsletter = lazy(() => import('./pages/admin/AdminNewsletter'));
 const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
 const AdminBackups = lazy(() => import('./pages/admin/AdminBackups'));
-const AdminPages = lazy(() => import('./pages/admin/AdminPages'));
 
 // LAZY LOADED STOREFRONT ROUTES
 const OurStory = lazy(() => import('./pages/about/OurStory'));
@@ -228,13 +225,10 @@ function App() {
               <Route path="finance" element={<AdminFinance />} />
               <Route path="promotions" element={<AdminPromotions />} />
               <Route path="content" element={<AdminContent />} />
-              <Route path="notifications" element={<AdminProtectedRoute allowedRoles={['Super Admin', 'Editor', 'Marketing', 'Support']}><AdminNotifications /></AdminProtectedRoute>} />
               <Route path="newsletter" element={<AdminProtectedRoute allowedRoles={['Super Admin', 'Marketing']}><AdminNewsletter /></AdminProtectedRoute>} />
               <Route path="messages" element={<AdminMessages />} />
-              <Route path="twilio" element={<AdminProtectedRoute allowedRoles={['Super Admin']}><AdminTwilio /></AdminProtectedRoute>} />
               <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="settings" element={<AdminSettings />} />
-              <Route path="pages" element={<AdminPages />} />
               <Route path="backups" element={<AdminProtectedRoute allowedRoles={['Super Admin']}><AdminBackups /></AdminProtectedRoute>} />
             </Route>
 
