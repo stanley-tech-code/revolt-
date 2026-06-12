@@ -28,32 +28,6 @@ const PAGE_SCHEMA = {
         ]
       },
       {
-        id: 'ethos',
-        label: 'Ethos Block',
-        fields: [
-          { name: 'ethosVisible', label: 'Show Section', type: 'boolean', default: true },
-          { name: 'ethosTitle', label: 'Title', type: 'text', default: 'Ethos' },
-          { name: 'ethosDesc', label: 'Description', type: 'textarea', default: 'We believe in designing products that perform and endure.' }
-        ]
-      },
-      {
-        id: 'curation',
-        label: 'Curated For You',
-        fields: [
-          { name: 'curationVisible', label: 'Show Section', type: 'boolean', default: true },
-          { name: 'curationTitle', label: 'Section Title', type: 'text', default: 'Curated For You' },
-          { name: 'curationMainImage', label: 'Main Curation Image', type: 'image', default: '/images/campaign-2.webp' },
-          { name: 'curationMainTitle', label: 'Main Curation Title', type: 'text', default: 'The Lounge Edit' },
-          { name: 'curationMainLink', label: 'Main Curation Link', type: 'text', default: '/other/shop-the-collection' },
-          { name: 'curationSub1Image', label: 'Sub Item 1 Image', type: 'image', default: '/images/product-2.webp' },
-          { name: 'curationSub1Title', label: 'Sub Item 1 Title', type: 'text', default: 'Seamless Tops' },
-          { name: 'curationSub1Link', label: 'Sub Item 1 Link', type: 'text', default: '/other/view' },
-          { name: 'curationSub2Image', label: 'Sub Item 2 Image', type: 'image', default: '/images/product-3.webp' },
-          { name: 'curationSub2Title', label: 'Sub Item 2 Title', type: 'text', default: 'Performance Leggings' },
-          { name: 'curationSub2Link', label: 'Sub Item 2 Link', type: 'text', default: '/other/view' }
-        ]
-      },
-      {
         id: 'products',
         label: 'Most Wanted Categories',
         fields: [
@@ -74,49 +48,6 @@ const PAGE_SCHEMA = {
         ]
       },
       {
-        id: 'newArrivals',
-        label: 'New Arrivals Product Ribbon',
-        fields: [
-          { name: 'newArrivalsVisible', label: 'Show Section', type: 'boolean', default: true }
-        ]
-      },
-      {
-        id: 'newsletter',
-        label: 'Newsletter Signup',
-        fields: [
-          { name: 'newsletterVisible', label: 'Show Section', type: 'boolean', default: true },
-          { name: 'newsletterTitle', label: 'Title', type: 'text', default: 'Join the Club' },
-          { name: 'newsletterDesc', label: 'Description', type: 'textarea', default: 'Sign up for exclusive offers and early access.' }
-        ]
-      },
-      {
-        id: 'testimonials',
-        label: 'Testimonials Quote',
-        fields: [
-          { name: 'testimonialsVisible', label: 'Show Section', type: 'boolean', default: true },
-          { name: 'testimonialsDesc', label: 'Quote', type: 'textarea', default: 'The best basics I have ever worn.' },
-          { name: 'testimonialsTitle', label: 'Author/Source', type: 'text', default: 'Vogue' }
-        ]
-      },
-      {
-        id: 'faq',
-        label: 'FAQ Block',
-        fields: [
-          { name: 'faqVisible', label: 'Show Section', type: 'boolean', default: true },
-          { name: 'faqTitle', label: 'Title', type: 'text', default: 'Frequently Asked Questions' },
-          { name: 'faqDesc', label: 'Return Policy Text', type: 'textarea', default: 'You can return any unworn items within 30 days.' }
-        ]
-      },
-      {
-        id: 'contact',
-        label: 'Contact Info',
-        fields: [
-          { name: 'contactVisible', label: 'Show Section', type: 'boolean', default: true },
-          { name: 'contactTitle', label: 'Title', type: 'text', default: 'Contact Us' },
-          { name: 'contactDesc', label: 'Description', type: 'textarea', default: 'Need help? We\'re here for you.' }
-        ]
-      },
-      {
         id: 'editorial',
         label: 'Editorial Feature',
         fields: [
@@ -126,6 +57,30 @@ const PAGE_SCHEMA = {
           { name: 'editorialImage', label: 'Image URL', type: 'image', default: '/images/editorial-wide.webp' },
           { name: 'editorialBtnText', label: 'Button Text', type: 'text', default: 'Read More' },
           { name: 'editorialBtnLink', label: 'Button Link', type: 'text', default: '/about/our-story' }
+        ]
+      },
+      {
+        id: 'newArrivals',
+        label: 'New Arrivals Product Ribbon',
+        fields: [
+          { name: 'newArrivalsVisible', label: 'Show Section', type: 'boolean', default: true }
+        ]
+      },
+      {
+        id: 'curation',
+        label: 'Curated For You',
+        fields: [
+          { name: 'curationVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'curationTitle', label: 'Section Title', type: 'text', default: 'Curated For You' },
+          { name: 'curationMainImage', label: 'Main Curation Image', type: 'image', default: '/images/campaign-2.webp' },
+          { name: 'curationMainTitle', label: 'Main Curation Title', type: 'text', default: 'The Lounge Edit' },
+          { name: 'curationMainLink', label: 'Main Curation Link', type: 'text', default: '/other/shop-the-collection' },
+          { name: 'curationSub1Image', label: 'Sub Item 1 Image', type: 'image', default: '/images/product-2.webp' },
+          { name: 'curationSub1Title', label: 'Sub Item 1 Title', type: 'text', default: 'Seamless Tops' },
+          { name: 'curationSub1Link', label: 'Sub Item 1 Link', type: 'text', default: '/other/view' },
+          { name: 'curationSub2Image', label: 'Sub Item 2 Image', type: 'image', default: '/images/product-3.webp' },
+          { name: 'curationSub2Title', label: 'Sub Item 2 Title', type: 'text', default: 'Performance Leggings' },
+          { name: 'curationSub2Link', label: 'Sub Item 2 Link', type: 'text', default: '/other/view' }
         ]
       }
     ]
