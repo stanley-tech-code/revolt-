@@ -151,68 +151,11 @@ const PAGE_SCHEMA = {
       }
     ]
   },
-  trendGuide: {
-    title: 'Trend Guide',
-    sections: [
-      {
-        id: 'hero',
-        label: 'Hero Section',
-        fields: [
-          { name: 'heroImage', label: 'Hero Image URL', type: 'text' },
-          { name: 'heroEyebrow', label: 'Eyebrow Text', type: 'text' },
-          { name: 'heroTitle', label: 'Title', type: 'text' },
-          { name: 'heroDesc', label: 'Description', type: 'textarea' },
-          { name: 'heroVisible', label: 'Show Section', type: 'boolean', default: true }
-        ]
-      },
-      {
-        id: 'intro',
-        label: 'Intro Section',
-        fields: [
-          { name: 'introTitle', label: 'Title', type: 'text' },
-          { name: 'introText', label: 'Content', type: 'textarea' },
-          { name: 'introBtnText', label: 'Button Text', type: 'text' },
-          { name: 'introBtnLink', label: 'Button Link', type: 'text' },
-          { name: 'introVisible', label: 'Show Section', type: 'boolean', default: true }
-        ]
-      },
-      {
-        id: 'trend1',
-        label: 'Trend 1',
-        fields: [
-          { name: 'trend1Image', label: 'Image URL', type: 'text' },
-          { name: 'trend1Title', label: 'Title', type: 'text' },
-          { name: 'trend1Desc', label: 'Description', type: 'textarea' },
-          { name: 'trend1Visible', label: 'Show Section', type: 'boolean', default: true }
-        ]
-      },
-      {
-        id: 'trend2',
-        label: 'Trend 2',
-        fields: [
-          { name: 'trend2Image', label: 'Image URL', type: 'text' },
-          { name: 'trend2Title', label: 'Title', type: 'text' },
-          { name: 'trend2Desc', label: 'Description', type: 'textarea' },
-          { name: 'trend2Visible', label: 'Show Section', type: 'boolean', default: true }
-        ]
-      },
-      {
-        id: 'cta',
-        label: 'Footer CTA',
-        fields: [
-          { name: 'ctaTitle', label: 'Title', type: 'text' },
-          { name: 'ctaDesc', label: 'Description', type: 'textarea' },
-          { name: 'ctaBtnText', label: 'Button Text', type: 'text' },
-          { name: 'ctaBtnLink', label: 'Button Link', type: 'text' },
-          { name: 'ctaVisible', label: 'Show Section', type: 'boolean', default: true }
-        ]
-      }
-    ]
-  },
-  clothingGuide: { title: 'Clothing Guide', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
-  braFitGuide: { title: 'Bra Fit Guide', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
-  underwearGuide: { title: 'Underwear Guide', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
-  swimFitGuide: { title: 'Swim Fit Guide', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
+  trendGuide: createGuideSchema('Trend Guide'),
+  clothingGuide: createGuideSchema('Clothing Guide'),
+  braFitGuide: createGuideSchema('Bra Fit Guide'),
+  underwearGuide: createGuideSchema('Underwear Guide'),
+  swimFitGuide: createGuideSchema('Swim Fit Guide'),
   ourStory: { title: 'Our Story', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   sustainability: { title: 'Sustainability', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   careers: { title: 'Careers', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
