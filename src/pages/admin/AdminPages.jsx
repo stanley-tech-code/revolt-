@@ -186,7 +186,7 @@ const PAGE_SCHEMA = {
 };
 
 export default function AdminPages() {
-  const { db, updateDraft, publishChanges, isLoading } = useCms();
+  const { db, draftDb, updateDraft, publishChanges, isLoading } = useCms();
   const [activePage, setActivePage] = useState('home');
   const [openSections, setOpenSections] = useState({});
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -203,8 +203,7 @@ export default function AdminPages() {
   const handleFieldChange = (fieldName, value) => {
     updateDraft((prev) => {
       const nextPages = { ...prev.pages };
-      if (!nextPages[activePage]) nextPages[activePage] = {};
-      nextPages[activePage][fieldName] = value;
+      nextPages[activePage] = { ...(nextPages[activePage] || {}), [fieldName]: value };
       return { ...prev, pages: nextPages };
     });
     setHasUnsavedChanges(true);
@@ -216,7 +215,7 @@ export default function AdminPages() {
   };
 
   const currentSchema = PAGE_SCHEMA[activePage];
-  const currentData = db?.pages?.[activePage] || {};
+  const currentData = draftDb?.pages?.[activePage] || db?.pages?.[activePage] || {};
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in pb-20">

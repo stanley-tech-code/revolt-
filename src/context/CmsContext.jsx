@@ -757,6 +757,7 @@ export function CmsProvider({ children }) {
       errorNotification,
       setDb,
       fetchDatabase,
+      updateDraft,
       publishChanges,
       discardChanges,
       undo,
