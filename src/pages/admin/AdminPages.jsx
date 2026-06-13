@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCms } from '../../context/CmsContext';
+import { GUIDE_DEFAULTS } from '../../data/guideDefaults';
 
 const EyeOff = ({ size = 10 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -11,7 +12,7 @@ const EyeOff = ({ size = 10 }) => (
 );
 
 
-const createGuideSchema = (title) => ({
+const createGuideSchema = (title, defaults = {}) => ({
   title,
   sections: [
     {
@@ -19,10 +20,10 @@ const createGuideSchema = (title) => ({
       label: 'Hero Section',
       fields: [
         { name: 'heroVisible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'heroImage', label: 'Hero Image', type: 'image' },
-        { name: 'heroEyebrow', label: 'Eyebrow Text', type: 'text' },
-        { name: 'heroTitle', label: 'Title', type: 'text' },
-        { name: 'heroDesc', label: 'Description', type: 'textarea' }
+        { name: 'heroImage', label: 'Hero Image', type: 'image', default: defaults.heroImage },
+        { name: 'heroEyebrow', label: 'Eyebrow Text', type: 'text', default: defaults.heroEyebrow },
+        { name: 'heroTitle', label: 'Title', type: 'text', default: defaults.heroTitle },
+        { name: 'heroDesc', label: 'Description', type: 'textarea', default: defaults.heroDesc }
       ]
     },
     {
@@ -30,10 +31,10 @@ const createGuideSchema = (title) => ({
       label: 'Intro Text',
       fields: [
         { name: 'introVisible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'introTitle', label: 'Title', type: 'text' },
-        { name: 'introText', label: 'Content', type: 'textarea' },
-        { name: 'introBtnText', label: 'Button Text', type: 'text' },
-        { name: 'introBtnLink', label: 'Button Link', type: 'text' }
+        { name: 'introTitle', label: 'Title', type: 'text', default: defaults.introTitle },
+        { name: 'introText', label: 'Content', type: 'textarea', default: defaults.introText },
+        { name: 'introBtnText', label: 'Button Text', type: 'text', default: defaults.introBtnText },
+        { name: 'introBtnLink', label: 'Button Link', type: 'text', default: defaults.introBtnLink }
       ]
     },
     {
@@ -41,12 +42,12 @@ const createGuideSchema = (title) => ({
       label: 'Focus Section 1',
       fields: [
         { name: 'section1Visible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'section1Image', label: 'Image', type: 'image' },
-        { name: 'section1Eyebrow', label: 'Eyebrow', type: 'text' },
-        { name: 'section1Title', label: 'Title', type: 'text' },
-        { name: 'section1Desc', label: 'Description', type: 'textarea' },
-        { name: 'section1BtnText', label: 'Button Text', type: 'text' },
-        { name: 'section1BtnLink', label: 'Button Link', type: 'text' }
+        { name: 'section1Image', label: 'Image', type: 'image', default: defaults.section1Image },
+        { name: 'section1Eyebrow', label: 'Eyebrow', type: 'text', default: defaults.section1Eyebrow },
+        { name: 'section1Title', label: 'Title', type: 'text', default: defaults.section1Title },
+        { name: 'section1Desc', label: 'Description', type: 'textarea', default: defaults.section1Desc },
+        { name: 'section1BtnText', label: 'Button Text', type: 'text', default: defaults.section1BtnText },
+        { name: 'section1BtnLink', label: 'Button Link', type: 'text', default: defaults.section1BtnLink }
       ]
     },
     {
@@ -54,12 +55,12 @@ const createGuideSchema = (title) => ({
       label: 'Focus Section 2',
       fields: [
         { name: 'section2Visible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'section2Image', label: 'Image', type: 'image' },
-        { name: 'section2Eyebrow', label: 'Eyebrow', type: 'text' },
-        { name: 'section2Title', label: 'Title', type: 'text' },
-        { name: 'section2Desc', label: 'Description', type: 'textarea' },
-        { name: 'section2BtnText', label: 'Button Text', type: 'text' },
-        { name: 'section2BtnLink', label: 'Button Link', type: 'text' }
+        { name: 'section2Image', label: 'Image', type: 'image', default: defaults.section2Image },
+        { name: 'section2Eyebrow', label: 'Eyebrow', type: 'text', default: defaults.section2Eyebrow },
+        { name: 'section2Title', label: 'Title', type: 'text', default: defaults.section2Title },
+        { name: 'section2Desc', label: 'Description', type: 'textarea', default: defaults.section2Desc },
+        { name: 'section2BtnText', label: 'Button Text', type: 'text', default: defaults.section2BtnText },
+        { name: 'section2BtnLink', label: 'Button Link', type: 'text', default: defaults.section2BtnLink }
       ]
     },
     {
@@ -67,10 +68,10 @@ const createGuideSchema = (title) => ({
       label: 'Footer CTA',
       fields: [
         { name: 'ctaVisible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'ctaTitle', label: 'Title', type: 'text' },
-        { name: 'ctaDesc', label: 'Description', type: 'textarea' },
-        { name: 'ctaBtnText', label: 'Button Text', type: 'text' },
-        { name: 'ctaBtnLink', label: 'Button Link', type: 'text' }
+        { name: 'ctaTitle', label: 'Title', type: 'text', default: defaults.ctaTitle },
+        { name: 'ctaDesc', label: 'Description', type: 'textarea', default: defaults.ctaDesc },
+        { name: 'ctaBtnText', label: 'Button Text', type: 'text', default: defaults.ctaBtnText },
+        { name: 'ctaBtnLink', label: 'Button Link', type: 'text', default: defaults.ctaBtnLink }
       ]
     }
   ]
@@ -151,11 +152,11 @@ const PAGE_SCHEMA = {
       }
     ]
   },
-  trendGuide: createGuideSchema('Trend Guide'),
-  clothingGuide: createGuideSchema('Clothing Guide'),
-  braFitGuide: createGuideSchema('Bra Fit Guide'),
-  underwearGuide: createGuideSchema('Underwear Guide'),
-  swimFitGuide: createGuideSchema('Swim Fit Guide'),
+  trendGuide: createGuideSchema('Trend Guide', GUIDE_DEFAULTS.trendGuide),
+  clothingGuide: createGuideSchema('Clothing Guide', GUIDE_DEFAULTS.clothingGuide),
+  braFitGuide: createGuideSchema('Bra Fit Guide', GUIDE_DEFAULTS.braFitGuide),
+  underwearGuide: createGuideSchema('Underwear Guide', GUIDE_DEFAULTS.underwearGuide),
+  swimFitGuide: createGuideSchema('Swim Fit Guide', GUIDE_DEFAULTS.swimFitGuide),
   ourStory: { title: 'Our Story', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   sustainability: { title: 'Sustainability', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   careers: { title: 'Careers', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
