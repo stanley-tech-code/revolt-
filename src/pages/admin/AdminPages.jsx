@@ -2,6 +2,180 @@ import React, { useState, useEffect } from 'react';
 import { useCms } from '../../context/CmsContext';
 import { GUIDE_DEFAULTS } from '../../data/guideDefaults';
 
+const renderFieldInput = (field, val, onChange, handleFileUpload) => {
+  if (field.type === 'boolean') {
+    return (
+      <div className="flex items-center justify-between border-b border-clay/20 pb-4">
+        <div>
+          <label className="text-xs font-bold uppercase tracking-wider text-ink block">{field.label}</label>
+          <span className="text-[10px] text-cocoa mt-1 block">Toggle to show or hide this.</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => onChange(!val)}
+          className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${val ? 'bg-ink' : 'bg-clay'}`}
+        >
+          <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${val ? 'translate-x-4' : 'translate-x-0'}`} />
+        </button>
+      </div>
+    );
+  }
+
+  if (field.type === 'list') {
+    const listItems = Array.isArray(val) ? val : [];
+    return (
+      <div className="space-y-4 border-t border-clay/30 pt-6 mt-4">
+        <div className="flex justify-between items-center">
+          <div>
+            <label className="text-xs font-bold uppercase tracking-wider text-ink block">{field.label}</label>
+            {field.description && <span className="text-[10px] text-cocoa mt-1 block">{field.description}</span>}
+          </div>
+          <button 
+            type="button"
+            onClick={() => {
+              const newItem = {};
+              field.itemTemplate.forEach(f => {
+                newItem[f.name] = f.default !== undefined ? f.default : (f.type === 'boolean' ? true : '');
+              });
+              onChange([...listItems, newItem]);
+            }}
+            className="text-[10px] bg-ink text-white px-3 py-1.5 font-bold uppercase tracking-wider hover:bg-ink/80 transition-colors rounded"
+          >
+            + Add Item
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          {listItems.map((item, index) => (
+            <div key={index} className="border border-clay/30 p-5 bg-sand/10 space-y-5 relative rounded">
+              <button 
+                type="button"
+                onClick={() => {
+                  const newList = listItems.filter((_, i) => i !== index);
+                  onChange(newList);
+                }}
+                className="absolute top-3 right-3 text-red-500 hover:text-red-700 font-bold w-6 h-6 flex items-center justify-center rounded-full bg-red-50 hover:bg-red-100 transition-colors"
+                title="Remove Item"
+              >
+                ✕
+              </button>
+              <h4 className="text-[10px] font-bold uppercase tracking-widest text-cocoa border-b border-clay/20 pb-2 mb-4">Item {index + 1}</h4>
+              
+              {field.itemTemplate.map(subField => {
+                const subVal = item[subField.name] !== undefined ? item[subField.name] : (subField.default !== undefined ? subField.default : '');
+                return (
+                  <div key={subField.name}>
+                    {renderFieldInput(subField, subVal, (newSubVal) => {
+                      const newList = [...listItems];
+                      newList[index] = { ...newList[index], [subField.name]: newSubVal };
+                      onChange(newList);
+                    }, handleFileUpload)}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+          {listItems.length === 0 && (
+            <div className="text-center py-8 text-cocoa text-sm border-2 border-dashed border-clay/30 rounded">
+              No items added yet. Click "Add Item" to begin.
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      <label className="text-[10px] font-bold uppercase tracking-[0.15em] text-cocoa">
+        {field.label}
+      </label>
+      {field.type === 'textarea' ? (
+        <textarea
+          value={val}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors min-h-[100px] whitespace-pre-wrap font-mono rounded-sm"
+          placeholder={`Enter ${field.label.toLowerCase()}`}
+        />
+      ) : field.type === 'image' || field.type === 'video' ? (
+        <div className="space-y-3">
+          <div 
+            className="border-2 border-dashed border-clay/60 hover:border-ink transition-colors rounded p-6 flex flex-col items-center justify-center cursor-pointer text-center group bg-canvas"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                handleFileUpload(e.dataTransfer.files[0], onChange);
+              }
+            }}
+            onClick={(e) => {
+              const input = e.currentTarget.querySelector('input[type="file"]');
+              if (input) input.click();
+            }}
+          >
+            <input 
+              type="file" 
+              accept={field.type === 'image' ? "image/*" : "video/*"}
+              className="hidden" 
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                  handleFileUpload(e.target.files[0], onChange);
+                }
+              }} 
+            />
+            <div className="w-10 h-10 rounded-full bg-sand flex items-center justify-center mb-3 group-hover:bg-ink group-hover:text-white transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+            </div>
+            <p className="text-xs font-bold uppercase tracking-wider text-ink mb-1">
+              Drag & Drop or Click to Upload {field.type}
+            </p>
+            <p className="text-[10px] text-cocoa">
+              Supports {field.type === 'image' ? 'JPG, PNG, WEBP' : 'MP4, WEBM'} (max 4.5MB)
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={val}
+                onChange={(e) => onChange(e.target.value)}
+                className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors rounded-sm"
+                placeholder={`Or enter ${field.label.toLowerCase()} URL`}
+              />
+            </div>
+            {field.type === 'image' && val && (
+              <div className="shrink-0 w-20 h-12 bg-sand border border-clay/30 overflow-hidden relative group rounded-sm">
+                <img src={val} alt="Preview" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <a href={val} target="_blank" rel="noreferrer" className="text-white hover:text-sand" onClick={(e) => e.stopPropagation()}>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  </a>
+                </div>
+              </div>
+            )}
+            {field.type === 'video' && val && (
+              <div className="shrink-0 w-20 h-12 bg-sand border border-clay/30 overflow-hidden relative rounded-sm">
+                <video src={val} className="w-full h-full object-cover" />
+              </div>
+            )}
+          </div>
+        </div>
+      ) : field.type === 'text' ? (
+        <div className="relative">
+          <input
+            type="text"
+            value={val}
+            onChange={(e) => onChange(e.target.value)}
+            className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors rounded-sm"
+            placeholder={`Enter ${field.label.toLowerCase()}`}
+          />
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
 const EyeOff = ({ size = 10 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
@@ -27,51 +201,55 @@ const createGuideSchema = (title, defaults = {}) => ({
       ]
     },
     {
-      id: 'intro',
-      label: 'Intro Text',
+      id: 'categories',
+      label: 'Category Blocks',
       fields: [
-        { name: 'introVisible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'introTitle', label: 'Title', type: 'text', default: defaults.introTitle },
-        { name: 'introText', label: 'Content', type: 'textarea', default: defaults.introText },
-        { name: 'introBtnText', label: 'Button Text', type: 'text', default: defaults.introBtnText },
-        { name: 'introBtnLink', label: 'Button Link', type: 'text', default: defaults.introBtnLink }
+        {
+          name: 'categories',
+          label: 'Dynamic Categories',
+          description: 'Add as many category blocks as you need.',
+          type: 'list',
+          itemTemplate: [
+            { name: 'visible', label: 'Show Category', type: 'boolean', default: true },
+            { name: 'label', label: 'Category Label (All Caps)', type: 'text' },
+            { name: 'desc', label: 'Category 1-Line Description', type: 'text' },
+            { name: 'mainImage', label: 'Main Editorial Image', type: 'image' },
+            { name: 'mainVideo', label: 'Main Editorial Video (Optional)', type: 'video' },
+            { name: 'copyTitle', label: 'Microcopy Title (e.g. Lifted Look)', type: 'text' },
+            { name: 'copyDesc', label: 'Microcopy Description', type: 'textarea' },
+            { name: 'icon1Label', label: 'Icon 1 Label (e.g. Coverage)', type: 'text' },
+            { name: 'icon1Value', label: 'Icon 1 Value (e.g. Light)', type: 'text' },
+            { name: 'icon2Label', label: 'Icon 2 Label (e.g. Support)', type: 'text' },
+            { name: 'icon2Value', label: 'Icon 2 Value (e.g. Medium)', type: 'text' },
+            { name: 'icon3Label', label: 'Icon 3 Label (e.g. Fit)', type: 'text' },
+            { name: 'icon3Value', label: 'Icon 3 Value (e.g. Relaxed)', type: 'text' },
+            { name: 'productImage', label: 'Hero Product Image', type: 'image' },
+            { name: 'productName', label: 'Hero Product Name', type: 'text' },
+            { name: 'productDesc', label: 'Hero Product Description', type: 'text' },
+            { name: 'productLink', label: 'Hero Product Link', type: 'text' }
+          ]
+        }
       ]
     },
     {
-      id: 'section1',
-      label: 'Focus Section 1',
+      id: 'shopBy',
+      label: 'Shop By Section',
       fields: [
-        { name: 'section1Visible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'section1Image', label: 'Image', type: 'image', default: defaults.section1Image },
-        { name: 'section1Eyebrow', label: 'Eyebrow', type: 'text', default: defaults.section1Eyebrow },
-        { name: 'section1Title', label: 'Title', type: 'text', default: defaults.section1Title },
-        { name: 'section1Desc', label: 'Description', type: 'textarea', default: defaults.section1Desc },
-        { name: 'section1BtnText', label: 'Button Text', type: 'text', default: defaults.section1BtnText },
-        { name: 'section1BtnLink', label: 'Button Link', type: 'text', default: defaults.section1BtnLink }
-      ]
-    },
-    {
-      id: 'section2',
-      label: 'Focus Section 2',
-      fields: [
-        { name: 'section2Visible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'section2Image', label: 'Image', type: 'image', default: defaults.section2Image },
-        { name: 'section2Eyebrow', label: 'Eyebrow', type: 'text', default: defaults.section2Eyebrow },
-        { name: 'section2Title', label: 'Title', type: 'text', default: defaults.section2Title },
-        { name: 'section2Desc', label: 'Description', type: 'textarea', default: defaults.section2Desc },
-        { name: 'section2BtnText', label: 'Button Text', type: 'text', default: defaults.section2BtnText },
-        { name: 'section2BtnLink', label: 'Button Link', type: 'text', default: defaults.section2BtnLink }
-      ]
-    },
-    {
-      id: 'cta',
-      label: 'Footer CTA',
-      fields: [
-        { name: 'ctaVisible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'ctaTitle', label: 'Title', type: 'text', default: defaults.ctaTitle },
-        { name: 'ctaDesc', label: 'Description', type: 'textarea', default: defaults.ctaDesc },
-        { name: 'ctaBtnText', label: 'Button Text', type: 'text', default: defaults.ctaBtnText },
-        { name: 'ctaBtnLink', label: 'Button Link', type: 'text', default: defaults.ctaBtnLink }
+        { name: 'shopByVisible', label: 'Show Section', type: 'boolean', default: true },
+        { name: 'shopByTitle', label: 'Section Title', type: 'text', default: defaults.shopByTitle || 'Shop By' },
+        {
+          name: 'shopByCards',
+          label: 'Filter Cards',
+          type: 'list',
+          itemTemplate: [
+            { name: 'visible', label: 'Show Card', type: 'boolean', default: true },
+            { name: 'image', label: 'Background Image', type: 'image' },
+            { name: 'title', label: 'Title', type: 'text' },
+            { name: 'desc', label: 'Description', type: 'text' },
+            { name: 'btnText', label: 'Button Text', type: 'text', default: 'Shop Now' },
+            { name: 'link', label: 'Button Link', type: 'text' }
+          ]
+        }
       ]
     }
   ]
@@ -242,6 +420,15 @@ export default function AdminPages() {
     setOpenSections(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const handleFileUploadNested = async (file, onChangeCallback) => {
+    try {
+      const url = await uploadFile(file);
+      onChangeCallback(url);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleFieldChange = (fieldName, value) => {
     updateDraft((prev) => {
       const nextPages = { ...prev.pages };
@@ -345,109 +532,14 @@ export default function AdminPages() {
                         {section.fields.map(field => {
                           const val = currentData[field.name] !== undefined ? currentData[field.name] : (field.default || '');
                           
-                          if (field.type === 'boolean') {
-                            return (
-                              <div key={field.name} className="flex items-center justify-between border-b border-clay/20 pb-4">
-                                <div>
-                                  <label className="text-xs font-bold uppercase tracking-wider text-ink block">{field.label}</label>
-                                  <span className="text-[10px] text-cocoa mt-1 block">Toggle to show or hide this entire section on the storefront.</span>
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={() => handleFieldChange(field.name, !val)}
-                                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${val ? 'bg-ink' : 'bg-clay'}`}
-                                >
-                                  <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${val ? 'translate-x-4' : 'translate-x-0'}`} />
-                                </button>
-                              </div>
-                            );
-                          }
-
                           return (
-                            <div key={field.name} className="space-y-2">
-                              <label className="text-[10px] font-bold uppercase tracking-[0.15em] text-cocoa">
-                                {field.label}
-                              </label>
-                              {field.type === 'textarea' ? (
-                                <textarea
-                                  value={val}
-                                  onChange={(e) => handleFieldChange(field.name, e.target.value)}
-                                  className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors min-h-[100px] whitespace-pre-wrap font-mono"
-                                  placeholder={`Enter ${field.label.toLowerCase()}`}
-                                />
-                              ) : field.type === 'image' || field.type === 'video' ? (
-                                <div className="space-y-3">
-                                  <div 
-                                    className="border-2 border-dashed border-clay/60 hover:border-ink transition-colors rounded p-6 flex flex-col items-center justify-center cursor-pointer text-center group bg-canvas"
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => {
-                                      e.preventDefault();
-                                      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                                        handleFileUpload(field.name, e.dataTransfer.files[0]);
-                                      }
-                                    }}
-                                    onClick={() => document.getElementById(`upload-${field.name}`).click()}
-                                  >
-                                    <input 
-                                      id={`upload-${field.name}`}
-                                      type="file" 
-                                      accept={field.type === 'image' ? "image/*" : "video/*"}
-                                      className="hidden" 
-                                      onChange={(e) => {
-                                        if (e.target.files && e.target.files.length > 0) {
-                                          handleFileUpload(field.name, e.target.files[0]);
-                                        }
-                                      }} 
-                                    />
-                                    <div className="w-10 h-10 rounded-full bg-sand flex items-center justify-center mb-3 group-hover:bg-ink group-hover:text-white transition-colors">
-                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                                    </div>
-                                    <p className="text-xs font-bold uppercase tracking-wider text-ink mb-1">
-                                      Drag & Drop or Click to Upload {field.type}
-                                    </p>
-                                    <p className="text-[10px] text-cocoa">
-                                      Supports {field.type === 'image' ? 'JPG, PNG, WEBP' : 'MP4, WEBM'} (max 4.5MB)
-                                    </p>
-                                  </div>
-                                  
-                                  <div className="flex items-center gap-3">
-                                    <div className="flex-1 relative">
-                                      <input
-                                        type="text"
-                                        value={val}
-                                        onChange={(e) => handleFieldChange(field.name, e.target.value)}
-                                        className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors"
-                                        placeholder={`Or enter ${field.label.toLowerCase()} URL`}
-                                      />
-                                    </div>
-                                    {field.type === 'image' && val && (
-                                      <div className="shrink-0 w-20 h-12 bg-sand border border-clay/30 overflow-hidden relative group">
-                                        <img src={val} alt="Preview" className="w-full h-full object-cover" />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                                          <a href={val} target="_blank" rel="noreferrer" className="text-white hover:text-sand" onClick={(e) => e.stopPropagation()}>
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                          </a>
-                                        </div>
-                                      </div>
-                                    )}
-                                    {field.type === 'video' && val && (
-                                      <div className="shrink-0 w-20 h-12 bg-sand border border-clay/30 overflow-hidden relative">
-                                        <video src={val} className="w-full h-full object-cover" />
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              ) : field.type === 'text' ? (
-                                <div className="relative">
-                                  <input
-                                    type="text"
-                                    value={val}
-                                    onChange={(e) => handleFieldChange(field.name, e.target.value)}
-                                    className="w-full border border-clay p-3 text-sm focus:border-ink focus:ring-0 outline-none transition-colors"
-                                    placeholder={`Enter ${field.label.toLowerCase()}`}
-                                  />
-                                </div>
-                              ) : null}
+                            <div key={field.name} className="w-full">
+                              {renderFieldInput(
+                                field, 
+                                val, 
+                                (newVal) => handleFieldChange(field.name, newVal), 
+                                handleFileUploadNested
+                              )}
                             </div>
                           );
                         })}

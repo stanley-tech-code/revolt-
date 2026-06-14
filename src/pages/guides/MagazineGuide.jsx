@@ -1,113 +1,206 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCms } from '../../context/CmsContext';
 import { GUIDE_DEFAULTS } from '../../data/guideDefaults';
 
-export default function MagazineGuide({ pageKey }) {
-  const { db } = useCms();
-  const content = db?.pages?.[pageKey] || {};
-  const defaults = GUIDE_DEFAULTS[pageKey] || GUIDE_DEFAULTS.trendGuide;
+const IconLine = ({ label, value }) => (
+  <div className="flex items-center justify-between border-b border-black py-2">
+    <span className="text-xs uppercase tracking-widest font-bold">{label}</span>
+    <span className="text-sm font-serif">{value}</span>
+  </div>
+);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pageKey]);
+const MagazineGuide = ({ pageKey }) => {
+  const { db } = useCms();
+  const content = db.pages?.[pageKey] || {};
+  const defaults = GUIDE_DEFAULTS[pageKey] || {};
+
+  // Merge content with defaults
+  const data = { ...defaults, ...content };
+
+  const heroVisible = data.heroVisible !== false;
+  const shopByVisible = data.shopByVisible !== false;
+
+  const categories = Array.isArray(data.categories) ? data.categories : (defaults.categories || []);
+  const shopByCards = Array.isArray(data.shopByCards) ? data.shopByCards : (defaults.shopByCards || []);
 
   return (
-    <main className="animate-fade-in pb-32">
-      {/* Hero Section */}
-      {content.heroVisible !== false && (
-        <section className="relative w-full h-[60vh] md:h-[80vh] bg-sand flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <img 
-              src={content.heroImage || defaults.heroImage} 
-              alt="Hero" 
-              className="w-full h-full object-cover opacity-80 mix-blend-multiply"
+    <div className="bg-white text-black min-h-screen">
+      {/* HERO SECTION */}
+      {heroVisible && (
+        <section className="relative w-full h-[70vh] md:h-[85vh] bg-stone-100 flex items-center justify-center overflow-hidden">
+          {data.heroVideo ? (
+            <video 
+              src={data.heroVideo} 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              className="absolute inset-0 w-full h-full object-cover"
             />
-          </div>
-          <div className="relative z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
-            <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-ink/80 mb-6 block bg-canvas/90 px-4 py-2 inline-block">{content.heroEyebrow || defaults.heroEyebrow}</span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter text-ink mb-6 bg-canvas/90 px-6 py-2">
-              {content.heroTitle || defaults.heroTitle}
+          ) : data.heroImage ? (
+            <img 
+              src={data.heroImage} 
+              alt={data.heroTitle} 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : null}
+          
+          <div className="absolute inset-0 bg-black/20" />
+          
+          <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto flex flex-col items-center">
+            {data.heroEyebrow && (
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 md:mb-6 block">
+                {data.heroEyebrow}
+              </span>
+            )}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight mb-4 md:mb-6">
+              {data.heroTitle}
             </h1>
-            <p className="text-sm md:text-base text-ink font-medium max-w-2xl bg-canvas/90 px-6 py-4 leading-relaxed">
-              {content.heroDesc || defaults.heroDesc}
-            </p>
+            {data.heroDesc && (
+              <p className="text-sm md:text-base max-w-md mx-auto opacity-90">
+                {data.heroDesc}
+              </p>
+            )}
           </div>
         </section>
       )}
 
-      {/* Intro Text */}
-      {content.introVisible !== false && (
-        <section className="py-24 px-6 max-w-3xl mx-auto text-center border-b border-[#000000]/10">
-          <h2 className="text-2xl font-bold uppercase tracking-widest text-ink mb-8">{content.introTitle || defaults.introTitle}</h2>
-          <p className="text-cocoa text-sm md:text-base leading-loose mb-12 whitespace-pre-wrap">
-            {content.introText || defaults.introText}
-          </p>
-          <Link to={content.introBtnLink || defaults.introBtnLink} className="inline-block bg-ink text-canvas px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-ink/80 transition-colors">
-            {content.introBtnText || defaults.introBtnText}
-          </Link>
-        </section>
-      )}
-
-      {/* Breakdowns */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto space-y-32">
+      {/* DYNAMIC CATEGORY BLOCKS */}
+      {categories.map((category, idx) => {
+        if (category.visible === false) return null;
         
-        {/* Section 1 */}
-        {content.section1Visible !== false && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1 aspect-[4/5] bg-sand overflow-hidden group">
-              <img src={content.section1Image || defaults.section1Image} alt="Section 1" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+        // Alternate layout: even indexes have image on left, odd have image on right
+        const isReversed = idx % 2 !== 0;
+
+        return (
+          <section key={idx} className="border-b border-black">
+            {/* Category Header */}
+            <div className="border-b border-black px-6 md:px-12 py-8 md:py-12 text-center">
+              <h2 className="text-3xl md:text-5xl font-serif mb-3 uppercase tracking-wide">
+                {category.label}
+              </h2>
+              {category.desc && (
+                <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
+                  {category.desc}
+                </p>
+              )}
             </div>
-            <div className="order-1 md:order-2 space-y-6 md:pl-12">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-cocoa">{content.section1Eyebrow || defaults.section1Eyebrow}</span>
-              <h3 className="text-3xl font-bold uppercase tracking-tight text-ink">{content.section1Title || defaults.section1Title}</h3>
-              <p className="text-sm text-cocoa leading-relaxed whitespace-pre-wrap">
-                {content.section1Desc || defaults.section1Desc}
-              </p>
-              <div className="pt-6">
-                <Link to={content.section1BtnLink || defaults.section1BtnLink} className="text-xs font-bold uppercase tracking-[0.1em] border-b border-ink pb-1 hover:text-cocoa transition-colors">
-                  {content.section1BtnText || defaults.section1BtnText}
-                </Link>
+
+            {/* Split Grid */}
+            <div className={`flex flex-col ${isReversed ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+              
+              {/* Main Editorial Media */}
+              <div className="w-full md:w-3/5 border-b md:border-b-0 border-black flex-shrink-0 relative h-[60vh] md:h-[90vh]">
+                {category.mainVideo ? (
+                  <video 
+                    src={category.mainVideo} 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : category.mainImage ? (
+                  <img 
+                    src={category.mainImage} 
+                    alt={category.label} 
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-stone-100" />
+                )}
+              </div>
+
+              {/* Detail / Microcopy Column */}
+              <div className={`w-full md:w-2/5 flex flex-col ${isReversed ? 'md:border-r border-black' : 'md:border-l border-black'}`}>
+                
+                {/* Copy Block */}
+                <div className="p-8 md:p-12 border-b border-black">
+                  <h3 className="text-2xl md:text-3xl font-serif mb-4">
+                    {category.copyTitle}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-800">
+                    {category.copyDesc}
+                  </p>
+                </div>
+
+                {/* Icons / Details */}
+                <div className="p-8 md:p-12 border-b border-black bg-stone-50">
+                  <div className="space-y-4 border-t border-black pt-4">
+                    {category.icon1Label && <IconLine label={category.icon1Label} value={category.icon1Value} />}
+                    {category.icon2Label && <IconLine label={category.icon2Label} value={category.icon2Value} />}
+                    {category.icon3Label && <IconLine label={category.icon3Label} value={category.icon3Value} />}
+                  </div>
+                </div>
+
+                {/* Featured Product Card */}
+                <div className="p-8 md:p-12 flex-grow flex flex-col justify-center items-center text-center group cursor-pointer hover:bg-stone-50 transition-colors">
+                  <div className="w-48 h-64 md:w-56 md:h-72 mb-6 overflow-hidden bg-stone-100">
+                    {category.productImage && (
+                      <img 
+                        src={category.productImage} 
+                        alt={category.productName} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    )}
+                  </div>
+                  <h4 className="text-lg font-bold uppercase tracking-widest mb-2">
+                    {category.productName}
+                  </h4>
+                  <p className="text-xs text-gray-500 mb-6 uppercase tracking-wider">
+                    {category.productDesc}
+                  </p>
+                  {category.productLink && (
+                    <Link 
+                      to={category.productLink}
+                      className="text-[10px] font-bold uppercase tracking-[0.2em] border-b-2 border-black pb-1 hover:text-gray-500 hover:border-gray-500 transition-colors"
+                    >
+                      Shop The Style
+                    </Link>
+                  )}
+                </div>
+
               </div>
             </div>
-          </div>
-        )}
+          </section>
+        );
+      })}
 
-        {/* Section 2 */}
-        {content.section2Visible !== false && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 md:pr-12">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-cocoa">{content.section2Eyebrow || defaults.section2Eyebrow}</span>
-              <h3 className="text-3xl font-bold uppercase tracking-tight text-ink">{content.section2Title || defaults.section2Title}</h3>
-              <p className="text-sm text-cocoa leading-relaxed whitespace-pre-wrap">
-                {content.section2Desc || defaults.section2Desc}
-              </p>
-              <div className="pt-6">
-                <Link to={content.section2BtnLink || defaults.section2BtnLink} className="text-xs font-bold uppercase tracking-[0.1em] border-b border-ink pb-1 hover:text-cocoa transition-colors">
-                  {content.section2BtnText || defaults.section2BtnText}
+      {/* SHOP BY SECTION */}
+      {shopByVisible && shopByCards.length > 0 && (
+        <section className="py-20 px-6 md:px-12 max-w-[1600px] mx-auto">
+          <h2 className="text-3xl md:text-5xl font-serif text-center mb-16">
+            {data.shopByTitle || 'Shop By'}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {shopByCards.map((card, idx) => {
+              if (card.visible === false) return null;
+              return (
+                <Link key={idx} to={card.link || '#'} className="group block relative overflow-hidden h-[400px] bg-stone-100">
+                  {card.image && (
+                    <img 
+                      src={card.image} 
+                      alt={card.title} 
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                    <h3 className="text-2xl font-serif mb-2">{card.title}</h3>
+                    <p className="text-sm opacity-90 mb-6">{card.desc}</p>
+                    <span className="text-[10px] font-bold uppercase tracking-widest border-b border-white pb-1 w-max opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                      {card.btnText || 'Shop Now'}
+                    </span>
+                  </div>
                 </Link>
-              </div>
-            </div>
-            <div className="aspect-[4/5] bg-sand overflow-hidden group">
-              <img src={content.section2Image || defaults.section2Image} alt="Section 2" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-            </div>
+              );
+            })}
           </div>
-        )}
-
-      </section>
-
-      {/* Footer CTA */}
-      {content.ctaVisible !== false && (
-        <section className="py-24 bg-ink text-canvas text-center px-6">
-          <h2 className="text-3xl font-bold uppercase tracking-widest mb-6">{content.ctaTitle || defaults.ctaTitle}</h2>
-          <p className="text-sm text-canvas/70 max-w-xl mx-auto mb-10 whitespace-pre-wrap">
-            {content.ctaDesc || defaults.ctaDesc}
-          </p>
-          <Link to={content.ctaBtnLink || defaults.ctaBtnLink} className="inline-block bg-canvas text-ink px-10 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-canvas/90 transition-colors">
-            {content.ctaBtnText || defaults.ctaBtnText}
-          </Link>
         </section>
       )}
-    </main>
+    </div>
   );
-}
+};
+
+export default MagazineGuide;
