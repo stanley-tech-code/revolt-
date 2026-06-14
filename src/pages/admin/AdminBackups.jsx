@@ -33,7 +33,7 @@ export default function AdminBackups() {
     fetchBackups();
   }, []);
 
-  const handleCreateBackup = async () => {
+  const handleCreateBackup = async (type = 'full') => {
     setActionLoading(true);
     setError(null);
     setSuccess(null);
@@ -43,11 +43,12 @@ export default function AdminBackups() {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ type })
       });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Backup created successfully.');
+        setSuccess(`${type === 'layout' ? 'Layout ' : ''}Backup created successfully.`);
         setTimeout(fetchBackups, 1000); // Wait a moment for file to be written
       } else {
         setError(data.error || 'Failed to create backup.');
@@ -58,8 +59,13 @@ export default function AdminBackups() {
     setActionLoading(false);
   };
 
-  const handleRestore = async (filename) => {
-    if (!window.confirm(`Are you absolutely sure you want to restore from ${filename}? This will overwrite all current data.`)) {
+  const handleRestore = async (filename, backupType) => {
+    const isLayout = backupType === 'layout';
+    const warningMsg = isLayout 
+      ? `Are you sure you want to restore the layout from ${filename}? This will overwrite all current page designs and theme settings.`
+      : `Are you absolutely sure you want to restore from ${filename}? This will overwrite all current data.`;
+
+    if (!window.confirm(warningMsg)) {
       return;
     }
     setActionLoading(true);
@@ -122,13 +128,22 @@ export default function AdminBackups() {
           <h1 className="text-3xl font-bold tracking-tight text-[#000000]">System Backups</h1>
           <p className="text-sm text-[#000000]/60 mt-2">Manage automated and manual database backups securely.</p>
         </div>
-        <button 
-          onClick={handleCreateBackup} 
-          disabled={actionLoading}
-          className="bg-[#000000] text-white px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#000000]/80 transition-colors disabled:opacity-50"
-        >
-          {actionLoading ? 'Processing...' : 'Manual Backup'}
-        </button>
+        <div className="flex gap-3">
+          <button 
+            onClick={() => handleCreateBackup('layout')} 
+            disabled={actionLoading}
+            className="bg-white border border-[#000000] text-[#000000] px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-stone-50 transition-colors disabled:opacity-50"
+          >
+            {actionLoading ? 'Processing...' : 'Backup Layout'}
+          </button>
+          <button 
+            onClick={() => handleCreateBackup('full')} 
+            disabled={actionLoading}
+            className="bg-[#000000] text-white px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#000000]/80 transition-colors disabled:opacity-50"
+          >
+            {actionLoading ? 'Processing...' : 'Full Backup'}
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -168,6 +183,9 @@ export default function AdminBackups() {
                     <td className="px-4 py-3 font-mono text-xs">{b.filename}</td>
                     <td className="px-4 py-3">{formatBytes(b.size)}</td>
                     <td className="px-4 py-3">
+                      <span className={`px-2 py-1 text-[10px] uppercase font-bold mr-2 ${b.backupType === 'layout' ? 'bg-amber-100 text-amber-800' : 'bg-stone-200 text-stone-800'}`}>
+                        {b.backupType === 'layout' ? 'Layout' : 'Full DB'}
+                      </span>
                       <span className={`px-2 py-1 text-[10px] uppercase font-bold ${b.trigger === 'auto' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
                         {b.trigger}
                       </span>
@@ -180,7 +198,7 @@ export default function AdminBackups() {
                         Download
                       </button>
                       <button 
-                        onClick={() => handleRestore(b.filename)}
+                        onClick={() => handleRestore(b.filename, b.backupType)}
                         disabled={actionLoading}
                         className="text-[10px] font-bold uppercase text-red-600 hover:text-red-800 disabled:opacity-50"
                       >

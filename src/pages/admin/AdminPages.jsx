@@ -327,6 +327,17 @@ const PAGE_SCHEMA = {
           { name: 'curationSub2Title', label: 'Sub Item 2 Title', type: 'text', default: 'Performance Leggings' },
           { name: 'curationSub2Link', label: 'Sub Item 2 Link', type: 'text', default: '/other/view' }
         ]
+      },
+      {
+        id: 'ethos',
+        label: 'Our Ethos',
+        fields: [
+          { name: 'ethosVisible', label: 'Show Section', type: 'boolean', default: true },
+          { name: 'ethosTitle', label: 'Title', type: 'text', default: 'Our Ethos' },
+          { name: 'ethosDesc', label: 'Description', type: 'textarea', default: 'We believe in uncompromising quality and meticulous design. Every piece is crafted to elevate your daily uniform.' },
+          { name: 'ethosBtnText', label: 'Button Text', type: 'text', default: 'Read Our Story' },
+          { name: 'ethosBtnLink', label: 'Button Link', type: 'text', default: '/about/our-story' }
+        ]
       }
     ]
   },

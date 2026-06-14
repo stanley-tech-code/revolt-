@@ -2020,25 +2020,29 @@ app.get('/api/system-backups', verifyToken, async (req, res) => {
 app.post('/api/system-backups/create', verifyToken, async (req, res) => {
   if (req.user.role !== 'Super Admin') return res.status(403).json({ success: false, error: 'Super Admin access required.' });
   try {
-    const [cmsRes, prodRes, ordRes, custRes, usersRes] = await Promise.all([
-      supabase.from('cms').select('*'),
-      supabase.from('products').select('*'),
-      supabase.from('orders').select('*'),
-      supabase.from('customers').select('*'),
-      supabase.from('users').select('*')
-    ]);
+    const backupType = req.body.type === 'layout' ? 'layout' : 'full';
+    let backupPayload = { timestamp: new Date().toISOString(), backupType };
 
-    const backupPayload = {
-      cms: cmsRes.data || [],
-      products: prodRes.data || [],
-      orders: ordRes.data || [],
-      customers: custRes.data || [],
-      users: usersRes.data || [],
-      timestamp: new Date().toISOString()
-    };
+    if (backupType === 'layout') {
+      const cmsRes = await supabase.from('cms').select('*');
+      backupPayload.cms = cmsRes.data || [];
+    } else {
+      const [cmsRes, prodRes, ordRes, custRes, usersRes] = await Promise.all([
+        supabase.from('cms').select('*'),
+        supabase.from('products').select('*'),
+        supabase.from('orders').select('*'),
+        supabase.from('customers').select('*'),
+        supabase.from('users').select('*')
+      ]);
+      backupPayload.cms = cmsRes.data || [];
+      backupPayload.products = prodRes.data || [];
+      backupPayload.orders = ordRes.data || [];
+      backupPayload.customers = custRes.data || [];
+      backupPayload.users = usersRes.data || [];
+    }
 
     const size = Buffer.byteLength(JSON.stringify(backupPayload));
-    const filename = `revolt_backup_${Date.now()}.json`;
+    const filename = `revolt_backup_${backupType}_${Date.now()}.json`;
 
     await supabase.from('cms').upsert({ type: `backup_data_${filename}`, data: backupPayload });
 
@@ -2049,11 +2053,12 @@ app.post('/api/system-backups/create', verifyToken, async (req, res) => {
       filename,
       createdAt: backupPayload.timestamp,
       size,
-      trigger: req.body.trigger || 'manual'
+      backupType,
+      trigger: req.body.trigger || (backupType === 'layout' ? 'Layout Snapshot' : 'manual')
     });
 
     await supabase.from('cms').upsert({ type: 'backup_metadata', data: metadata });
-    await addLog(req.user.username, `Created system backup: ${filename}`);
+    await addLog(req.user.username, `Created ${backupType} system backup: ${filename}`);
 
     return res.json({ success: true, filename });
   } catch (err) {
@@ -2072,10 +2077,26 @@ app.post('/api/system-backups/restore', verifyToken, async (req, res) => {
     if (!backupDoc || !backupDoc.data) return res.status(404).json({ success: false, error: 'Backup not found.' });
 
     const payload = backupDoc.data;
+    let actionStr = '';
 
-    // We do NOT fully restore data automatically since it could destroy the live session state and cause major downtime.
-    // In a real Vercel production app, a restore would require a data migration tool.
-    // For this prompt's requirement, we record the successful restoration event.
+    if (payload.backupType === 'layout') {
+      // Actually restore layout/design configuration to the CMS table
+      const cmsRecords = payload.cms.filter(record => !record.type.startsWith('backup_data_') && record.type !== 'backup_metadata');
+      if (cmsRecords.length > 0) {
+        // Delete all existing non-backup CMS records
+        await supabase.from('cms')
+          .delete()
+          .not('type', 'like', 'backup_data_%')
+          .neq('type', 'backup_metadata');
+          
+        // Insert the backed-up records
+        await supabase.from('cms').insert(cmsRecords);
+      }
+      actionStr = `Restored layout configuration from ${filename}`;
+    } else {
+      // Full database restore acts as a dry-run
+      actionStr = `Restored database from ${filename} (Dry-run)`;
+    }
     
     const { data: metaDoc } = await supabase.from('cms').select('data').eq('type', 'backup_metadata').maybeSingle();
     let metadata = metaDoc?.data || { backups: [], history: [] };
@@ -2084,11 +2105,11 @@ app.post('/api/system-backups/restore', verifyToken, async (req, res) => {
       id: Date.now().toString(),
       timestamp: new Date().toISOString(),
       user: req.user.username,
-      action: `Restored database from ${filename} (Dry-run)`
+      action: actionStr
     });
 
     await supabase.from('cms').upsert({ type: 'backup_metadata', data: metadata });
-    await addLog(req.user.username, `Restored system from backup: ${filename}`);
+    await addLog(req.user.username, actionStr);
 
     return res.json({ success: true });
   } catch (err) {
