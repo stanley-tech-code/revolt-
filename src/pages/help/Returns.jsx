@@ -311,21 +311,6 @@ export default function Returns() {
 
       </section>
 
-      {/* Our Ethos Section */}
-      {homeContent.ethosVisible !== false && (
-        <section className="w-full py-24 md:py-32 bg-[#1f1b16] text-[#ffffff] flex flex-col items-center justify-center text-center px-6 mt-20">
-          <div className="max-w-3xl mx-auto flex flex-col items-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif mb-6 uppercase tracking-wider">{homeContent.ethosTitle || "Our Ethos"}</h2>
-            <div className="w-12 h-[1px] bg-white/30 mb-8"></div>
-            <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-2xl leading-relaxed mb-10 font-serif italic">
-              "{homeContent.ethosDesc || 'We believe in uncompromising quality and meticulous design. Every piece is crafted to elevate your daily uniform.'}"
-            </p>
-            <Link to={homeContent.ethosBtnLink || "/about/our-story"} className="text-[10px] font-bold uppercase tracking-[0.3em] text-white border-b border-white pb-1 hover:text-white/60 hover:border-white/60 transition-colors">
-              {homeContent.ethosBtnText || "Read Our Story"}
-            </Link>
-          </div>
-        </section>
-      )}
     </main>
   );
 }

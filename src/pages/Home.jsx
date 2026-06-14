@@ -153,16 +153,13 @@ export default function Home() {
 
       {/* 6. Our Ethos */}
       {content.ethosVisible !== false && (
-        <section className="w-full py-24 md:py-32 bg-[#1f1b16] text-[#ffffff] flex flex-col items-center justify-center text-center px-6">
+        <section className="w-full py-24 md:py-32 bg-white text-ink flex flex-col items-center justify-center text-center px-6">
           <div className="max-w-3xl mx-auto flex flex-col items-center">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif mb-6 uppercase tracking-wider">{content.ethosTitle || "Our Ethos"}</h2>
-            <div className="w-12 h-[1px] bg-white/30 mb-8"></div>
-            <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-2xl leading-relaxed mb-10 font-serif italic">
+            <div className="w-12 h-[1px] bg-ink/30 mb-8"></div>
+            <p className="text-sm md:text-base lg:text-lg text-ink/80 max-w-2xl leading-relaxed font-serif italic">
               "{content.ethosDesc || 'We believe in uncompromising quality and meticulous design. Every piece is crafted to elevate your daily uniform.'}"
             </p>
-            <Link to={content.ethosBtnLink || "/about/our-story"} className="text-[10px] font-bold uppercase tracking-[0.3em] text-white border-b border-white pb-1 hover:text-white/60 hover:border-white/60 transition-colors">
-              {content.ethosBtnText || "Read Our Story"}
-            </Link>
           </div>
         </section>
       )}
