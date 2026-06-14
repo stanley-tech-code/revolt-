@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCms } from '../../context/CmsContext';
 
 export default function Returns() {
   const { db } = useCms();
-  const content = db?.pages?.returns || {};
-  const homeContent = db?.pages?.home || {};
-  
   const whatsappNumberRaw = db.settings?.localization?.supportPhones?.[0] || db.settings?.localization?.supportPhone || '254700000000';
   const whatsappNumber = whatsappNumberRaw.replace(/[^0-9]/g, '');
   const [activeTab, setActiveTab] = useState('policy'); // 'policy' | 'request'
@@ -70,15 +67,13 @@ export default function Returns() {
 
 
 
-  if (content.visible === false) return null;
-
   return (
-    <main className="bg-canvas min-h-screen text-ink pb-0 pt-10">
-      <section className="max-w-4xl mx-auto px-6 mb-20">
+    <main className="bg-canvas min-h-screen text-ink pb-20 pt-10">
+      <section className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-4">{content.title || 'Returns & Exchanges'}</h1>
-          <p className="text-cocoa text-sm md:text-base max-w-lg mx-auto whitespace-pre-wrap">
-            {content.content || "Your satisfaction is our priority. We've made our return process simple, fast, and hassle-free."}
+          <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tight mb-4">Returns & Exchanges</h1>
+          <p className="text-cocoa text-sm md:text-base max-w-lg mx-auto">
+            Your satisfaction is our priority. We've made our return process simple, fast, and hassle-free.
           </p>
         </div>
 
@@ -310,22 +305,6 @@ export default function Returns() {
         )}
 
       </section>
-
-      {/* Our Ethos Section */}
-      {homeContent.ethosVisible !== false && (
-        <section className="w-full py-24 md:py-32 bg-[#1f1b16] text-[#ffffff] flex flex-col items-center justify-center text-center px-6 mt-20">
-          <div className="max-w-3xl mx-auto flex flex-col items-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif mb-6 uppercase tracking-wider">{homeContent.ethosTitle || "Our Ethos"}</h2>
-            <div className="w-12 h-[1px] bg-white/30 mb-8"></div>
-            <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-2xl leading-relaxed mb-10 font-serif italic">
-              "{homeContent.ethosDesc || 'We believe in uncompromising quality and meticulous design. Every piece is crafted to elevate your daily uniform.'}"
-            </p>
-            <Link to={homeContent.ethosBtnLink || "/about/our-story"} className="text-[10px] font-bold uppercase tracking-[0.3em] text-white border-b border-white pb-1 hover:text-white/60 hover:border-white/60 transition-colors">
-              {homeContent.ethosBtnText || "Read Our Story"}
-            </Link>
-          </div>
-        </section>
-      )}
     </main>
   );
 }

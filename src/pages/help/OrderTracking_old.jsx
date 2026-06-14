@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useCms } from '../../context/CmsContext';
 
 const STAGES = ['Processing', 'Packed', 'Shipped', 'Delivered'];
 
 export default function OrderTracking() {
-  const { db } = useCms();
-  const content = db?.pages?.orderTracking || {};
-  const homeContent = db?.pages?.home || {};
-
   const [orderIdInput, setOrderIdInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [orderData, setOrderData] = useState(null);
@@ -174,14 +169,12 @@ export default function OrderTracking() {
     );
   };
 
-  if (content.visible === false) return null;
-
   return (
-    <main className="bg-[#fafafa] min-h-screen pt-32 pb-0">
-      <section className="px-6 mb-24">
+    <main className="bg-[#fafafa] min-h-screen pt-32 pb-24">
+      <section className="px-6">
         <div className="max-w-xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-gray-900 mb-4">{content.title || 'Track Order'}</h1>
-          <p className="text-gray-500 mb-10 text-sm md:text-base whitespace-pre-wrap">{content.content || 'Enter your order number to see the latest updates on your shipment.'}</p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-gray-900 mb-4">Track Order</h1>
+          <p className="text-gray-500 mb-10 text-sm md:text-base">Enter your order number to see the latest updates on your shipment.</p>
           
           <form onSubmit={handleTrack} className="relative flex items-center shadow-[0_4px_20px_rgb(0,0,0,0.04)] rounded-full bg-white overflow-hidden border border-gray-100 p-2">
             <input 
@@ -225,22 +218,6 @@ export default function OrderTracking() {
           animation: scale-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
       `}</style>
-
-      {/* Our Ethos Section */}
-      {homeContent.ethosVisible !== false && (
-        <section className="w-full py-24 md:py-32 bg-[#1f1b16] text-[#ffffff] flex flex-col items-center justify-center text-center px-6 mt-20">
-          <div className="max-w-3xl mx-auto flex flex-col items-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif mb-6 uppercase tracking-wider">{homeContent.ethosTitle || "Our Ethos"}</h2>
-            <div className="w-12 h-[1px] bg-white/30 mb-8"></div>
-            <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-2xl leading-relaxed mb-10 font-serif italic">
-              "{homeContent.ethosDesc || 'We believe in uncompromising quality and meticulous design. Every piece is crafted to elevate your daily uniform.'}"
-            </p>
-            <Link to={homeContent.ethosBtnLink || "/about/our-story"} className="text-[10px] font-bold uppercase tracking-[0.3em] text-white border-b border-white pb-1 hover:text-white/60 hover:border-white/60 transition-colors">
-              {homeContent.ethosBtnText || "Read Our Story"}
-            </Link>
-          </div>
-        </section>
-      )}
     </main>
   );
 }
