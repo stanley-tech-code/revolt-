@@ -28,7 +28,7 @@ const MagazineGuide = ({ pageKey }) => {
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
       {heroVisible && pageKey === 'braFitGuide' ? (
-        <section className="relative w-full h-[460px] flex items-center justify-center bg-stone-100 transition-all text-center overflow-hidden">
+        <section className="relative w-full h-screen flex items-center justify-center bg-stone-100 transition-all text-center overflow-hidden">
           {data.heroVideo ? (
             <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
               <source src={data.heroVideo} type="video/mp4" />
@@ -189,7 +189,7 @@ const MagazineGuide = ({ pageKey }) => {
 
                   {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {idx === 0 && (
-                    <section className="w-full h-[340px] relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center">
+                    <section className="w-full h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center">
                       <img 
                         src={data.promoBanner || "/images/campaign-2.webp"} 
                         alt="Campaign Banner" 
