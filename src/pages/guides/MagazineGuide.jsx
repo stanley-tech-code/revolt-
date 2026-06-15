@@ -109,40 +109,53 @@ const MagazineGuide = ({ pageKey }) => {
           if (pageKey === 'braFitGuide') {
             return (
               <React.Fragment key={idx}>
-                {/* Section: 50/50 Split Poster Grid */}
-                <section className="w-full">
-                  <div className="flex flex-col md:flex-row">
-                    {/* Left: Poster Image */}
-                    <div className="w-full md:w-1/2 h-[60vh] md:h-[80vh] relative bg-stone-100">
+                {/* Two-poster section */}
+                <section className="w-full py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    {/* Left column: tall poster-style image (4:5 ratio) */}
+                    <div className="w-full aspect-[3/4] md:aspect-[4/5] relative bg-stone-100 overflow-hidden">
                       <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover" />
                     </div>
                     
-                    {/* Right: Description & Guide */}
-                    <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-20 lg:p-24 bg-white">
-                      <h2 className="text-3xl md:text-4xl font-serif mb-10 uppercase tracking-wide">{category.label}</h2>
+                    {/* Right column: vertical content panel */}
+                    <div className="w-full flex flex-col justify-center py-8 md:py-0 md:px-8 lg:px-12 bg-white">
+                      <h2 className="text-3xl md:text-4xl font-sans font-bold mb-6 uppercase tracking-wide text-black">{category.label}</h2>
                       
-                      <div className="mb-10">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-black/10 pb-2">Description</h3>
-                        <p className="text-[15px] text-gray-600 leading-[1.6] max-w-md">
-                          {category.copyDesc || category.desc}
-                        </p>
-                      </div>
+                      <p className="text-base text-gray-700 leading-relaxed max-w-md font-sans mb-10">
+                        {category.copyDesc || category.desc}
+                      </p>
                       
-                      <div>
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-black/10 pb-2">Guide</h3>
-                        <ul className="text-[15px] text-gray-600 space-y-2 max-w-md">
-                          {category.icon1Value && <li><span className="font-medium text-black">Coverage:</span> {category.icon1Value}</li>}
-                          {category.icon2Value && <li><span className="font-medium text-black">Support:</span> {category.icon2Value}</li>}
-                          {category.icon3Value && <li><span className="font-medium text-black">Style:</span> {category.icon3Value}</li>}
+                      {/* 'Guide' block with structured info */}
+                      <div className="bg-[#faf9f8] p-6 md:p-8 border border-gray-100 w-full max-w-md">
+                        <h3 className="text-sm font-bold uppercase tracking-[0.1em] mb-4 text-black border-b border-gray-200 pb-3 font-sans">Guide</h3>
+                        <ul className="text-sm text-gray-700 space-y-4 font-sans">
+                          {category.icon1Value && (
+                            <li className="flex justify-between items-center">
+                              <span className="font-semibold text-black uppercase tracking-wider text-xs">Coverage Level</span> 
+                              <span>{category.icon1Value}</span>
+                            </li>
+                          )}
+                          {category.icon2Value && (
+                            <li className="flex justify-between items-center border-t border-gray-100 pt-3">
+                              <span className="font-semibold text-black uppercase tracking-wider text-xs">Support Level</span> 
+                              <span>{category.icon2Value}</span>
+                            </li>
+                          )}
+                          {category.icon3Value && (
+                            <li className="flex justify-between items-center border-t border-gray-100 pt-3">
+                              <span className="font-semibold text-black uppercase tracking-wider text-xs">Fabric Details</span> 
+                              <span>{category.icon3Value}</span>
+                            </li>
+                          )}
                         </ul>
                       </div>
                     </div>
                   </div>
                 </section>
 
-                {/* Inject Full-Screen Banner after Section 1 */}
+                {/* Full-screen banner (only after Section 1, which is idx 0) */}
                 {idx === 0 && (
-                  <section className="w-full h-[70vh] md:h-[90vh] relative overflow-hidden bg-stone-100">
+                  <section className="w-full h-[60vh] relative overflow-hidden bg-stone-100">
                     <img 
                       src={data.promoBanner || "/images/campaign-2.webp"} 
                       alt="Campaign Banner" 
@@ -255,24 +268,24 @@ const MagazineGuide = ({ pageKey }) => {
       {/* SHOP BY SECTION */}
       {shopByVisible && shopByCards.length > 0 && (
         <section className="py-20 px-6 md:px-12 max-w-[1600px] mx-auto">
-          <h2 className="text-3xl md:text-5xl font-serif text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-sans font-bold text-center mb-16 uppercase tracking-wide text-black">
             {data.shopByTitle || 'Shop By'}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {shopByCards.map((card, idx) => {
               if (card.visible === false) return null;
               return (
                 <Link key={idx} to={card.link || '#'} className="group block relative overflow-hidden h-[400px] bg-stone-100">
                   {card.image && (
-                    <img 
+                     <img 
                       src={card.image} 
                       alt={card.title} 
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
                   <div className="absolute inset-0 p-8 flex flex-col justify-end text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-2xl font-serif mb-2">{card.title}</h3>
+                    <h3 className="text-2xl font-sans font-bold mb-2 uppercase">{card.title}</h3>
                     <p className="text-sm opacity-90 mb-6">{card.desc}</p>
                     <span className="text-[10px] font-bold uppercase tracking-widest border-b border-white pb-1 w-max opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                       {card.btnText || 'Shop Now'}

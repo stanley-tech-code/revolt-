@@ -106,12 +106,44 @@ export const GUIDE_DEFAULTS = {
         productName: 'Fits Everybody Plunge',
         productDesc: '$44 | 5 Colors',
         productLink: '/bras/all-bras'
+      },
+      {
+        visible: true,
+        label: 'THE BALCONETTE',
+        desc: 'Classic support with a wider neckline.',
+        mainImage: '/images/campaign-1.webp',
+        copyTitle: 'Natural Lift',
+        copyDesc: 'Provides comfortable, targeted support that naturally lifts without aggressive push-up padding.',
+        icon1Label: 'Coverage', icon1Value: 'Medium',
+        icon2Label: 'Support', icon2Value: 'High',
+        icon3Label: 'Wire', icon3Value: 'Wired',
+        productImage: '/images/product-3.webp',
+        productName: 'Cotton Rib Balconette',
+        productDesc: '$48 | 4 Colors',
+        productLink: '/bras/all-bras'
+      },
+      {
+        visible: true,
+        label: 'THE FULL COVERAGE',
+        desc: 'Maximum support for larger cup sizes.',
+        mainImage: '/images/editorial-tall.webp',
+        copyTitle: 'All-Day Comfort',
+        copyDesc: 'Smoothing wings and a higher neckline for secure, bounce-free support all day.',
+        icon1Label: 'Coverage', icon1Value: 'Full',
+        icon2Label: 'Support', icon2Value: 'Maximum',
+        icon3Label: 'Wire', icon3Value: 'Wired',
+        productImage: '/images/product-4.webp',
+        productName: 'Ultimate Support Bra',
+        productDesc: '$52 | 6 Colors',
+        productLink: '/bras/all-bras'
       }
     ],
     shopByTitle: 'Shop by Support Level',
     shopByCards: [
       { visible: true, image: '/images/editorial-wide.webp', title: 'Light Support', desc: 'For lounging', btnText: 'Shop Now', link: '/bras/all-bras' },
-      { visible: true, image: '/images/campaign-2.webp', title: 'Medium Support', desc: 'For everyday', btnText: 'Shop Now', link: '/bras/all-bras' }
+      { visible: true, image: '/images/campaign-2.webp', title: 'Medium Support', desc: 'For everyday', btnText: 'Shop Now', link: '/bras/all-bras' },
+      { visible: true, image: '/images/product-1.webp', title: 'High Support', desc: 'For activity', btnText: 'Shop Now', link: '/bras/all-bras' },
+      { visible: true, image: '/images/product-2.webp', title: 'Full Coverage', desc: 'Maximum comfort', btnText: 'Shop Now', link: '/bras/all-bras' }
     ]
   },
   underwearGuide: {
