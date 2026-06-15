@@ -39,11 +39,16 @@ const MagazineGuide = ({ pageKey }) => {
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : data.heroImage ? (
-            <img 
-              src={data.heroImage} 
-              alt={data.heroTitle} 
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+            <picture className="absolute inset-0 w-full h-full">
+              {data.heroImageMobile && (
+                <source media="(max-width: 767px)" srcSet={data.heroImageMobile} />
+              )}
+              <img 
+                src={data.heroImage} 
+                alt={data.heroTitle} 
+                className="w-full h-full object-cover"
+              />
+            </picture>
           ) : null}
           
           <div className="absolute inset-0 bg-black/20" />

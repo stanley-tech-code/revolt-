@@ -194,7 +194,8 @@ const createGuideSchema = (title, defaults = {}) => ({
       label: 'Hero Section',
       fields: [
         { name: 'heroVisible', label: 'Show Section', type: 'boolean', default: true },
-        { name: 'heroImage', label: 'Hero Image', type: 'image', default: defaults.heroImage },
+        { name: 'heroImage', label: 'Hero Desktop Image', type: 'image', default: defaults.heroImage },
+        { name: 'heroImageMobile', label: 'Hero Mobile Image (Portrait crop)', type: 'image', default: defaults.heroImageMobile },
         { name: 'heroEyebrow', label: 'Eyebrow Text', type: 'text', default: defaults.heroEyebrow },
         { name: 'heroTitle', label: 'Title', type: 'text', default: defaults.heroTitle },
         { name: 'heroDesc', label: 'Description', type: 'textarea', default: defaults.heroDesc }

@@ -75,6 +75,7 @@ export const GUIDE_DEFAULTS = {
     heroTitle: 'Find Your Perfect Bra',
     heroDesc: 'A comprehensive guide to our fits, fabrics, and support levels.',
     heroImage: '/images/campaign-1.webp',
+    heroImageMobile: '/images/product-1.webp',
     categories: [
       {
         visible: true,
