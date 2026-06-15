@@ -25,9 +25,9 @@ function formatRelativeTime(date) {
 }
 
 export default function AdminCarts() {
-  const { db, sendNotification } = useCms();
+  const { db, sendNotification, fetchDatabase } = useCms();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('Abandoned Carts Only');
+  const [filterStatus, setFilterStatus] = useState('All Carts');
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [promoMessage, setPromoMessage] = useState('');
   const [sendingPromo, setSendingPromo] = useState(false);
@@ -128,9 +128,17 @@ export default function AdminCarts() {
           <h1 className="text-3xl font-bold uppercase tracking-tight">Cart Management</h1>
           <p className="text-xs tracking-[0.2em] uppercase text-[#000000]/50 mt-2">Track Active and Abandoned Carts</p>
         </div>
-        <div className="text-left sm:text-right">
-          <p className="text-sm font-bold">{customerCartData.filter(c => c.isAbandoned).length}</p>
-          <p className="text-[10px] uppercase tracking-wider text-red-600 font-bold mt-1">Total Abandoned Carts</p>
+        <div className="flex items-center gap-6 text-left sm:text-right">
+          <button 
+            onClick={() => fetchDatabase ? fetchDatabase(true) : window.location.reload()}
+            className="text-[10px] font-bold uppercase tracking-wider underline text-[#000000]/60 hover:text-black transition-colors"
+          >
+            Refresh Data
+          </button>
+          <div>
+            <p className="text-sm font-bold">{customerCartData.filter(c => c.isAbandoned).length}</p>
+            <p className="text-[10px] uppercase tracking-wider text-red-600 font-bold mt-1">Total Abandoned Carts</p>
+          </div>
         </div>
       </div>
 
