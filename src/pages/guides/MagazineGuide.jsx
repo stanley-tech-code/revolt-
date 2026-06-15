@@ -102,14 +102,72 @@ const MagazineGuide = ({ pageKey }) => {
       )}
 
       {/* DYNAMIC CATEGORY BLOCKS */}
-      {categories.map((category, idx) => {
-        if (category.visible === false) return null;
-        
-        // Alternate layout: even indexes have image on left, odd have image on right
-        const isReversed = idx % 2 !== 0;
+      <div className="w-full">
+        {categories.map((category, idx) => {
+          if (category.visible === false) return null;
 
-        return (
-          <section key={idx} className="border-b border-black">
+          if (pageKey === 'braFitGuide') {
+            return (
+              <section key={idx} className="w-full py-20 md:py-[120px] even:bg-[#faf9f8] odd:bg-white">
+                <div className="w-full px-6 text-center mb-12">
+                  <h2 className="text-[28px] md:text-[36px] font-bold uppercase tracking-[2px]">{category.label}</h2>
+                  {category.desc && (
+                    <p className="text-[16px] text-[#777] max-w-[480px] mx-auto mt-[12px]">
+                      {category.desc}
+                    </p>
+                  )}
+                </div>
+                
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[45%_55%] gap-[28px]">
+                  {/* Column A — Benefit Card */}
+                  <Link to={category.productLink || "/"} className="block group cursor-pointer">
+                    <div className="w-full aspect-square md:aspect-[4/3] overflow-hidden mb-6 bg-stone-100">
+                      <img src={category.mainImage} alt={category.copyTitle} className="w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-[1.03] group-hover:opacity-90" />
+                    </div>
+                    <h3 className="text-[18px] md:text-[20px] font-bold mb-2">{category.copyTitle}</h3>
+                    <p className="text-[14px] text-[#777] leading-[1.5] mb-8">{category.copyDesc}</p>
+                    <div className="flex gap-12">
+                      <div className="flex flex-col items-start">
+                        <span className="text-[12px] font-bold uppercase tracking-widest mb-3">Coverage</span>
+                        <div className="flex items-end gap-[4px] h-[24px]">
+                          <div className={`w-[8px] rounded-sm ${category.icon1Value === 'Light' || category.icon1Value === 'Minimal' ? 'h-3 bg-black' : 'h-3 bg-gray-300'}`}></div>
+                          <div className={`w-[8px] rounded-sm ${category.icon1Value === 'Medium' || category.icon1Value === 'High' || category.icon1Value === 'Full' ? 'h-[16px] bg-black' : 'h-[16px] bg-gray-300'}`}></div>
+                          <div className={`w-[8px] rounded-sm ${category.icon1Value === 'High' || category.icon1Value === 'Full' ? 'h-[24px] bg-black' : 'h-[24px] bg-gray-300'}`}></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-start">
+                        <span className="text-[12px] font-bold uppercase tracking-widest mb-3">Support</span>
+                        <div className="flex items-end gap-[4px] h-[24px]">
+                          <div className={`w-[8px] rounded-sm ${category.icon2Value === 'Light' || category.icon2Value === 'Minimal' ? 'h-3 bg-black' : 'h-3 bg-gray-300'}`}></div>
+                          <div className={`w-[8px] rounded-sm ${category.icon2Value === 'Medium' || category.icon2Value === 'High' || category.icon2Value === 'Maximum' ? 'h-[16px] bg-black' : 'h-[16px] bg-gray-300'}`}></div>
+                          <div className={`w-[8px] rounded-sm ${category.icon2Value === 'High' || category.icon2Value === 'Maximum' ? 'h-[24px] bg-black' : 'h-[24px] bg-gray-300'}`}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* Column B — Featured Product Video Card */}
+                  <Link to={category.productLink || "/"} className="block group cursor-pointer mt-8 md:mt-0">
+                    <div className="w-full aspect-[4/5] rounded-[6px] overflow-hidden mb-6 relative bg-stone-100">
+                      {category.productVideo ? (
+                        <video src={category.productVideo} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-[1.03]" />
+                      ) : (
+                        <img src={category.productImage} alt={category.productName} className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-[1.03]" />
+                      )}
+                    </div>
+                    <h3 className="text-[18px] md:text-[20px] font-bold mb-1">{category.productName}</h3>
+                    <p className="text-[14px] text-[#777]">{category.productDesc}</p>
+                  </Link>
+                </div>
+              </section>
+            );
+          }
+          
+          // Alternate layout: even indexes have image on left, odd have image on right
+          const isReversed = idx % 2 !== 0;
+
+          return (
+            <section key={idx} className="border-b border-black">
             {/* Category Header */}
             <div className="border-b border-black px-6 md:px-12 py-8 md:py-12 text-center">
               <h2 className="text-3xl md:text-5xl font-serif mb-3 uppercase tracking-wide">
