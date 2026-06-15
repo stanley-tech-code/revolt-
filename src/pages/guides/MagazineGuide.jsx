@@ -189,7 +189,7 @@ const MagazineGuide = ({ pageKey }) => {
 
                   {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {idx === 0 && (
-                    <section className="w-full zoomed-h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center">
+                    <section className="w-full zoomed-h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center mt-[26px]">
                       <img 
                         src={data.promoBanner || "/images/campaign-2.webp"} 
                         alt="Campaign Banner" 
