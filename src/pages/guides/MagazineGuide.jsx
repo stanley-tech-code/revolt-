@@ -306,7 +306,7 @@ const MagazineGuide = ({ pageKey }) => {
       {/* SHOP BY SECTION */}
       {shopByVisible && shopByCards.length > 0 && (
         <section className="py-[40px] md:py-[60px] w-full max-w-[1600px] mx-auto overflow-hidden">
-          <h2 className="text-3xl md:text-5xl font-sans font-bold text-center mb-[24px] md:mb-[36px] uppercase tracking-wide text-black px-4 md:px-[44px]">
+          <h2 className="text-3xl md:text-5xl font-sans font-bold text-left mb-[24px] md:mb-[36px] uppercase tracking-wide text-black px-4 md:px-[44px]">
             {data.shopByTitle || 'Shop By'}
           </h2>
           <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-[16px] pb-4 px-4 md:px-[44px] md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-x-visible md:pb-0">
