@@ -80,7 +80,7 @@ function ClientLayout() {
   
   // Close menu on route change
   const location = useLocation();
-  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing' || location.pathname.includes('-guide') || location.pathname.includes('-edit');
+  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing' || location.pathname === '/accessories/gifting' || location.pathname.includes('-guide') || location.pathname.includes('-edit');
 
   React.useEffect(() => {
     setMobileMenuOpen(false);
@@ -284,8 +284,8 @@ function App() {
               <Route path="/bras/bra-fit-guide" element={<BraFitGuide />} />
               <Route path="/underwear/underwear-guide" element={<UnderwearGuide />} />
               <Route path="/swimwear/swim-fit-guide" element={<SwimFitGuide />} />
-              <Route path="/guides/travel-edit" element={<TravelEdit />} />
-              <Route path="/guides/gift-guide" element={<GiftGuide />} />
+              <Route path="/accessories/the-travel-edit" element={<TravelEdit />} />
+              <Route path="/accessories/gifting" element={<GiftGuide />} />
 
               {/* DYNAMIC PAGES */}
               <Route path="/product/:id" element={<ProductDetails />} />
