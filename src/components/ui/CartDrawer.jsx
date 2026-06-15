@@ -32,22 +32,22 @@ export default function CartDrawer() {
             <p className="text-[13px] text-gray-500 text-center mt-10">Your cart is currently empty.</p>
           ) : (
             cartItems.map(item => (
-              <div key={item.id} className="flex gap-4">
+              <div key={item.cartItemId || item.id} className="flex gap-4">
                 <div className="w-[100px] h-[130px] bg-gray-100 flex-shrink-0">
                   <img src={item.image || "/images/product-1.webp"} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 flex flex-col">
                   <div className="flex justify-between items-start gap-2">
                     <h3 className="text-[11px] font-bold uppercase tracking-[0.05em] leading-tight">{item.name}</h3>
-                    <button onClick={() => removeFromCart(item.id)} className="text-[10px] uppercase text-gray-400 hover:text-black tracking-wider">Remove</button>
+                    <button onClick={() => removeFromCart(item.cartItemId || item.id)} className="text-[10px] uppercase text-gray-400 hover:text-black tracking-wider">Remove</button>
                   </div>
                   <div className="text-[11px] text-gray-500 mt-1 capitalize">Color: {item.color} | Size: {item.size}</div>
                   
                   <div className="mt-auto flex justify-between items-end">
                     <div className="flex items-center border border-gray-200">
-                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50">-</button>
+                      <button onClick={() => updateQuantity(item.cartItemId || item.id, item.quantity - 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50">-</button>
                       <span className="text-[11px] w-8 text-center">{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50">+</button>
+                      <button onClick={() => updateQuantity(item.cartItemId || item.id, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-50">+</button>
                     </div>
                     <div className="text-[12px] font-bold">Ksh {(item.price * item.quantity).toLocaleString()}</div>
                   </div>

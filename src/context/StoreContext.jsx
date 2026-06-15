@@ -19,11 +19,22 @@ export function StoreProvider({ children }) {
 
   // Load from local storage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('revolt_cart');
-    if (savedCart) setCartItems(JSON.parse(savedCart));
-    
-    const savedWishlist = localStorage.getItem('revolt_wishlist');
-    if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+    try {
+      const savedCart = localStorage.getItem('revolt_cart');
+      if (savedCart) {
+        const parsed = JSON.parse(savedCart);
+        if (Array.isArray(parsed)) {
+          // Filter out corrupted items (e.g. NaN price from old bug)
+          const validCart = parsed.filter(item => item && item.name && typeof item.price === 'number' && !isNaN(item.price));
+          setCartItems(validCart);
+        }
+      }
+      
+      const savedWishlist = localStorage.getItem('revolt_wishlist');
+      if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+    } catch (err) {
+      console.error("Failed to load cart from local storage", err);
+    }
   }, []);
 
   // Sync / Merge with currentUser on login
@@ -83,22 +94,22 @@ export function StoreProvider({ children }) {
           item === existing ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prev, { ...product, quantity: 1, id: Date.now().toString() }];
+      return [...prev, { ...product, quantity: 1, cartItemId: Date.now().toString() }];
     });
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  const removeFromCart = (cartItemIdOrId) => {
+    setCartItems(prev => prev.filter(item => (item.cartItemId || item.id) !== cartItemIdOrId));
   };
 
-  const updateQuantity = (id, newQuantity) => {
+  const updateQuantity = (cartItemIdOrId, newQuantity) => {
     if (newQuantity < 1) {
-      removeFromCart(id);
+      removeFromCart(cartItemIdOrId);
       return;
     }
     setCartItems(prev => prev.map(item => 
-      item.id === id ? { ...item, quantity: newQuantity } : item
+      (item.cartItemId || item.id) === cartItemIdOrId ? { ...item, quantity: newQuantity } : item
     ));
   };
 
@@ -120,7 +131,7 @@ export function StoreProvider({ children }) {
   const closeSearch = () => setIsSearchOpen(false);
 
   const getCartTotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cartItems.reduce((total, item) => total + ((item.price || 0) * (item.quantity || 1)), 0);
   };
 
   const getCartCount = () => {

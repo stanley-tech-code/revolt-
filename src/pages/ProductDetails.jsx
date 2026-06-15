@@ -96,7 +96,7 @@ export default function ProductDetails() {
     addToCart({
       id: product.id,
       name: product.name,
-      price: product.salePrice,
+      price: product.salePrice || product.originalPrice || product.price,
       color: selectedColor,
       size: selectedSize,
       image: images[0]
