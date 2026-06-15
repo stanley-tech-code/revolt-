@@ -259,6 +259,7 @@ const MagazineGuide = ({ pageKey }) => {
           </section>
         );
       })}
+      </div>
 
       {/* SHOP BY SECTION */}
       {shopByVisible && shopByCards.length > 0 && (
