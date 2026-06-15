@@ -28,47 +28,48 @@ const MagazineGuide = ({ pageKey }) => {
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
       {heroVisible && (
-        <section className="relative w-full h-[70vh] md:h-[85vh] bg-stone-100 flex items-center justify-center overflow-hidden">
-          {data.heroVideo ? (
-            <video 
-              src={data.heroVideo} 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          ) : data.heroImage ? (
-            <picture className="absolute inset-0 w-full h-full">
-              {data.heroImageMobile && (
-                <source media="(max-width: 767px)" srcSet={data.heroImageMobile} />
-              )}
-              <img 
-                src={data.heroImage} 
-                alt={data.heroTitle} 
-                className="w-full h-full object-cover"
+        <>
+          <section className="relative w-full h-[90vh] md:h-[80vh] bg-stone-100 overflow-hidden">
+            {data.heroVideo ? (
+              <video 
+                src={data.heroVideo} 
+                autoPlay 
+                muted 
+                loop 
+                playsInline 
+                className="absolute inset-0 w-full h-full object-cover"
               />
-            </picture>
-          ) : null}
-          
-          <div className="absolute inset-0 bg-black/20" />
-          
-          <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto flex flex-col items-center">
+            ) : data.heroImage ? (
+              <picture className="absolute inset-0 w-full h-full">
+                {data.heroImageMobile && (
+                  <source media="(max-width: 767px)" srcSet={data.heroImageMobile} />
+                )}
+                <img 
+                  src={data.heroImage} 
+                  alt={data.heroTitle} 
+                  className="w-full h-full object-cover"
+                />
+              </picture>
+            ) : null}
+          </section>
+
+          {/* TEXT BLOCK BELOW IMAGE */}
+          <section className="w-full bg-white flex flex-col items-center text-center px-6 py-12">
             {data.heroEyebrow && (
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 md:mb-6 block">
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 text-[#888] block">
                 {data.heroEyebrow}
               </span>
             )}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight mb-4 md:mb-6">
+            <h1 className="text-[28px] md:text-[48px] font-serif tracking-normal leading-tight mb-4 text-black">
               {data.heroTitle}
             </h1>
             {data.heroDesc && (
-              <p className="text-sm md:text-base max-w-md mx-auto opacity-90">
+              <p className="text-[17px] text-[#888] max-w-[560px] mx-auto leading-[1.5]">
                 {data.heroDesc}
               </p>
             )}
-          </div>
-        </section>
+          </section>
+        </>
       )}
 
       {/* DYNAMIC CATEGORY BLOCKS */}
