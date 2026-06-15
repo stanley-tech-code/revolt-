@@ -78,7 +78,7 @@ function ClientLayout() {
   
   // Close menu on route change
   const location = useLocation();
-  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing';
+  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing' || location.pathname === '/bras/bra-fit-guide';
 
   React.useEffect(() => {
     setMobileMenuOpen(false);
