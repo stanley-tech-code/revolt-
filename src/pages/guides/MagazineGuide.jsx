@@ -28,7 +28,7 @@ const MagazineGuide = ({ pageKey }) => {
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
       {heroVisible && pageKey === 'braFitGuide' ? (
-        <section className="relative w-full zoomed-h-screen flex items-center justify-center bg-stone-100 transition-all text-center overflow-hidden">
+        <Link to={data.heroBtnLink || "/bras/all-bras"} className="block relative w-full zoomed-h-screen flex items-center justify-center bg-stone-100 transition-all text-center overflow-hidden">
           {data.heroVideo ? (
             <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
               <source src={data.heroVideo} type="video/mp4" />
@@ -41,7 +41,7 @@ const MagazineGuide = ({ pageKey }) => {
               <img src={data.heroImage} alt={data.heroTitle} className="absolute inset-0 w-full h-full object-cover" />
             </picture>
           ) : null}
-          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-500"></div>
           <div className="relative z-10 w-full px-6 flex flex-col items-center">
             <div className="max-w-[700px] relative">
               {data.heroEyebrow && (
@@ -55,7 +55,7 @@ const MagazineGuide = ({ pageKey }) => {
               )}
             </div>
           </div>
-        </section>
+        </Link>
       ) : heroVisible && (
         <>
           <section className="relative w-full h-[90vh] md:h-[80vh] bg-stone-100 overflow-hidden">
@@ -145,9 +145,10 @@ const MagazineGuide = ({ pageKey }) => {
                          return (
                            <React.Fragment key={pIdx}>
                              {/* IMAGE POSTER */}
-                             <div className={`w-full h-[320px] md:h-[310px] relative bg-stone-100 overflow-hidden ${mobileImgOrder} ${deskImgOrder} ${borderDivider}`}>
-                               <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover" />
-                             </div>
+                             <Link to={category.productLink || "/bras/all-bras"} className={`group block w-full h-[320px] md:h-[310px] relative bg-stone-100 overflow-hidden ${mobileImgOrder} ${deskImgOrder} ${borderDivider}`}>
+                               <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
+                             </Link>
 
                              {/* TEXT PANEL */}
                              <div className={`w-full h-auto md:h-[310px] flex flex-col justify-center py-[16px] px-[16px] md:pt-[36px] md:pb-[36px] md:px-[44px] bg-white ${mobileTextOrder} ${deskTextOrder} ${borderDivider}`}>
@@ -189,13 +190,14 @@ const MagazineGuide = ({ pageKey }) => {
 
                   {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {idx === 0 && (
-                    <section className="w-full zoomed-h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center mt-[26px]">
+                    <Link to={data.promoBtnLink || "/bras/all-bras"} className="group block w-full zoomed-h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center mt-[26px]">
                       <img 
                         src={data.promoBanner || "/images/campaign-2.webp"} 
                         alt="Campaign Banner" 
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                       />
-                    </section>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    </Link>
                   )}
                 </React.Fragment>
               );
