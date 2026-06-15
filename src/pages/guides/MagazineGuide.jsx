@@ -27,9 +27,38 @@ const MagazineGuide = ({ pageKey }) => {
   return (
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
-      {heroVisible && (
+      {heroVisible && pageKey === 'braFitGuide' ? (
+        <section className="relative w-full h-screen flex items-end justify-start bg-canvas transition-all">
+          {data.heroVideo ? (
+            <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+              <source src={data.heroVideo} type="video/mp4" />
+            </video>
+          ) : data.heroImage ? (
+            <picture className="absolute inset-0 w-full h-full">
+              {data.heroImageMobile && (
+                <source media="(max-width: 767px)" srcSet={data.heroImageMobile} />
+              )}
+              <img src={data.heroImage} alt={data.heroTitle} className="absolute inset-0 w-full h-full object-cover" />
+            </picture>
+          ) : null}
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent md:bg-gradient-to-r md:from-ink/20 md:via-transparent md:to-transparent"></div>
+          <div className="relative z-10 w-full px-4 md:px-8 lg:px-10 xl:px-12 pt-28 md:pt-32 pb-12 md:pb-16 lg:pb-20">
+            <div className="max-w-[550px] relative">
+              {data.heroEyebrow && (
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 block text-white">
+                  {data.heroEyebrow}
+                </span>
+              )}
+              <h1 className="text-[clamp(1.5rem,4.2vw,2.75rem)] font-bold uppercase mb-2 md:mb-3 text-white leading-[0.95] tracking-tight">{data.heroTitle}</h1>
+              {data.heroDesc && (
+                <p className="text-base md:text-lg lg:text-xl text-white max-w-[42ch] leading-relaxed">{data.heroDesc}</p>
+              )}
+            </div>
+          </div>
+        </section>
+      ) : heroVisible && (
         <>
-          <section className={`relative w-full ${pageKey === 'braFitGuide' ? 'h-screen' : 'h-[90vh] md:h-[80vh]'} bg-stone-100 overflow-hidden`}>
+          <section className="relative w-full h-[90vh] md:h-[80vh] bg-stone-100 overflow-hidden">
             {data.heroVideo ? (
               <video 
                 src={data.heroVideo} 

@@ -11,7 +11,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }) {
   const { openCart, openSearch, getCartCount, wishlist } = useStore();
   const { db } = useCms();
   const navContent = db?.pages?.navbar || {};
-  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing';
+  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing' || location.pathname === '/bras/bra-fit-guide';
 
   useEffect(() => {
     const handleScroll = () => {
