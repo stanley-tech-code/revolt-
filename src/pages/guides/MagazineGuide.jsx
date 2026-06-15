@@ -116,7 +116,7 @@ const MagazineGuide = ({ pageKey }) => {
 
               return (
                 <React.Fragment key={idx}>
-                  <section className="w-full max-w-7xl mx-auto">
+                  <section className="w-full px-4 md:px-8 xl:px-12">
                     <div className="w-full text-center pt-[18px] pb-[8px] text-[10px] font-bold uppercase tracking-widest text-gray-400">
                       SECTION {idx + 1} — {isReversed ? 'TWO DESCRIPTIONS LEFT / TWO POSTERS RIGHT' : 'TWO POSTERS LEFT / TWO DESCRIPTIONS RIGHT'}
                     </div>
