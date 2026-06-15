@@ -28,7 +28,7 @@ const MagazineGuide = ({ pageKey }) => {
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
       {heroVisible && pageKey === 'braFitGuide' ? (
-        <Link to={data.heroBtnLink || "/bras/all-bras"} className="block relative w-full zoomed-h-screen flex items-center justify-center bg-stone-100 transition-all text-center overflow-hidden">
+        <Link to={data.heroBtnLink || "/bras/all-bras"} className="group block relative w-full zoomed-h-screen overflow-hidden bg-stone-100 transition-all">
           {data.heroVideo ? (
             <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
               <source src={data.heroVideo} type="video/mp4" />
@@ -38,11 +38,11 @@ const MagazineGuide = ({ pageKey }) => {
               {data.heroImageMobile && (
                 <source media="(max-width: 767px)" srcSet={data.heroImageMobile} />
               )}
-              <img src={data.heroImage} alt={data.heroTitle} className="absolute inset-0 w-full h-full object-cover" />
+              <img src={data.heroImage} alt={data.heroTitle} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
             </picture>
           ) : null}
-          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-500"></div>
-          <div className="relative z-10 w-full px-6 flex flex-col items-center">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500"></div>
+          <div className="absolute bottom-0 left-0 w-full px-6 md:px-8 xl:px-12 pb-12 md:pb-16 flex flex-col items-start text-left">
             <div className="max-w-[700px] relative">
               {data.heroEyebrow && (
                 <span className="text-[10px] uppercase tracking-[0.5em] font-medium mb-3 block text-white drop-shadow-sm">
@@ -51,8 +51,11 @@ const MagazineGuide = ({ pageKey }) => {
               )}
               <h1 className="text-[clamp(1.5rem,4.2vw,2.75rem)] font-bold uppercase mb-2 md:mb-3 text-white leading-[0.95] tracking-tight">{data.heroTitle}</h1>
               {data.heroDesc && (
-                <p className="text-base md:text-lg lg:text-xl text-white max-w-[42ch] mx-auto mb-4 md:mb-5 leading-relaxed">{data.heroDesc}</p>
+                <p className="text-base md:text-lg lg:text-xl text-white max-w-[42ch] mb-4 md:mb-6 leading-relaxed">{data.heroDesc}</p>
               )}
+              <span className="inline-block bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] py-3.5 px-8 transition-all duration-500 group-hover:bg-black group-hover:text-white mt-2">
+                {data.heroBtnText || 'Shop Now'}
+              </span>
             </div>
           </div>
         </Link>
@@ -186,14 +189,35 @@ const MagazineGuide = ({ pageKey }) => {
                   </section>
 
                   {/* Full-screen banner (only after Section 1, which is idx 0) */}
+                  {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {idx === 0 && (
-                    <Link to={data.promoBtnLink || "/bras/all-bras"} className="group block w-full zoomed-h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center mt-[26px]">
+                    <Link to={data.promoBtnLink || "/bras/all-bras"} className="group block w-full zoomed-h-screen relative overflow-hidden bg-stone-100 mt-[26px]">
                       <img 
                         src={data.promoBanner || "/images/campaign-2.webp"} 
                         alt="Campaign Banner" 
                         className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-colors duration-500"></div>
+                      <div className="absolute bottom-0 left-0 w-full px-6 md:px-8 xl:px-12 pb-12 md:pb-16 flex flex-col items-start text-left">
+                        <div className="max-w-[700px] relative">
+                          {data.promoEyebrow && (
+                            <span className="text-[10px] uppercase tracking-[0.5em] font-medium mb-3 block text-white drop-shadow-sm">
+                              {data.promoEyebrow}
+                            </span>
+                          )}
+                          <h2 className="text-[clamp(1.5rem,4.2vw,2.75rem)] font-bold uppercase mb-2 md:mb-3 text-white leading-[0.95] tracking-tight">
+                            {data.promoTitle || 'The Support Edit'}
+                          </h2>
+                          {data.promoDesc && (
+                            <p className="text-base md:text-lg lg:text-xl text-white max-w-[42ch] mb-4 md:mb-6 leading-relaxed">
+                              {data.promoDesc}
+                            </p>
+                          )}
+                          <span className="inline-block bg-white text-black text-[10px] font-bold uppercase tracking-[0.4em] py-3.5 px-8 transition-all duration-500 group-hover:bg-black group-hover:text-white mt-2">
+                            {data.promoBtnText || 'Shop Now'}
+                          </span>
+                        </div>
+                      </div>
                     </Link>
                   )}
                 </React.Fragment>
