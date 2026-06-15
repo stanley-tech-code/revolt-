@@ -47,16 +47,17 @@ export default function AdminCarts() {
       
       const cartItems = Array.isArray(customer.cart) ? customer.cart : [];
       const cartValue = cartItems.reduce((sum, item) => {
-        const price = item.salePrice || item.originalPrice || 0;
+        const price = item.price || item.salePrice || item.originalPrice || 0;
         return sum + (price * (item.quantity || 1));
       }, 0);
 
-      const twentyFourHoursAgo = new Date();
-      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+      const twoHoursAgo = new Date();
+      twoHoursAgo.setHours(twoHoursAgo.getHours() - 2);
 
-      // Abandoned: Has items in cart AND hasn't completed an order in the last 24 hours
-      const hasRecentOrder = lastOrderDate && lastOrderDate > twentyFourHoursAgo;
-      const isAbandoned = cartItems.length > 0 && !hasRecentOrder;
+      // Active: Cart was updated within the last 2 hours. Abandoned: Cart updated more than 2 hours ago.
+      const cartUpdateDate = customer.cartUpdatedAt ? new Date(customer.cartUpdatedAt) : new Date(0);
+      const isActive = cartUpdateDate > twoHoursAgo;
+      const isAbandoned = cartItems.length > 0 && !isActive;
 
       // Last Activity: max of lastOrderDate, cartUpdatedAt, or createdat
       const datesToCompare = [new Date(customer.createdat || customer.createdAt)];
@@ -288,13 +289,13 @@ export default function AdminCarts() {
                     <div className="flex-1 flex flex-col justify-center">
                       <p className="text-xs font-bold uppercase tracking-wider">{item.name}</p>
                       <div className="text-[10px] text-gray-500 mt-1 flex gap-3">
-                        {item.selectedColor && <span>Color: {item.selectedColor}</span>}
-                        {item.selectedSize && <span>Size: {item.selectedSize}</span>}
+                        {(item.color || item.selectedColor) && <span>Color: {item.color || item.selectedColor}</span>}
+                        {(item.size || item.selectedSize) && <span>Size: {item.size || item.selectedSize}</span>}
                         <span>Qty: {item.quantity || 1}</span>
                       </div>
                     </div>
                     <div className="text-right flex flex-col justify-center">
-                      <p className="text-xs font-bold">Ksh {((item.salePrice || item.originalPrice || 0) * (item.quantity || 1)).toLocaleString()}</p>
+                      <p className="text-xs font-bold">Ksh {((item.price || item.salePrice || item.originalPrice || 0) * (item.quantity || 1)).toLocaleString()}</p>
                     </div>
                   </div>
                 ))}
