@@ -198,7 +198,9 @@ const createGuideSchema = (title, defaults = {}) => ({
         { name: 'heroImageMobile', label: 'Hero Mobile Image (Portrait crop)', type: 'image', default: defaults.heroImageMobile },
         { name: 'heroEyebrow', label: 'Eyebrow Text', type: 'text', default: defaults.heroEyebrow },
         { name: 'heroTitle', label: 'Title', type: 'text', default: defaults.heroTitle },
-        { name: 'heroDesc', label: 'Description', type: 'textarea', default: defaults.heroDesc }
+        { name: 'heroDesc', label: 'Description', type: 'textarea', default: defaults.heroDesc },
+        { name: 'heroBtnText', label: 'Button Text', type: 'text', default: defaults.heroBtnText },
+        { name: 'heroBtnLink', label: 'Button Link', type: 'text', default: defaults.heroBtnLink }
       ]
     },
     {
@@ -230,6 +232,18 @@ const createGuideSchema = (title, defaults = {}) => ({
             { name: 'productLink', label: 'Hero Product Link', type: 'text' }
           ]
         }
+      ]
+    },
+    {
+      id: 'promoSection',
+      label: 'Promo Banner Section',
+      fields: [
+        { name: 'promoBanner', label: 'Promo Desktop Image', type: 'image', default: defaults.promoBanner },
+        { name: 'promoEyebrow', label: 'Promo Eyebrow', type: 'text', default: defaults.promoEyebrow },
+        { name: 'promoTitle', label: 'Promo Title', type: 'text', default: defaults.promoTitle },
+        { name: 'promoDesc', label: 'Promo Description', type: 'textarea', default: defaults.promoDesc },
+        { name: 'promoBtnText', label: 'Promo Button Text', type: 'text', default: defaults.promoBtnText },
+        { name: 'promoBtnLink', label: 'Promo Button Link', type: 'text', default: defaults.promoBtnLink }
       ]
     },
     {
@@ -347,6 +361,8 @@ const PAGE_SCHEMA = {
   braFitGuide: createGuideSchema('Bra Fit Guide', GUIDE_DEFAULTS.braFitGuide),
   underwearGuide: createGuideSchema('Underwear Guide', GUIDE_DEFAULTS.underwearGuide),
   swimFitGuide: createGuideSchema('Swim Fit Guide', GUIDE_DEFAULTS.swimFitGuide),
+  travelEdit: createGuideSchema('Travel Edit', GUIDE_DEFAULTS.travelEdit),
+  giftGuide: createGuideSchema('Gift Guide', GUIDE_DEFAULTS.giftGuide),
   ourStory: { title: 'Our Story', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   sustainability: { title: 'Sustainability', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
   careers: { title: 'Careers', sections: [{ id: 'main', label: 'Page Content', fields: [{ name: 'title', label: 'Title', type: 'text' }, { name: 'content', label: 'Content', type: 'textarea' }, { name: 'visible', label: 'Show Page', type: 'boolean', default: true }] }] },
