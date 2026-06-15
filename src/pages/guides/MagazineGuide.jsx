@@ -306,15 +306,15 @@ const MagazineGuide = ({ pageKey }) => {
 
       {/* SHOP BY SECTION */}
       {shopByVisible && shopByCards.length > 0 && (
-        <section className="py-[60px] px-[44px] max-w-[1600px] mx-auto">
-          <h2 className="text-3xl md:text-5xl font-sans font-bold text-center mb-[36px] uppercase tracking-wide text-black">
+        <section className="py-[40px] md:py-[60px] w-full max-w-[1600px] mx-auto overflow-hidden">
+          <h2 className="text-3xl md:text-5xl font-sans font-bold text-center mb-[24px] md:mb-[36px] uppercase tracking-wide text-black px-4 md:px-[44px]">
             {data.shopByTitle || 'Shop By'}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[16px]">
+          <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-[16px] pb-4 px-4 md:px-[44px] md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-x-visible md:pb-0">
             {shopByCards.map((card, idx) => {
               if (card.visible === false) return null;
               return (
-                <Link key={idx} to={card.link || '#'} className="group block relative overflow-hidden h-[260px] bg-stone-100">
+                <Link key={idx} to={card.link || '#'} className="snap-start flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-auto group block relative overflow-hidden h-[260px] bg-stone-100">
                   {card.image && (
                      <img 
                       src={card.image} 
@@ -323,9 +323,9 @@ const MagazineGuide = ({ pageKey }) => {
                     />
                   )}
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-2xl font-sans font-bold mb-2 uppercase">{card.title}</h3>
-                    <p className="text-sm opacity-90 mb-6">{card.desc}</p>
+                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                    <h3 className="text-xl md:text-2xl font-sans font-bold mb-2 uppercase">{card.title}</h3>
+                    <p className="text-xs md:text-sm opacity-90 mb-4 md:mb-6">{card.desc}</p>
                     <span className="text-[10px] font-bold uppercase tracking-widest border-b border-white pb-1 w-max opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                       {card.btnText || 'Shop Now'}
                     </span>
