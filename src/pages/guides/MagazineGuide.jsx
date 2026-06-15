@@ -117,9 +117,6 @@ const MagazineGuide = ({ pageKey }) => {
               return (
                 <React.Fragment key={idx}>
                   <section className="w-full px-4 md:px-8 xl:px-12">
-                    <div className="w-full text-center pt-[18px] pb-[8px] text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                      SECTION {idx + 1} — {isReversed ? 'TWO DESCRIPTIONS LEFT / TWO POSTERS RIGHT' : 'TWO POSTERS LEFT / TWO DESCRIPTIONS RIGHT'}
-                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:min-h-[620px]">
                       {pair.map((category, pIdx) => {
                          const isFirstItem = pIdx === 0;
@@ -190,7 +187,7 @@ const MagazineGuide = ({ pageKey }) => {
 
                   {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {idx === 0 && (
-                    <Link to={data.promoBtnLink || "/bras/all-bras"} className="group block w-full zoomed-h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center mt-[26px]">
+                    <Link to={data.promoBtnLink || "/bras/all-bras"} className="group block w-full zoomed-h-screen relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center">
                       <img 
                         src={data.promoBanner || "/images/campaign-2.webp"} 
                         alt="Campaign Banner" 
