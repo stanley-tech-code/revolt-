@@ -27,35 +27,12 @@ export default function Account() {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [replyText, setReplyText] = useState('');
 
-  // Profile form state
   const [profileData, setProfileData] = useState({
     fullName: currentUser?.fullName || '',
     phone: currentUser?.phone || '',
     dateOfBirth: currentUser?.dateOfBirth || '',
     gender: currentUser?.gender || ''
   });
-
-  // Fit Profile state (V2)
-  const [fitStep, setFitStep] = useState(1);
-  const [fitProfile, setFitProfile] = useState({
-    unit: currentUser?.measurements?.unit || 'cm',
-    age: currentUser?.measurements?.age || '',
-    height: currentUser?.measurements?.height || '',
-    weight: currentUser?.measurements?.weight || '',
-    bust: currentUser?.measurements?.bust || '',
-    underBust: currentUser?.measurements?.underBust || '',
-    waist: currentUser?.measurements?.waist || '',
-    hips: currentUser?.measurements?.hips || '',
-    thighs: currentUser?.measurements?.thighs || '',
-    shoulder: currentUser?.measurements?.shoulder || '',
-    torso: currentUser?.measurements?.torso || '',
-    fitPreference: currentUser?.measurements?.fitPreference || '',
-    bodyShape: currentUser?.measurements?.bodyShape || '',
-    fitConcerns: currentUser?.measurements?.fitConcerns || [],
-    shoppingIntent: currentUser?.measurements?.shoppingIntent || ''
-  });
-  const [isSavingMeasurements, setIsSavingMeasurements] = useState(false);
-  const [showFitResults, setShowFitResults] = useState(false);
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
@@ -98,7 +75,6 @@ export default function Account() {
 
   const tabs = [
     { id: 'profile', label: 'My Profile' },
-    { id: 'fit-profile', label: 'Fit Profile' },
     { id: 'orders', label: 'Order History' },
     { id: 'addresses', label: 'Address Book' },
     { id: 'tickets', label: 'Support Tickets' },
@@ -173,89 +149,6 @@ export default function Account() {
       alert('Failed to send reply');
     }
   };
-
-  const handleSaveMeasurements = async (e) => {
-    e.preventDefault();
-    setIsSavingMeasurements(true);
-    await updateProfile({ measurements: fitProfile });
-    setIsSavingMeasurements(false);
-    setShowFitResults(true);
-  };
-
-  const toggleFitConcern = (concern) => {
-    const concerns = [...fitProfile.fitConcerns];
-    if (concerns.includes(concern)) {
-      setFitProfile({ ...fitProfile, fitConcerns: concerns.filter(c => c !== concern) });
-    } else {
-      setFitProfile({ ...fitProfile, fitConcerns: [...concerns, concern] });
-    }
-  };
-
-  // Advanced AI Recommendation Engine (V2)
-  const calculateRecommendation = () => {
-    const { bust, waist, hips, fitPreference, shoppingIntent } = fitProfile;
-    const b = Number(bust);
-    const w = Number(waist);
-    const h = Number(hips);
-
-    if (!b || !w || !h) return { primarySize: null, secondarySize: null, confidence: 0, notes: [] };
-
-    const factor = fitProfile.unit === 'in' ? 2.54 : 1;
-    const b_cm = b * factor;
-    const w_cm = w * factor;
-    const h_cm = h * factor;
-
-    const getDimSize = (val, thresholds) => {
-      if (val <= thresholds.xs) return 0;
-      if (val <= thresholds.s) return 1;
-      if (val <= thresholds.m) return 2;
-      if (val <= thresholds.l) return 3;
-      if (val <= thresholds.xl) return 4;
-      return 5; // XXL
-    };
-
-    const bustIdx = getDimSize(b_cm, { xs: 85, s: 91, m: 97, l: 105, xl: 113 });
-    const waistIdx = getDimSize(w_cm, { xs: 66, s: 71, m: 77, l: 85, xl: 93 });
-    const hipsIdx = getDimSize(h_cm, { xs: 91, s: 97, m: 103, l: 111, xl: 119 });
-
-    let recommendedIdx = Math.max(bustIdx, waistIdx, hipsIdx);
-    let notes = [];
-
-    if (shoppingIntent === 'Top') {
-      recommendedIdx = Math.max(bustIdx, waistIdx);
-    } else if (shoppingIntent === 'Skirt') {
-      recommendedIdx = Math.max(waistIdx, hipsIdx);
-    }
-
-    if (fitPreference === 'Relaxed' || fitPreference === 'Oversized') {
-      recommendedIdx = Math.min(5, recommendedIdx + 1);
-      notes.push(`Sized up for a ${fitPreference.toLowerCase()} fit.`);
-    } else if (fitPreference === 'Snug') {
-      notes.push("You prefer a snug fit. This size should hug your curves perfectly.");
-    }
-
-    const minIdx = Math.min(bustIdx, waistIdx, hipsIdx);
-    const spread = Math.max(bustIdx, waistIdx, hipsIdx) - minIdx;
-    
-    if (spread >= 2) {
-      if (bustIdx > hipsIdx) notes.push("You have a fuller bust relative to your hips; consider sizing up in tops or separating sets.");
-      if (hipsIdx > bustIdx) notes.push("You have fuller hips relative to your bust; tailor notes may be required for a perfect fit on dresses.");
-    }
-
-    const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-    const primarySize = sizes[recommendedIdx];
-    const secondarySize = recommendedIdx < 5 ? sizes[recommendedIdx + 1] : sizes[Math.max(0, recommendedIdx - 1)];
-
-    let confidence = 95;
-    if (spread === 0) confidence = 98; 
-    else if (spread === 1) confidence = 89;
-    else if (spread === 2) confidence = 78;
-    else confidence = 65; 
-
-    return { primarySize, secondarySize, confidence, notes };
-  };
-
-  const aiRec = calculateRecommendation();
 
   // Silhouette rendering removed per user request
 
@@ -365,190 +258,6 @@ export default function Account() {
                   {isUpdating ? 'Saving...' : 'Save Changes'}
                 </button>
               </form>
-            </div>
-          )}
-
-          {/* FIT PROFILE (AI) TAB */}
-          {activeTab === 'fit-profile' && (
-            <div className="animate-fade-in max-w-2xl mx-auto">
-              <h2 className="text-xl font-bold uppercase tracking-wider mb-2 text-center">Fit Profile</h2>
-              <p className="text-xs text-gray-500 mb-8 text-center max-w-lg mx-auto leading-relaxed">
-                Let's get to know you. By completing this profile, we will recommend your perfect size and help you avoid returns.
-              </p>
-
-              {!showFitResults ? (
-                <div className="bg-white border border-gray-200 p-8 shadow-sm">
-                  {/* Progress Bar */}
-                  <div className="flex justify-between mb-8 relative">
-                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-100 -z-10 -translate-y-1/2"></div>
-                    <div className="absolute top-1/2 left-0 h-0.5 bg-black -z-10 -translate-y-1/2 transition-all duration-300" style={{ width: `${((fitStep - 1) / 2) * 100}%` }}></div>
-                    {[1, 2, 3].map(s => (
-                      <div key={s} className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${fitStep >= s ? 'bg-black text-white' : 'bg-gray-100 text-gray-400'}`}>
-                        {s}
-                      </div>
-                    ))}
-                  </div>
-
-                  {fitStep === 1 && (
-                    <div className="space-y-6 animate-fade-in">
-                      <h3 className="text-sm font-bold uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">Step 1: Basic Info</h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Age</label>
-                          <input type="number" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.age} onChange={e => setFitProfile({...fitProfile, age: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Unit Preference</label>
-                          <div className="flex gap-4 mt-2">
-                            <label className="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="unit" checked={fitProfile.unit === 'cm'} onChange={() => setFitProfile({...fitProfile, unit: 'cm'})} /> cm/kg</label>
-                            <label className="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="unit" checked={fitProfile.unit === 'in'} onChange={() => setFitProfile({...fitProfile, unit: 'in'})} /> inches/lbs</label>
-                          </div>
-                        </div>
-                      </div>
-                      <button onClick={() => setFitStep(2)} className="w-full bg-black text-white py-4 text-xs font-bold uppercase tracking-widest mt-6 hover:bg-gray-800 transition-colors">Continue to Measurements</button>
-                    </div>
-                  )}
-
-                  {fitStep === 2 && (
-                    <div className="space-y-6 animate-fade-in">
-                      <h3 className="text-sm font-bold uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">Step 2: Body Measurements ({fitProfile.unit})</h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Height</label>
-                          <input type="number" required className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.height} onChange={e => setFitProfile({...fitProfile, height: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Weight</label>
-                          <input type="number" required className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.weight} onChange={e => setFitProfile({...fitProfile, weight: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Bust / Chest</label>
-                          <p className="text-[9px] text-gray-400 mb-1">Fullest part of chest</p>
-                          <input type="number" required className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.bust} onChange={e => setFitProfile({...fitProfile, bust: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Under-bust</label>
-                          <p className="text-[9px] text-gray-400 mb-1">Just below the chest</p>
-                          <input type="number" className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.underBust} onChange={e => setFitProfile({...fitProfile, underBust: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Waist</label>
-                          <p className="text-[9px] text-gray-400 mb-1">Narrowest point</p>
-                          <input type="number" required className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.waist} onChange={e => setFitProfile({...fitProfile, waist: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Hips</label>
-                          <p className="text-[9px] text-gray-400 mb-1">Fullest part</p>
-                          <input type="number" required className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.hips} onChange={e => setFitProfile({...fitProfile, hips: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Shoulder Width</label>
-                          <p className="text-[9px] text-gray-400 mb-1">Across the back</p>
-                          <input type="number" className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.shoulder} onChange={e => setFitProfile({...fitProfile, shoulder: e.target.value})} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Torso Length</label>
-                          <p className="text-[9px] text-gray-400 mb-1">Shoulder to waist</p>
-                          <input type="number" className="w-full border-b border-gray-300 py-2 text-sm focus:outline-none focus:border-black bg-transparent" value={fitProfile.torso} onChange={e => setFitProfile({...fitProfile, torso: e.target.value})} />
-                        </div>
-                      </div>
-                      <div className="flex gap-4 mt-6">
-                        <button onClick={() => setFitStep(1)} className="w-1/3 border border-black text-black py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors">Back</button>
-                        <button onClick={() => setFitStep(3)} className="w-2/3 bg-black text-white py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors">Continue</button>
-                      </div>
-                    </div>
-                  )}
-
-                  {fitStep === 3 && (
-                    <div className="space-y-6 animate-fade-in">
-                      <h3 className="text-sm font-bold uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">Step 3: Fit Preferences</h3>
-                      
-                      <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">How do you like your clothes to fit?</label>
-                        <div className="flex flex-wrap gap-3">
-                          {['Snug', 'Fitted', 'Relaxed', 'Oversized'].map(opt => (
-                            <button key={opt} onClick={() => setFitProfile({...fitProfile, fitPreference: opt})} className={`px-4 py-2 border text-xs ${fitProfile.fitPreference === opt ? 'border-black bg-black text-white' : 'border-gray-200 text-gray-600 hover:border-gray-400'}`}>{opt}</button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">What's your body shape?</label>
-                        <div className="flex flex-wrap gap-3">
-                          {['Hourglass', 'Pear', 'Apple', 'Rectangle', 'Petite', 'Athletic'].map(opt => (
-                            <button key={opt} onClick={() => setFitProfile({...fitProfile, bodyShape: opt})} className={`px-4 py-2 border text-xs ${fitProfile.bodyShape === opt ? 'border-black bg-black text-white' : 'border-gray-200 text-gray-600 hover:border-gray-400'}`}>{opt}</button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3">Any fit concerns? (Select all that apply)</label>
-                        <div className="flex flex-wrap gap-3">
-                          {['Wide hips', 'Broad shoulders', 'Short torso', 'Long legs', 'Fuller bust'].map(opt => (
-                            <button key={opt} onClick={() => toggleFitConcern(opt)} className={`px-4 py-2 border text-xs ${fitProfile.fitConcerns.includes(opt) ? 'border-black bg-black text-white' : 'border-gray-200 text-gray-600 hover:border-gray-400'}`}>{opt}</button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex gap-4 mt-6">
-                        <button onClick={() => setFitStep(2)} className="w-1/3 border border-black text-black py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors">Back</button>
-                        <button onClick={handleSaveMeasurements} disabled={isSavingMeasurements} className="w-2/3 bg-black text-white py-4 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors disabled:opacity-50">
-                          {isSavingMeasurements ? 'Analyzing...' : 'Analyze My Fit'}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="bg-white border border-gray-200 shadow-sm animate-fade-in p-8">
-                  <div className="max-w-md mx-auto">
-                    <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Fit Analysis</h3>
-                      <button onClick={() => {setShowFitResults(false); setFitStep(1);}} className="text-[10px] font-bold uppercase tracking-widest border-b border-gray-300 pb-0.5 hover:border-black transition-colors">Edit Profile</button>
-                    </div>
-                    
-                    {aiRec.primarySize ? (
-                      <div>
-                        <div className="flex items-end gap-4 mb-2">
-                          <div>
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-green-700">Primary Match</p>
-                            <p className="text-5xl font-bold tracking-tight mt-1">{aiRec.primarySize}</p>
-                          </div>
-                          <div className="pb-1">
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Backup</p>
-                            <p className="text-xl font-bold text-gray-600">{aiRec.secondarySize}</p>
-                          </div>
-                        </div>
-
-                        <div className="mt-6">
-                          <div className="flex justify-between text-xs font-bold mb-1">
-                            <span>Confidence Score</span>
-                            <span className="text-green-700">{aiRec.confidence}%</span>
-                          </div>
-                          <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
-                            <div className="bg-green-600 h-full transition-all duration-1000 ease-out" style={{ width: `${aiRec.confidence}%` }}></div>
-                          </div>
-                        </div>
-
-                        {aiRec.notes.length > 0 && (
-                          <div className="mt-8 bg-[#f0fdf4] border border-[#bbf7d0] p-4 rounded-sm">
-                            <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-green-800 mb-2 flex items-center gap-2">
-                              <span>✓</span> Tailor Notes & Insights
-                            </p>
-                            <ul className="space-y-2">
-                              {aiRec.notes.map((note, i) => (
-                                <li key={i} className="text-xs text-green-900 leading-relaxed">• {note}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <p className="text-sm text-gray-400 py-4">Insufficient data to generate recommendation.</p>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
           )}
 
