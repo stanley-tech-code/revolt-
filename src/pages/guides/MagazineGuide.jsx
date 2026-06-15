@@ -29,7 +29,7 @@ const MagazineGuide = ({ pageKey }) => {
       {/* HERO SECTION */}
       {heroVisible && (
         <>
-          <section className="relative w-full h-[90vh] md:h-[80vh] bg-stone-100 overflow-hidden">
+          <section className={`relative w-full ${pageKey === 'braFitGuide' ? 'h-screen' : 'h-[90vh] md:h-[80vh]'} bg-stone-100 overflow-hidden`}>
             {data.heroVideo ? (
               <video 
                 src={data.heroVideo} 
