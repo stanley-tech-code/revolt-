@@ -50,6 +50,50 @@ export const GUIDE_DEFAULTS = {
         icon1Label: 'Fit', icon1Value: 'Second-Skin',
         icon2Label: 'Fabric', icon2Value: 'Micro-Mesh',
         productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'REFINED LEATHER',
+        desc: 'A permanent fixture in the modern wardrobe.',
+        mainImage: '/images/product-1.webp',
+        copyTitle: 'Structured Rebellion',
+        copyDesc: 'Buttery soft vegan leathers cut into sharp, tailored silhouettes. Perfect for transitioning from day to night.',
+        icon1Label: 'Fit', icon1Value: 'Structured',
+        icon2Label: 'Fabric', icon2Value: 'Vegan Leather',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE MAXI HEMLINE',
+        desc: 'Floor-sweeping lengths make a return.',
+        mainImage: '/images/product-2.webp',
+        copyTitle: 'Elongated Silhouettes',
+        copyDesc: 'Skirts and dresses that hit below the ankle, creating a dramatic, sweeping line that commands attention.',
+        icon1Label: 'Fit', icon1Value: 'Column',
+        icon2Label: 'Fabric', icon2Value: 'Fluid Silk',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'METALLIC ACCENTS',
+        desc: 'High shine for everyday wear.',
+        mainImage: '/images/product-3.webp',
+        copyTitle: 'Liquid Metal',
+        copyDesc: 'Silver and gold tones are no longer reserved for evening. Incorporate metallic threads and finishes into your daily rotation.',
+        icon1Label: 'Fit', icon1Value: 'Draped',
+        icon2Label: 'Fabric', icon2Value: 'Lurex Blend',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE POWER SHOULDER',
+        desc: 'Strong silhouettes for a confident presence.',
+        mainImage: '/images/editorial-tall.webp',
+        copyTitle: 'Architectural Details',
+        copyDesc: 'Subtle padding and sharp tailoring draw the eye upward, creating a strong V-shape that instantly elevates any look.',
+        icon1Label: 'Fit', icon1Value: 'Structured',
+        icon2Label: 'Fabric', icon2Value: 'Wool Blend',
+        productLink: '/clothing'
       }
     ],
     promoEyebrow: 'THE EDIT',
@@ -117,6 +161,50 @@ export const GUIDE_DEFAULTS = {
         icon1Label: 'Fit', icon1Value: 'Compressive',
         icon2Label: 'Fabric', icon2Value: 'Microfiber Blend',
         productLink: '/clothing/tops'
+      },
+      {
+        visible: true,
+        label: 'THE TAILORED BLAZER',
+        desc: 'Instant polish for any outfit.',
+        mainImage: '/images/campaign-1.webp',
+        copyTitle: 'Structured Elegance',
+        copyDesc: 'A slightly oversized fit that drapes perfectly over both tees and evening wear. Fully lined for a premium feel.',
+        icon1Label: 'Fit', icon1Value: 'Oversized',
+        icon2Label: 'Fabric', icon2Value: 'Wool Blend',
+        productLink: '/clothing/outerwear'
+      },
+      {
+        visible: true,
+        label: 'THE RIBBED TANK',
+        desc: 'The essential layering piece.',
+        mainImage: '/images/product-2.webp',
+        copyTitle: 'Contoured Comfort',
+        copyDesc: 'High necklines and deep armholes create a flattering shoulder line. Spun with just enough elastane to hold its shape.',
+        icon1Label: 'Fit', icon1Value: 'Fitted',
+        icon2Label: 'Fabric', icon2Value: 'Cotton Rib',
+        productLink: '/clothing/tops'
+      },
+      {
+        visible: true,
+        label: 'THE SLIP DRESS',
+        desc: 'From day to night in a single piece.',
+        mainImage: '/images/editorial-wide.webp',
+        copyTitle: 'Fluid Motion',
+        copyDesc: 'Cut on the bias to drape beautifully across the body. Wear it alone or layered over a fitted tee.',
+        icon1Label: 'Fit', icon1Value: 'Bias Cut',
+        icon2Label: 'Fabric', icon2Value: 'Washable Silk',
+        productLink: '/clothing/dresses'
+      },
+      {
+        visible: true,
+        label: 'THE STRAIGHT-LEG DENIM',
+        desc: 'Vintage wash, modern fit.',
+        mainImage: '/images/product-4.webp',
+        copyTitle: 'Denim Reimagined',
+        copyDesc: 'Rigid denim look with hidden stretch for all-day wearability. A high rise that perfectly complements cropped tops.',
+        icon1Label: 'Fit', icon1Value: 'Straight',
+        icon2Label: 'Fabric', icon2Value: 'Stretch Denim',
+        productLink: '/clothing/bottoms'
       }
     ],
     promoEyebrow: 'WARDROBE BUILDERS',
@@ -185,6 +273,50 @@ export const GUIDE_DEFAULTS = {
         icon1Label: 'Coverage', icon1Value: 'Medium',
         icon2Label: 'Support', icon2Value: 'Medium',
         productLink: '/bras/all-bras'
+      },
+      {
+        visible: true,
+        label: 'PLUNGE BRA',
+        desc: 'Deep V Neckline',
+        mainImage: '/images/editorial-tall.webp',
+        copyTitle: 'Plunge Bra',
+        copyDesc: 'A deep V-shaped center front sits low between the cups, creating cleavage and disappearing under plunge and V-neck necklines.',
+        icon1Label: 'Coverage', icon1Value: 'Minimal',
+        icon2Label: 'Support', icon2Value: 'Light',
+        productLink: '/bras/all-bras'
+      },
+      {
+        visible: true,
+        label: 'STRAPLESS PLUNGE BRA',
+        desc: 'Strap-Free',
+        mainImage: '/images/editorial-wide.webp',
+        copyTitle: 'Strapless Plunge Bra',
+        copyDesc: 'The same deep-V cleavage with a secure, grippy band and removable straps — built to hold its shape without slipping.',
+        icon1Label: 'Coverage', icon1Value: 'Medium',
+        icon2Label: 'Support', icon2Value: 'High',
+        productLink: '/bras/all-bras'
+      },
+      {
+        visible: true,
+        label: 'FULL COVERAGE BRA',
+        desc: 'Maximum Support',
+        mainImage: '/images/campaign-1.webp',
+        copyTitle: 'Full Coverage Bra',
+        copyDesc: 'Cups that fully encase the bust for a smooth, no-spill silhouette and superior support, with wider straps for all-day comfort.',
+        icon1Label: 'Coverage', icon1Value: 'Full',
+        icon2Label: 'Support', icon2Value: 'Maximum',
+        productLink: '/bras/all-bras'
+      },
+      {
+        visible: true,
+        label: 'MINIMIZER BRA',
+        desc: 'Streamlined Shape',
+        mainImage: '/images/campaign-2.webp',
+        copyTitle: 'Minimizer Bra',
+        copyDesc: 'Full coverage cups designed to gently redistribute and reduce bust projection for a smoother line under fitted clothing.',
+        icon1Label: 'Coverage', icon1Value: 'Full',
+        icon2Label: 'Support', icon2Value: 'Maximum',
+        productLink: '/bras/all-bras'
       }
     ],
     promoEyebrow: 'THE SUPPORT EDIT',
@@ -252,6 +384,50 @@ export const GUIDE_DEFAULTS = {
         icon1Label: 'Coverage', icon1Value: 'Full',
         icon2Label: 'Fabric', icon2Value: 'Seamless Stretch',
         productLink: '/underwear/all-underwear'
+      },
+      {
+        visible: true,
+        label: 'THE HIGH-WAIST THONG',
+        desc: 'Contouring without the lines.',
+        mainImage: '/images/campaign-1.webp',
+        copyTitle: 'Sculpted Shape',
+        copyDesc: 'Sitting just below the belly button, this style smooths the core while remaining completely invisible from behind.',
+        icon1Label: 'Coverage', icon1Value: 'Minimal',
+        icon2Label: 'Fabric', icon2Value: 'Microfiber',
+        productLink: '/underwear/all-underwear'
+      },
+      {
+        visible: true,
+        label: 'THE HIGH-WAIST BRIEF',
+        desc: 'Vintage-inspired full coverage.',
+        mainImage: '/images/product-2.webp',
+        copyTitle: 'Maximum Smoothing',
+        copyDesc: 'The ultimate comfort piece. A retro-inspired cut that provides full front, back, and hip coverage without riding up.',
+        icon1Label: 'Coverage', icon1Value: 'Full',
+        icon2Label: 'Fabric', icon2Value: 'Cotton Stretch',
+        productLink: '/underwear/all-underwear'
+      },
+      {
+        visible: true,
+        label: 'THE FRENCH CUT',
+        desc: 'Leg-lengthening magic.',
+        mainImage: '/images/editorial-wide.webp',
+        copyTitle: 'Elevated Lines',
+        copyDesc: 'Cut high on the hip to elongate the legs, offering moderate coverage in the back with a distinctly European feel.',
+        icon1Label: 'Coverage', icon1Value: 'Moderate',
+        icon2Label: 'Fabric', icon2Value: 'Lace Trim',
+        productLink: '/underwear/all-underwear'
+      },
+      {
+        visible: true,
+        label: 'THE SEAMLESS PANTY',
+        desc: 'Like wearing nothing at all.',
+        mainImage: '/images/editorial-tall.webp',
+        copyTitle: 'Laser-Cut Perfection',
+        copyDesc: 'Constructed without elastics or stitching around the leg openings to guarantee absolute invisibility under leggings and silk.',
+        icon1Label: 'Coverage', icon1Value: 'Various',
+        icon2Label: 'Fabric', icon2Value: 'Laser-Cut Nylon',
+        productLink: '/underwear/all-underwear'
       }
     ],
     promoEyebrow: 'THE COMFORT EDIT',
@@ -317,6 +493,50 @@ export const GUIDE_DEFAULTS = {
         copyTitle: 'Flattering Lines',
         copyDesc: 'Sits right at the natural waist to cinch and smooth, featuring a high-cut leg to elongate your silhouette.',
         icon1Label: 'Coverage', icon1Value: 'Full',
+        icon2Label: 'Support', icon2Value: 'Medium',
+        productLink: '/swimwear/all-swimwear'
+      },
+      {
+        visible: true,
+        label: 'THE STRING BIKINI',
+        desc: 'Fully adjustable for the perfect fit.',
+        mainImage: '/images/product-2.webp',
+        copyTitle: 'Custom Coverage',
+        copyDesc: 'Tie closures allow you to adjust the fit and coverage to your exact preference. A timeless beach essential.',
+        icon1Label: 'Coverage', icon1Value: 'Minimal',
+        icon2Label: 'Support', icon2Value: 'Light',
+        productLink: '/swimwear/all-swimwear'
+      },
+      {
+        visible: true,
+        label: 'THE SCOOP TOP',
+        desc: 'Sporty aesthetic, secure fit.',
+        mainImage: '/images/editorial-tall.webp',
+        copyTitle: 'Active Swim',
+        copyDesc: 'A comfortable, bralette-style fit that provides security for swimming and water sports without sacrificing style.',
+        icon1Label: 'Coverage', icon1Value: 'Medium',
+        icon2Label: 'Support', icon2Value: 'Medium',
+        productLink: '/swimwear/all-swimwear'
+      },
+      {
+        visible: true,
+        label: 'THE CHEEKY BOTTOM',
+        desc: 'Minimal back coverage, maximum sun.',
+        mainImage: '/images/product-4.webp',
+        copyTitle: 'Flattering Curves',
+        copyDesc: 'Designed to enhance your shape with a slight ruche detail at the back. Perfect for tanning.',
+        icon1Label: 'Coverage', icon1Value: 'Minimal',
+        icon2Label: 'Support', icon2Value: 'N/A',
+        productLink: '/swimwear/all-swimwear'
+      },
+      {
+        visible: true,
+        label: 'THE CUT-OUT ONE-PIECE',
+        desc: 'Strategic reveals.',
+        mainImage: '/images/editorial-wide.webp',
+        copyTitle: 'Modern Glamour',
+        copyDesc: 'Combining the security of a one-piece with the aesthetic of a bikini through carefully placed cut-outs.',
+        icon1Label: 'Coverage', icon1Value: 'Moderate',
         icon2Label: 'Support', icon2Value: 'Medium',
         productLink: '/swimwear/all-swimwear'
       }
@@ -386,6 +606,50 @@ export const GUIDE_DEFAULTS = {
         icon1Label: 'Packability', icon1Value: 'Medium',
         icon2Label: 'Versatility', icon2Value: 'Beach to Dinner',
         productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE CARRY-ON TOTE',
+        desc: 'Fits everything, goes everywhere.',
+        mainImage: '/images/product-2.webp',
+        copyTitle: 'Organized Chaos',
+        copyDesc: 'A structured canvas tote that fits under the seat in front of you but looks chic enough to be a beach bag.',
+        icon1Label: 'Packability', icon1Value: 'Low',
+        icon2Label: 'Versatility', icon2Value: 'Transit & Beach',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE RIBBED SEPARATES',
+        desc: 'Mix, match, repeat.',
+        mainImage: '/images/product-3.webp',
+        copyTitle: 'The Capsule Formula',
+        copyDesc: 'Pack 3 ribbed pieces that can be worn in 6 different combinations. The ultimate space-saving strategy.',
+        icon1Label: 'Packability', icon1Value: 'Maximum',
+        icon2Label: 'Versatility', icon2Value: 'Endless',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE OVERSIZED SHIRT',
+        desc: 'The ultimate vacation multi-tasker.',
+        mainImage: '/images/editorial-tall.webp',
+        copyTitle: 'Beyond the Beach',
+        copyDesc: 'Wear it open as a swim cover-up, tied at the waist with linen pants, or buttoned up for dinner.',
+        icon1Label: 'Packability', icon1Value: 'High',
+        icon2Label: 'Versatility', icon2Value: 'Beach to Bar',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE SLIP-ON SANDAL',
+        desc: 'Zero effort, instant polish.',
+        mainImage: '/images/campaign-1.webp',
+        copyTitle: 'TSA Approved',
+        copyDesc: 'Easy to slide off at security and comfortable enough to walk 10,000 steps around a new city.',
+        icon1Label: 'Packability', icon1Value: 'High',
+        icon2Label: 'Versatility', icon2Value: 'Daytime Sightseeing',
+        productLink: '/clothing'
       }
     ],
     promoEyebrow: 'DESTINATION APPROVED',
@@ -452,6 +716,50 @@ export const GUIDE_DEFAULTS = {
         copyDesc: 'Our best-selling seamless tees and universal fit joggers. Loved by everyone, returned by no one.',
         icon1Label: 'Price', icon1Value: 'Various',
         icon2Label: 'Occasion', icon2Value: 'For Anyone',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE HOSTESS GIFT',
+        desc: 'Better than a bottle of wine.',
+        mainImage: '/images/product-4.webp',
+        copyTitle: 'Home Upgrades',
+        copyDesc: 'Luxe cashmere throws, signature scented candles, and elevated loungewear sets that make staying in feel like an event.',
+        icon1Label: 'Price', icon1Value: 'Under $100',
+        icon2Label: 'Occasion', icon2Value: 'Dinner Parties',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE WORKOUT ENTHUSIAST',
+        desc: 'Performance wear that looks like streetwear.',
+        mainImage: '/images/product-1.webp',
+        copyTitle: 'Studio to Street',
+        copyDesc: 'High-compression leggings and breathable crop tops that transition seamlessly from pilates to brunch.',
+        icon1Label: 'Price', icon1Value: '$80 - $120',
+        icon2Label: 'Occasion', icon2Value: 'For the Active',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE JETSETTER',
+        desc: 'Gifts for their next getaway.',
+        mainImage: '/images/editorial-tall.webp',
+        copyTitle: 'First-Class Essentials',
+        copyDesc: 'Travel-friendly knits, oversized cashmere wraps for chilly flights, and chic passport holders.',
+        icon1Label: 'Price', icon1Value: 'Various',
+        icon2Label: 'Occasion', icon2Value: 'For the Traveler',
+        productLink: '/clothing'
+      },
+      {
+        visible: true,
+        label: 'THE SELF-CARE PACKAGE',
+        desc: 'Because they deserve a break.',
+        mainImage: '/images/product-3.webp',
+        copyTitle: 'Pure Indulgence',
+        copyDesc: 'Bundle a silk sleep mask with our softest modal pajamas for the ultimate night-in gift set.',
+        icon1Label: 'Price', icon1Value: 'Under $100',
+        icon2Label: 'Occasion', icon2Value: 'Just Because',
         productLink: '/clothing'
       }
     ],
