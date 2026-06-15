@@ -166,7 +166,7 @@ export const GUIDE_DEFAULTS = {
         productLink: '/bras/all-bras'
       }
     ],
-    shopByTitle: 'Shop by Support Level',
+    shopByTitle: 'Shop',
     shopByCards: [
       { visible: true, image: '/images/editorial-wide.webp', title: 'Light Support', desc: 'For lounging', btnText: 'Shop Now', link: '/bras/all-bras' },
       { visible: true, image: '/images/campaign-2.webp', title: 'Medium Support', desc: 'For everyday', btnText: 'Shop Now', link: '/bras/all-bras' },
