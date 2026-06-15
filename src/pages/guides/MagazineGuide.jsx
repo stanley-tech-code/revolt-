@@ -108,58 +108,49 @@ const MagazineGuide = ({ pageKey }) => {
 
           if (pageKey === 'braFitGuide') {
             return (
-              <section key={idx} className="w-full py-20 md:py-[120px] even:bg-[#faf9f8] odd:bg-white">
-                <div className="w-full px-6 text-center mb-12">
-                  <h2 className="text-[28px] md:text-[36px] font-bold uppercase tracking-[2px]">{category.label}</h2>
-                  {category.desc && (
-                    <p className="text-[16px] text-[#777] max-w-[480px] mx-auto mt-[12px]">
-                      {category.desc}
-                    </p>
-                  )}
-                </div>
-                
-                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[45%_55%] gap-[28px]">
-                  {/* Column A — Benefit Card */}
-                  <Link to={category.productLink || "/"} className="block group cursor-pointer">
-                    <div className="w-full aspect-square md:aspect-[4/3] overflow-hidden mb-6 bg-stone-100">
-                      <img src={category.mainImage} alt={category.copyTitle} className="w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-[1.03] group-hover:opacity-90" />
+              <React.Fragment key={idx}>
+                {/* Section: 50/50 Split Poster Grid */}
+                <section className="w-full">
+                  <div className="flex flex-col md:flex-row">
+                    {/* Left: Poster Image */}
+                    <div className="w-full md:w-1/2 h-[60vh] md:h-[80vh] relative bg-stone-100">
+                      <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover" />
                     </div>
-                    <h3 className="text-[18px] md:text-[20px] font-bold mb-2">{category.copyTitle}</h3>
-                    <p className="text-[14px] text-[#777] leading-[1.5] mb-8">{category.copyDesc}</p>
-                    <div className="flex gap-12">
-                      <div className="flex flex-col items-start">
-                        <span className="text-[12px] font-bold uppercase tracking-widest mb-3">Coverage</span>
-                        <div className="flex items-end gap-[4px] h-[24px]">
-                          <div className={`w-[8px] rounded-sm ${category.icon1Value === 'Light' || category.icon1Value === 'Minimal' ? 'h-3 bg-black' : 'h-3 bg-gray-300'}`}></div>
-                          <div className={`w-[8px] rounded-sm ${category.icon1Value === 'Medium' || category.icon1Value === 'High' || category.icon1Value === 'Full' ? 'h-[16px] bg-black' : 'h-[16px] bg-gray-300'}`}></div>
-                          <div className={`w-[8px] rounded-sm ${category.icon1Value === 'High' || category.icon1Value === 'Full' ? 'h-[24px] bg-black' : 'h-[24px] bg-gray-300'}`}></div>
-                        </div>
+                    
+                    {/* Right: Description & Guide */}
+                    <div className="w-full md:w-1/2 flex flex-col justify-center p-12 md:p-20 lg:p-24 bg-white">
+                      <h2 className="text-3xl md:text-4xl font-serif mb-10 uppercase tracking-wide">{category.label}</h2>
+                      
+                      <div className="mb-10">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-black/10 pb-2">Description</h3>
+                        <p className="text-[15px] text-gray-600 leading-[1.6] max-w-md">
+                          {category.copyDesc || category.desc}
+                        </p>
                       </div>
-                      <div className="flex flex-col items-start">
-                        <span className="text-[12px] font-bold uppercase tracking-widest mb-3">Support</span>
-                        <div className="flex items-end gap-[4px] h-[24px]">
-                          <div className={`w-[8px] rounded-sm ${category.icon2Value === 'Light' || category.icon2Value === 'Minimal' ? 'h-3 bg-black' : 'h-3 bg-gray-300'}`}></div>
-                          <div className={`w-[8px] rounded-sm ${category.icon2Value === 'Medium' || category.icon2Value === 'High' || category.icon2Value === 'Maximum' ? 'h-[16px] bg-black' : 'h-[16px] bg-gray-300'}`}></div>
-                          <div className={`w-[8px] rounded-sm ${category.icon2Value === 'High' || category.icon2Value === 'Maximum' ? 'h-[24px] bg-black' : 'h-[24px] bg-gray-300'}`}></div>
-                        </div>
+                      
+                      <div>
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-black/10 pb-2">Guide</h3>
+                        <ul className="text-[15px] text-gray-600 space-y-2 max-w-md">
+                          {category.icon1Value && <li><span className="font-medium text-black">Coverage:</span> {category.icon1Value}</li>}
+                          {category.icon2Value && <li><span className="font-medium text-black">Support:</span> {category.icon2Value}</li>}
+                          {category.icon3Value && <li><span className="font-medium text-black">Style:</span> {category.icon3Value}</li>}
+                        </ul>
                       </div>
                     </div>
-                  </Link>
+                  </div>
+                </section>
 
-                  {/* Column B — Featured Product Video Card */}
-                  <Link to={category.productLink || "/"} className="block group cursor-pointer mt-8 md:mt-0">
-                    <div className="w-full aspect-[4/5] rounded-[6px] overflow-hidden mb-6 relative bg-stone-100">
-                      {category.productVideo ? (
-                        <video src={category.productVideo} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-[1.03]" />
-                      ) : (
-                        <img src={category.productImage} alt={category.productName} className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-[1.03]" />
-                      )}
-                    </div>
-                    <h3 className="text-[18px] md:text-[20px] font-bold mb-1">{category.productName}</h3>
-                    <p className="text-[14px] text-[#777]">{category.productDesc}</p>
-                  </Link>
-                </div>
-              </section>
+                {/* Inject Full-Screen Banner after Section 1 */}
+                {idx === 0 && (
+                  <section className="w-full h-[70vh] md:h-[90vh] relative overflow-hidden bg-stone-100">
+                    <img 
+                      src={data.promoBanner || "/images/campaign-2.webp"} 
+                      alt="Campaign Banner" 
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </section>
+                )}
+              </React.Fragment>
             );
           }
           
