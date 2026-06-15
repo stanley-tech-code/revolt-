@@ -28,7 +28,7 @@ const MagazineGuide = ({ pageKey }) => {
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
       {heroVisible && pageKey === 'braFitGuide' ? (
-        <section className="relative w-full zoomed-h-screen flex items-end justify-start bg-canvas transition-all">
+        <section className="relative w-full h-[460px] flex items-center justify-center bg-stone-100 transition-all text-center overflow-hidden">
           {data.heroVideo ? (
             <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
               <source src={data.heroVideo} type="video/mp4" />
@@ -41,17 +41,17 @@ const MagazineGuide = ({ pageKey }) => {
               <img src={data.heroImage} alt={data.heroTitle} className="absolute inset-0 w-full h-full object-cover" />
             </picture>
           ) : null}
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent md:bg-gradient-to-r md:from-ink/20 md:via-transparent md:to-transparent"></div>
-          <div className="relative z-10 w-full px-4 md:px-8 lg:px-10 xl:px-12 pt-28 md:pt-32 pb-12 md:pb-16 lg:pb-20">
-            <div className="max-w-[550px] relative">
+          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="relative z-10 w-full px-6 flex flex-col items-center">
+            <div className="max-w-[700px] relative">
               {data.heroEyebrow && (
                 <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 block text-white">
                   {data.heroEyebrow}
                 </span>
               )}
-              <h1 className="text-[clamp(1.5rem,4.2vw,2.75rem)] font-bold uppercase mb-2 md:mb-3 text-white leading-[0.95] tracking-tight">{data.heroTitle}</h1>
+              <h1 className="text-[28px] md:text-[48px] font-sans font-bold uppercase mb-4 text-white leading-tight tracking-wide">{data.heroTitle}</h1>
               {data.heroDesc && (
-                <p className="text-base md:text-lg lg:text-xl text-white max-w-[42ch] leading-relaxed">{data.heroDesc}</p>
+                <p className="text-base md:text-lg text-white max-w-[560px] mx-auto leading-relaxed font-sans">{data.heroDesc}</p>
               )}
             </div>
           </div>
@@ -116,8 +116,11 @@ const MagazineGuide = ({ pageKey }) => {
 
               return (
                 <React.Fragment key={idx}>
-                  <section className="w-full py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
+                  <section className="w-full max-w-7xl mx-auto">
+                    <div className="w-full text-center pt-[18px] pb-[8px] text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                      SECTION {idx + 1} — {isReversed ? 'TWO DESCRIPTIONS LEFT / TWO POSTERS RIGHT' : 'TWO POSTERS LEFT / TWO DESCRIPTIONS RIGHT'}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:min-h-[620px]">
                       {pair.map((category, pIdx) => {
                          const isFirstItem = pIdx === 0;
                          // Mobile order: Image always first
@@ -136,39 +139,42 @@ const MagazineGuide = ({ pageKey }) => {
                            deskTextOrder = isFirstItem ? "md:order-2" : "md:order-4";
                          }
 
+                         // 1px divider between stacked items
+                         const borderDivider = isFirstItem ? 'md:border-b md:border-gray-200' : '';
+
                          return (
                            <React.Fragment key={pIdx}>
                              {/* IMAGE POSTER */}
-                             <div className={`w-full aspect-[3/4] md:aspect-[4/5] relative bg-stone-100 overflow-hidden ${mobileImgOrder} ${deskImgOrder}`}>
+                             <div className={`w-full h-[320px] md:h-[310px] relative bg-stone-100 overflow-hidden ${mobileImgOrder} ${deskImgOrder} ${borderDivider}`}>
                                <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover" />
                              </div>
 
                              {/* TEXT PANEL */}
-                             <div className={`w-full flex flex-col justify-center py-8 md:py-0 md:px-8 lg:px-12 bg-white ${mobileTextOrder} ${deskTextOrder}`}>
-                               <h2 className="text-3xl md:text-4xl font-sans font-bold mb-6 uppercase tracking-wide text-black">{category.label}</h2>
+                             <div className={`w-full h-auto md:h-[310px] flex flex-col justify-center pt-[36px] pb-[36px] px-[44px] bg-white ${mobileTextOrder} ${deskTextOrder} ${borderDivider}`}>
+                               <h2 className="text-[22px] md:text-3xl font-sans font-bold mb-4 uppercase tracking-wide text-black">{category.label}</h2>
                                
-                               <p className="text-base text-gray-700 leading-relaxed max-w-md font-sans mb-10">
+                               <p className="text-[14px] text-gray-700 leading-relaxed font-sans mb-6">
                                  {category.copyDesc || category.desc}
                                </p>
                                
-                               <div className="bg-white border border-gray-100 p-6 md:p-8 w-full max-w-md">
-                                 <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-gray-200 pb-3 font-sans">Guide</h3>
-                                 <ul className="text-sm text-gray-700 space-y-4 font-sans text-left mt-6">
+                               <div className="w-full max-w-sm">
+                                 <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-3 text-black border-b border-gray-100 pb-2 font-sans">Guide</h3>
+                                 <ul className="text-[13px] text-gray-700 space-y-3 font-sans text-left mt-4">
                                    {category.icon1Value && (
                                      <li className="flex justify-between items-center">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-xs">Coverage Level</span> 
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[11px]">Coverage Level</span> 
                                        <span>{category.icon1Value}</span>
                                      </li>
                                    )}
                                    {category.icon2Value && (
-                                     <li className="flex justify-between items-center border-t border-gray-50 pt-3">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-xs">Support Level</span> 
+                                     <li className="flex justify-between items-center border-t border-gray-50 pt-2">
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[11px]">Support Level</span> 
                                        <span>{category.icon2Value}</span>
                                      </li>
                                    )}
                                    {category.icon3Value && (
-                                     <li className="flex justify-between items-center border-t border-gray-50 pt-3">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-xs">Fabric Details</span> 
+                                     <li className="flex justify-between items-center border-t border-gray-50 pt-2">
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[11px]">Fabric Details</span> 
                                        <span>{category.icon3Value}</span>
                                      </li>
                                    )}
@@ -183,7 +189,7 @@ const MagazineGuide = ({ pageKey }) => {
 
                   {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {idx === 0 && (
-                    <section className="w-full h-[60vh] relative overflow-hidden bg-stone-100">
+                    <section className="w-full h-[340px] relative overflow-hidden bg-stone-100 flex flex-col justify-center items-center">
                       <img 
                         src={data.promoBanner || "/images/campaign-2.webp"} 
                         alt="Campaign Banner" 
@@ -300,15 +306,15 @@ const MagazineGuide = ({ pageKey }) => {
 
       {/* SHOP BY SECTION */}
       {shopByVisible && shopByCards.length > 0 && (
-        <section className="py-20 px-6 md:px-12 max-w-[1600px] mx-auto">
-          <h2 className="text-3xl md:text-5xl font-sans font-bold text-center mb-16 uppercase tracking-wide text-black">
+        <section className="py-[60px] px-[44px] max-w-[1600px] mx-auto">
+          <h2 className="text-3xl md:text-5xl font-sans font-bold text-center mb-[36px] uppercase tracking-wide text-black">
             {data.shopByTitle || 'Shop By'}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[16px]">
             {shopByCards.map((card, idx) => {
               if (card.visible === false) return null;
               return (
-                <Link key={idx} to={card.link || '#'} className="group block relative overflow-hidden h-[400px] bg-stone-100">
+                <Link key={idx} to={card.link || '#'} className="group block relative overflow-hidden h-[260px] bg-stone-100">
                   {card.image && (
                      <img 
                       src={card.image} 
