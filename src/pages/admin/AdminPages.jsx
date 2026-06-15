@@ -212,6 +212,7 @@ const createGuideSchema = (title, defaults = {}) => ({
           label: 'Dynamic Categories',
           description: 'Add as many category blocks as you need.',
           type: 'list',
+          default: defaults.categories || [],
           itemTemplate: [
             { name: 'visible', label: 'Show Category', type: 'boolean', default: true },
             { name: 'label', label: 'Category Label (All Caps)', type: 'text' },
@@ -256,6 +257,7 @@ const createGuideSchema = (title, defaults = {}) => ({
           name: 'shopByCards',
           label: 'Filter Cards',
           type: 'list',
+          default: defaults.shopByCards || [],
           itemTemplate: [
             { name: 'visible', label: 'Show Card', type: 'boolean', default: true },
             { name: 'image', label: 'Background Image', type: 'image' },
