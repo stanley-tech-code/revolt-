@@ -28,7 +28,7 @@ const MagazineGuide = ({ pageKey }) => {
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
       {heroVisible && pageKey === 'braFitGuide' ? (
-        <section className="relative w-full h-screen flex items-end justify-start bg-canvas transition-all">
+        <section className="relative w-full zoomed-h-screen flex items-end justify-start bg-canvas transition-all">
           {data.heroVideo ? (
             <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
               <source src={data.heroVideo} type="video/mp4" />
