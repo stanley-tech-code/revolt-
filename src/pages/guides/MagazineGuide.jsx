@@ -103,71 +103,103 @@ const MagazineGuide = ({ pageKey }) => {
 
       {/* DYNAMIC CATEGORY BLOCKS */}
       <div className="w-full">
-        {categories.map((category, idx) => {
-          if (category.visible === false) return null;
+        {pageKey === 'braFitGuide' ? (
+          (() => {
+            const visibleCategories = categories.filter(c => c.visible !== false);
+            const chunks = [];
+            for (let i = 0; i < visibleCategories.length; i += 2) {
+              chunks.push(visibleCategories.slice(i, i + 2));
+            }
+            
+            return chunks.map((pair, idx) => {
+              const isReversed = idx % 2 !== 0;
 
-          if (pageKey === 'braFitGuide') {
-            return (
-              <React.Fragment key={idx}>
-                {/* Two-poster section */}
-                <section className="w-full py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    {/* Left column: tall poster-style image (4:5 ratio) */}
-                    <div className="w-full aspect-[3/4] md:aspect-[4/5] relative bg-stone-100 overflow-hidden">
-                      <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover" />
-                    </div>
-                    
-                    {/* Right column: matching text banner panel */}
-                    <div className="w-full aspect-[3/4] md:aspect-[4/5] flex flex-col justify-center items-center text-center p-8 md:p-12 lg:p-16 bg-[#faf9f8]">
-                      <h2 className="text-3xl md:text-4xl font-sans font-bold mb-6 uppercase tracking-wide text-black">{category.label}</h2>
-                      
-                      <p className="text-base text-gray-700 leading-relaxed max-w-sm font-sans mb-10">
-                        {category.copyDesc || category.desc}
-                      </p>
-                      
-                      {/* 'Guide' block with structured info */}
-                      <div className="w-full max-w-xs mt-4">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-black/10 pb-3 font-sans">Guide</h3>
-                        <ul className="text-sm text-gray-700 space-y-4 font-sans text-left mt-6">
-                          {category.icon1Value && (
-                            <li className="flex justify-between items-center">
-                              <span className="font-semibold text-black uppercase tracking-wider text-xs">Coverage Level</span> 
-                              <span>{category.icon1Value}</span>
-                            </li>
-                          )}
-                          {category.icon2Value && (
-                            <li className="flex justify-between items-center border-t border-black/5 pt-3">
-                              <span className="font-semibold text-black uppercase tracking-wider text-xs">Support Level</span> 
-                              <span>{category.icon2Value}</span>
-                            </li>
-                          )}
-                          {category.icon3Value && (
-                            <li className="flex justify-between items-center border-t border-black/5 pt-3">
-                              <span className="font-semibold text-black uppercase tracking-wider text-xs">Fabric Details</span> 
-                              <span>{category.icon3Value}</span>
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </section>
+              return (
+                <React.Fragment key={idx}>
+                  <section className="w-full py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 md:gap-x-8 gap-y-12 md:gap-y-16">
+                      {pair.map((category, pIdx) => {
+                         const isFirstItem = pIdx === 0;
+                         // Mobile order: Image always first
+                         const mobileImgOrder = isFirstItem ? "order-1" : "order-3";
+                         const mobileTextOrder = isFirstItem ? "order-2" : "order-4";
+                         
+                         // Desktop order
+                         let deskImgOrder, deskTextOrder;
+                         if (isReversed) {
+                           // Odd section: Text Left, Image Right
+                           deskImgOrder = isFirstItem ? "md:order-2" : "md:order-4";
+                           deskTextOrder = isFirstItem ? "md:order-1" : "md:order-3";
+                         } else {
+                           // Even section: Image Left, Text Right
+                           deskImgOrder = isFirstItem ? "md:order-1" : "md:order-3";
+                           deskTextOrder = isFirstItem ? "md:order-2" : "md:order-4";
+                         }
 
-                {/* Full-screen banner (only after Section 1, which is idx 0) */}
-                {idx === 0 && (
-                  <section className="w-full h-[60vh] relative overflow-hidden bg-stone-100">
-                    <img 
-                      src={data.promoBanner || "/images/campaign-2.webp"} 
-                      alt="Campaign Banner" 
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
+                         return (
+                           <React.Fragment key={pIdx}>
+                             {/* IMAGE POSTER */}
+                             <div className={`w-full aspect-[3/4] md:aspect-[4/5] relative bg-stone-100 overflow-hidden ${mobileImgOrder} ${deskImgOrder}`}>
+                               <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover" />
+                             </div>
+
+                             {/* TEXT PANEL */}
+                             <div className={`w-full flex flex-col justify-center py-8 md:py-0 md:px-8 lg:px-12 bg-white ${mobileTextOrder} ${deskTextOrder}`}>
+                               <h2 className="text-3xl md:text-4xl font-sans font-bold mb-6 uppercase tracking-wide text-black">{category.label}</h2>
+                               
+                               <p className="text-base text-gray-700 leading-relaxed max-w-md font-sans mb-10">
+                                 {category.copyDesc || category.desc}
+                               </p>
+                               
+                               <div className="bg-white border border-gray-100 p-6 md:p-8 w-full max-w-md">
+                                 <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-gray-200 pb-3 font-sans">Guide</h3>
+                                 <ul className="text-sm text-gray-700 space-y-4 font-sans text-left mt-6">
+                                   {category.icon1Value && (
+                                     <li className="flex justify-between items-center">
+                                       <span className="font-semibold text-black uppercase tracking-wider text-xs">Coverage Level</span> 
+                                       <span>{category.icon1Value}</span>
+                                     </li>
+                                   )}
+                                   {category.icon2Value && (
+                                     <li className="flex justify-between items-center border-t border-gray-50 pt-3">
+                                       <span className="font-semibold text-black uppercase tracking-wider text-xs">Support Level</span> 
+                                       <span>{category.icon2Value}</span>
+                                     </li>
+                                   )}
+                                   {category.icon3Value && (
+                                     <li className="flex justify-between items-center border-t border-gray-50 pt-3">
+                                       <span className="font-semibold text-black uppercase tracking-wider text-xs">Fabric Details</span> 
+                                       <span>{category.icon3Value}</span>
+                                     </li>
+                                   )}
+                                 </ul>
+                               </div>
+                             </div>
+                           </React.Fragment>
+                         );
+                      })}
+                    </div>
                   </section>
-                )}
-              </React.Fragment>
-            );
-          }
-          
-          // Alternate layout: even indexes have image on left, odd have image on right
+
+                  {/* Full-screen banner (only after Section 1, which is idx 0) */}
+                  {idx === 0 && (
+                    <section className="w-full h-[60vh] relative overflow-hidden bg-stone-100">
+                      <img 
+                        src={data.promoBanner || "/images/campaign-2.webp"} 
+                        alt="Campaign Banner" 
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    </section>
+                  )}
+                </React.Fragment>
+              );
+            });
+          })()
+        ) : (
+          categories.map((category, idx) => {
+            if (category.visible === false) return null;
+            
+            // Alternate layout: even indexes have image on left, odd have image on right
           const isReversed = idx % 2 !== 0;
 
           return (
@@ -262,8 +294,9 @@ const MagazineGuide = ({ pageKey }) => {
             </div>
           </section>
         );
-      })}
-      </div>
+      })
+    )}
+    </div>
 
       {/* SHOP BY SECTION */}
       {shopByVisible && shopByCards.length > 0 && (
