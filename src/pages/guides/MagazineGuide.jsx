@@ -45,13 +45,13 @@ const MagazineGuide = ({ pageKey }) => {
           <div className="relative z-10 w-full px-6 flex flex-col items-center">
             <div className="max-w-[700px] relative">
               {data.heroEyebrow && (
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 block text-white">
+                <span className="text-[10px] uppercase tracking-[0.5em] font-medium mb-3 block text-white drop-shadow-sm">
                   {data.heroEyebrow}
                 </span>
               )}
-              <h1 className="text-[28px] md:text-[48px] font-sans font-bold uppercase mb-4 text-white leading-tight tracking-wide">{data.heroTitle}</h1>
+              <h1 className="text-[clamp(1.5rem,4.2vw,2.75rem)] font-bold uppercase mb-2 md:mb-3 text-white leading-[0.95] tracking-tight">{data.heroTitle}</h1>
               {data.heroDesc && (
-                <p className="text-base md:text-lg text-white max-w-[560px] mx-auto leading-relaxed font-sans">{data.heroDesc}</p>
+                <p className="text-base md:text-lg lg:text-xl text-white max-w-[42ch] mx-auto mb-4 md:mb-5 leading-relaxed">{data.heroDesc}</p>
               )}
             </div>
           </div>
@@ -149,15 +149,15 @@ const MagazineGuide = ({ pageKey }) => {
 
                              {/* TEXT PANEL */}
                              <div className={`w-full h-auto md:h-[310px] flex flex-col justify-center py-[16px] px-[16px] md:pt-[36px] md:pb-[36px] md:px-[44px] bg-white ${mobileTextOrder} ${deskTextOrder} ${borderDivider}`}>
-                               <h2 className="text-[16px] md:text-3xl font-sans font-bold mb-1.5 md:mb-4 uppercase tracking-wide text-black">{category.label}</h2>
+                               <h2 className="text-[16px] md:text-2xl lg:text-3xl font-semibold uppercase tracking-tight text-black mb-1.5 md:mb-4">{category.label}</h2>
                                
-                               <p className="text-[12px] md:text-[14px] text-gray-700 leading-tight md:leading-relaxed font-sans mb-3 md:mb-6">
+                               <p className="text-[12px] md:text-base lg:text-lg text-gray-700 leading-tight md:leading-relaxed mb-3 md:mb-6">
                                  {category.copyDesc || category.desc}
                                </p>
                                
                                <div className="w-full max-w-sm">
-                                 <h3 className="text-[9px] md:text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5 md:mb-3 text-black border-b border-gray-100 pb-1 md:pb-2 font-sans">Guide</h3>
-                                 <ul className="text-[11px] md:text-[13px] text-gray-700 space-y-1.5 md:space-y-3 font-sans text-left mt-2 md:mt-4">
+                                 <h3 className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.5em] mb-1.5 md:mb-3 text-black border-b border-gray-100 pb-1 md:pb-2">Guide</h3>
+                                 <ul className="text-[11px] md:text-[13px] text-gray-700 space-y-1.5 md:space-y-3 text-left mt-2 md:mt-4">
                                    {category.icon1Value && (
                                      <li className="flex justify-between items-center">
                                        <span className="font-semibold text-black uppercase tracking-wider text-[9px] md:text-[11px]">Coverage Level</span> 
@@ -306,7 +306,7 @@ const MagazineGuide = ({ pageKey }) => {
       {/* SHOP BY SECTION */}
       {shopByVisible && shopByCards.length > 0 && (
         <section className="py-[40px] md:py-[60px] w-full max-w-[1600px] mx-auto overflow-hidden">
-          <h2 className="text-3xl md:text-5xl font-sans font-bold text-left mb-[24px] md:mb-[36px] uppercase tracking-wide text-black px-4 md:px-[44px]">
+          <h2 className="h2-fluid font-semibold uppercase tracking-tight text-left mb-[24px] md:mb-[36px] text-black px-4 md:px-[44px]">
             {data.shopByTitle || 'Shop By'}
           </h2>
           <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-[16px] pb-4 px-4 md:px-[44px] md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-x-visible md:pb-0">
@@ -323,9 +323,9 @@ const MagazineGuide = ({ pageKey }) => {
                   )}
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
                   <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-xl md:text-2xl font-sans font-bold mb-2 uppercase">{card.title}</h3>
-                    <p className="text-xs md:text-sm opacity-90 mb-4 md:mb-6">{card.desc}</p>
-                    <span className="text-[10px] font-bold uppercase tracking-widest border-b border-white pb-1 w-max opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                    <h3 className="text-xl md:text-2xl font-bold uppercase tracking-tight mb-2">{card.title}</h3>
+                    <p className="text-xs md:text-sm opacity-90 mb-4 md:mb-6 leading-relaxed">{card.desc}</p>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.4em] border-b border-white pb-1 w-max opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                       {card.btnText || 'Shop Now'}
                     </span>
                   </div>
