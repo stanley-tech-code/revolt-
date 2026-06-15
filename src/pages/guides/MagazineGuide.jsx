@@ -117,18 +117,18 @@ const MagazineGuide = ({ pageKey }) => {
                       <img src={category.mainImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover" />
                     </div>
                     
-                    {/* Right column: vertical content panel */}
-                    <div className="w-full flex flex-col justify-center py-8 md:py-0 md:px-8 lg:px-12 bg-white">
+                    {/* Right column: matching text banner panel */}
+                    <div className="w-full aspect-[3/4] md:aspect-[4/5] flex flex-col justify-center items-center text-center p-8 md:p-12 lg:p-16 bg-[#faf9f8]">
                       <h2 className="text-3xl md:text-4xl font-sans font-bold mb-6 uppercase tracking-wide text-black">{category.label}</h2>
                       
-                      <p className="text-base text-gray-700 leading-relaxed max-w-md font-sans mb-10">
+                      <p className="text-base text-gray-700 leading-relaxed max-w-sm font-sans mb-10">
                         {category.copyDesc || category.desc}
                       </p>
                       
                       {/* 'Guide' block with structured info */}
-                      <div className="bg-[#faf9f8] p-6 md:p-8 border border-gray-100 w-full max-w-md">
-                        <h3 className="text-sm font-bold uppercase tracking-[0.1em] mb-4 text-black border-b border-gray-200 pb-3 font-sans">Guide</h3>
-                        <ul className="text-sm text-gray-700 space-y-4 font-sans">
+                      <div className="w-full max-w-xs mt-4">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-4 text-black border-b border-black/10 pb-3 font-sans">Guide</h3>
+                        <ul className="text-sm text-gray-700 space-y-4 font-sans text-left mt-6">
                           {category.icon1Value && (
                             <li className="flex justify-between items-center">
                               <span className="font-semibold text-black uppercase tracking-wider text-xs">Coverage Level</span> 
@@ -136,13 +136,13 @@ const MagazineGuide = ({ pageKey }) => {
                             </li>
                           )}
                           {category.icon2Value && (
-                            <li className="flex justify-between items-center border-t border-gray-100 pt-3">
+                            <li className="flex justify-between items-center border-t border-black/5 pt-3">
                               <span className="font-semibold text-black uppercase tracking-wider text-xs">Support Level</span> 
                               <span>{category.icon2Value}</span>
                             </li>
                           )}
                           {category.icon3Value && (
-                            <li className="flex justify-between items-center border-t border-gray-100 pt-3">
+                            <li className="flex justify-between items-center border-t border-black/5 pt-3">
                               <span className="font-semibold text-black uppercase tracking-wider text-xs">Fabric Details</span> 
                               <span>{category.icon3Value}</span>
                             </li>
