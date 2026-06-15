@@ -150,31 +150,31 @@ const MagazineGuide = ({ pageKey }) => {
                              </div>
 
                              {/* TEXT PANEL */}
-                             <div className={`w-full h-auto md:h-[310px] flex flex-col justify-center pt-[36px] pb-[36px] px-[44px] bg-white ${mobileTextOrder} ${deskTextOrder} ${borderDivider}`}>
-                               <h2 className="text-[22px] md:text-3xl font-sans font-bold mb-4 uppercase tracking-wide text-black">{category.label}</h2>
+                             <div className={`w-full h-auto md:h-[310px] flex flex-col justify-center py-[28px] px-[24px] md:pt-[36px] md:pb-[36px] md:px-[44px] bg-white ${mobileTextOrder} ${deskTextOrder} ${borderDivider}`}>
+                               <h2 className="text-[20px] md:text-3xl font-sans font-bold mb-2 md:mb-4 uppercase tracking-wide text-black">{category.label}</h2>
                                
-                               <p className="text-[14px] text-gray-700 leading-relaxed font-sans mb-6">
+                               <p className="text-[13px] md:text-[14px] text-gray-700 leading-snug md:leading-relaxed font-sans mb-4 md:mb-6">
                                  {category.copyDesc || category.desc}
                                </p>
                                
                                <div className="w-full max-w-sm">
-                                 <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] mb-3 text-black border-b border-gray-100 pb-2 font-sans">Guide</h3>
-                                 <ul className="text-[13px] text-gray-700 space-y-3 font-sans text-left mt-4">
+                                 <h3 className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] mb-2 md:mb-3 text-black border-b border-gray-100 pb-1.5 md:pb-2 font-sans">Guide</h3>
+                                 <ul className="text-[12px] md:text-[13px] text-gray-700 space-y-2 md:space-y-3 font-sans text-left mt-3 md:mt-4">
                                    {category.icon1Value && (
                                      <li className="flex justify-between items-center">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-[11px]">Coverage Level</span> 
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[10px] md:text-[11px]">Coverage Level</span> 
                                        <span>{category.icon1Value}</span>
                                      </li>
                                    )}
                                    {category.icon2Value && (
-                                     <li className="flex justify-between items-center border-t border-gray-50 pt-2">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-[11px]">Support Level</span> 
+                                     <li className="flex justify-between items-center border-t border-gray-50 pt-1.5 md:pt-2">
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[10px] md:text-[11px]">Support Level</span> 
                                        <span>{category.icon2Value}</span>
                                      </li>
                                    )}
                                    {category.icon3Value && (
-                                     <li className="flex justify-between items-center border-t border-gray-50 pt-2">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-[11px]">Fabric Details</span> 
+                                     <li className="flex justify-between items-center border-t border-gray-50 pt-1.5 md:pt-2">
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[10px] md:text-[11px]">Fabric Details</span> 
                                        <span>{category.icon3Value}</span>
                                      </li>
                                    )}
