@@ -27,7 +27,7 @@ const MagazineGuide = ({ pageKey }) => {
   return (
     <div className="bg-white text-black min-h-screen">
       {/* HERO SECTION */}
-      {heroVisible && pageKey === 'braFitGuide' ? (
+      {heroVisible ? (
         <Link to={data.heroBtnLink || "/bras/all-bras"} className="group block relative w-full zoomed-h-screen overflow-hidden bg-stone-100 transition-all">
           {data.heroVideo ? (
             <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
@@ -59,55 +59,11 @@ const MagazineGuide = ({ pageKey }) => {
             </div>
           </div>
         </Link>
-      ) : heroVisible && (
-        <>
-          <section className="relative w-full h-[90vh] md:h-[80vh] bg-stone-100 overflow-hidden">
-            {data.heroVideo ? (
-              <video 
-                src={data.heroVideo} 
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            ) : data.heroImage ? (
-              <picture className="absolute inset-0 w-full h-full">
-                {data.heroImageMobile && (
-                  <source media="(max-width: 767px)" srcSet={data.heroImageMobile} />
-                )}
-                <img 
-                  src={data.heroImage} 
-                  alt={data.heroTitle} 
-                  className="w-full h-full object-cover"
-                />
-              </picture>
-            ) : null}
-          </section>
-
-          {/* TEXT BLOCK BELOW IMAGE */}
-          <section className="w-full bg-white flex flex-col items-center text-center px-6 py-12">
-            {data.heroEyebrow && (
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 text-[#888] block">
-                {data.heroEyebrow}
-              </span>
-            )}
-            <h1 className="text-[28px] md:text-[48px] font-serif tracking-normal leading-tight mb-4 text-black">
-              {data.heroTitle}
-            </h1>
-            {data.heroDesc && (
-              <p className="text-[17px] text-[#888] max-w-[560px] mx-auto leading-[1.5]">
-                {data.heroDesc}
-              </p>
-            )}
-          </section>
-        </>
-      )}
+      ) : null}
 
       {/* DYNAMIC CATEGORY BLOCKS */}
       <div className="w-full">
-        {pageKey === 'braFitGuide' ? (
-          (() => {
+        {(() => {
             const visibleCategories = categories.filter(c => c.visible !== false);
             const chunks = [];
             for (let i = 0; i < visibleCategories.length; i += 2) {
@@ -163,19 +119,19 @@ const MagazineGuide = ({ pageKey }) => {
                                  <ul className="text-[11px] md:text-[13px] text-gray-700 space-y-1.5 md:space-y-3 text-left mt-2 md:mt-4">
                                    {category.icon1Value && (
                                      <li className="flex justify-between items-center">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-[9px] md:text-[11px]">Coverage Level</span> 
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[9px] md:text-[11px]">{category.icon1Label || 'Detail 1'}</span> 
                                        <span>{category.icon1Value}</span>
                                      </li>
                                    )}
                                    {category.icon2Value && (
                                      <li className="flex justify-between items-center border-t border-gray-50 pt-1 md:pt-2">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-[9px] md:text-[11px]">Support Level</span> 
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[9px] md:text-[11px]">{category.icon2Label || 'Detail 2'}</span> 
                                        <span>{category.icon2Value}</span>
                                      </li>
                                    )}
                                    {category.icon3Value && (
                                      <li className="flex justify-between items-center border-t border-gray-50 pt-1 md:pt-2">
-                                       <span className="font-semibold text-black uppercase tracking-wider text-[9px] md:text-[11px]">Fabric Details</span> 
+                                       <span className="font-semibold text-black uppercase tracking-wider text-[9px] md:text-[11px]">{category.icon3Label || 'Detail 3'}</span> 
                                        <span>{category.icon3Value}</span>
                                      </li>
                                    )}
@@ -188,7 +144,6 @@ const MagazineGuide = ({ pageKey }) => {
                     </div>
                   </section>
 
-                  {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {/* Full-screen banner (only after Section 1, which is idx 0) */}
                   {idx === 0 && (
                     <Link to={data.promoBtnLink || "/bras/all-bras"} className="group block w-full zoomed-h-screen relative overflow-hidden bg-stone-100 mt-[26px]">
@@ -206,7 +161,7 @@ const MagazineGuide = ({ pageKey }) => {
                             </span>
                           )}
                           <h2 className="text-[clamp(1.5rem,4.2vw,2.75rem)] font-bold uppercase mb-2 md:mb-3 text-white leading-[0.95] tracking-tight">
-                            {data.promoTitle || 'The Support Edit'}
+                            {data.promoTitle || 'The Edit'}
                           </h2>
                           {data.promoDesc && (
                             <p className="text-base md:text-lg lg:text-xl text-white max-w-[42ch] mb-4 md:mb-6 leading-relaxed">
@@ -223,108 +178,7 @@ const MagazineGuide = ({ pageKey }) => {
                 </React.Fragment>
               );
             });
-          })()
-        ) : (
-          categories.map((category, idx) => {
-            if (category.visible === false) return null;
-            
-            // Alternate layout: even indexes have image on left, odd have image on right
-          const isReversed = idx % 2 !== 0;
-
-          return (
-            <section key={idx} className="border-b border-black">
-            {/* Category Header */}
-            <div className="border-b border-black px-6 md:px-12 py-8 md:py-12 text-center">
-              <h2 className="text-3xl md:text-5xl font-serif mb-3 uppercase tracking-wide">
-                {category.label}
-              </h2>
-              {category.desc && (
-                <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-                  {category.desc}
-                </p>
-              )}
-            </div>
-
-            {/* Split Grid */}
-            <div className={`flex flex-col ${isReversed ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
-              
-              {/* Main Editorial Media */}
-              <div className="w-full md:w-3/5 border-b md:border-b-0 border-black flex-shrink-0 relative h-[60vh] md:h-[90vh]">
-                {category.mainVideo ? (
-                  <video 
-                    src={category.mainVideo} 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline 
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : category.mainImage ? (
-                  <img 
-                    src={category.mainImage} 
-                    alt={category.label} 
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-stone-100" />
-                )}
-              </div>
-
-              {/* Detail / Microcopy Column */}
-              <div className={`w-full md:w-2/5 flex flex-col ${isReversed ? 'md:border-r border-black' : 'md:border-l border-black'}`}>
-                
-                {/* Copy Block */}
-                <div className="p-8 md:p-12 border-b border-black">
-                  <h3 className="text-2xl md:text-3xl font-serif mb-4">
-                    {category.copyTitle}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-gray-800">
-                    {category.copyDesc}
-                  </p>
-                </div>
-
-                {/* Icons / Details */}
-                <div className="p-8 md:p-12 border-b border-black bg-stone-50">
-                  <div className="space-y-4 border-t border-black pt-4">
-                    {category.icon1Label && <IconLine label={category.icon1Label} value={category.icon1Value} />}
-                    {category.icon2Label && <IconLine label={category.icon2Label} value={category.icon2Value} />}
-                    {category.icon3Label && <IconLine label={category.icon3Label} value={category.icon3Value} />}
-                  </div>
-                </div>
-
-                {/* Featured Product Card */}
-                <div className="p-8 md:p-12 flex-grow flex flex-col justify-center items-center text-center group cursor-pointer hover:bg-stone-50 transition-colors">
-                  <div className="w-48 h-64 md:w-56 md:h-72 mb-6 overflow-hidden bg-stone-100">
-                    {category.productImage && (
-                      <img 
-                        src={category.productImage} 
-                        alt={category.productName} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                      />
-                    )}
-                  </div>
-                  <h4 className="text-lg font-bold uppercase tracking-widest mb-2">
-                    {category.productName}
-                  </h4>
-                  <p className="text-xs text-gray-500 mb-6 uppercase tracking-wider">
-                    {category.productDesc}
-                  </p>
-                  {category.productLink && (
-                    <Link 
-                      to={category.productLink}
-                      className="text-[10px] font-bold uppercase tracking-[0.2em] border-b-2 border-black pb-1 hover:text-gray-500 hover:border-gray-500 transition-colors"
-                    >
-                      Shop The Style
-                    </Link>
-                  )}
-                </div>
-
-              </div>
-            </div>
-          </section>
-        );
-      })
-    )}
+          })()}
     </div>
 
       {/* SHOP BY SECTION */}

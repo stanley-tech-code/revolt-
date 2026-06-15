@@ -63,6 +63,8 @@ const ClothingGuide = lazy(() => import('./pages/guides/ClothingGuide'));
 const BraFitGuide = lazy(() => import('./pages/guides/BraFitGuide'));
 const UnderwearGuide = lazy(() => import('./pages/guides/UnderwearGuide'));
 const SwimFitGuide = lazy(() => import('./pages/guides/SwimFitGuide'));
+const TravelEdit = lazy(() => import('./pages/guides/TravelEdit'));
+const GiftGuide = lazy(() => import('./pages/guides/GiftGuide'));
 
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
@@ -78,7 +80,7 @@ function ClientLayout() {
   
   // Close menu on route change
   const location = useLocation();
-  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing' || location.pathname === '/bras/bra-fit-guide';
+  const isTransparentPage = location.pathname === '/' || location.pathname === '/clothing/clothing' || location.pathname.includes('-guide') || location.pathname.includes('-edit');
 
   React.useEffect(() => {
     setMobileMenuOpen(false);
@@ -282,6 +284,8 @@ function App() {
               <Route path="/bras/bra-fit-guide" element={<BraFitGuide />} />
               <Route path="/underwear/underwear-guide" element={<UnderwearGuide />} />
               <Route path="/swimwear/swim-fit-guide" element={<SwimFitGuide />} />
+              <Route path="/guides/travel-edit" element={<TravelEdit />} />
+              <Route path="/guides/gift-guide" element={<GiftGuide />} />
 
               {/* DYNAMIC PAGES */}
               <Route path="/product/:id" element={<ProductDetails />} />
