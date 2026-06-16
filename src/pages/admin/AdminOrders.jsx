@@ -33,7 +33,7 @@ export default function AdminOrders() {
   };
 
   const handleDownloadInvoice = () => {
-    const element = document.getElementById('hidden-invoice-pdf');
+    const element = document.getElementById('invoice-capture');
     if (!element) return;
     
     setDownloading(true);
@@ -197,7 +197,7 @@ export default function AdminOrders() {
                 <div className="text-right">
                   <p className="text-sm font-bold uppercase tracking-wider">Order #{selectedOrder.id.toString().substring(0,8).toUpperCase()}</p>
                   <p className="text-sm text-[#000000]/60 mt-1">{new Date(selectedOrder.createdAt || selectedOrder.date).toLocaleString()}</p>
-                  <div className="mt-2 inline-block">
+                  <div className="mt-2 inline-block" data-html2canvas-ignore="true">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/50 mr-2">Status:</span>
                     <span className="px-2 py-1 bg-[#f5f5f5] text-[10px] font-bold uppercase tracking-wider text-[#000000]">
                       {selectedOrder.status}
@@ -238,7 +238,7 @@ export default function AdminOrders() {
 
               {/* Fit profile removed */}
 
-              <div className="mb-8">
+              <div className="mb-8" data-html2canvas-ignore="true">
                 <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Order Timeline</h3>
                 
                 {/* Timeline UI (Printable) */}
@@ -259,7 +259,7 @@ export default function AdminOrders() {
                 </div>
 
                 {/* Status Update Controls (No Print) */}
-                <div className="no-print">
+                <div className="no-print" data-html2canvas-ignore="true">
                   <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-2">Update Status</h4>
                   <div className="flex flex-wrap gap-2">
                     {['Pending', 'Processing', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].map(status => (
@@ -403,96 +403,7 @@ export default function AdminOrders() {
         </div>
       )}
 
-      {/* Hidden Invoice PDF Template */}
-      {selectedOrder && (
-        <div id="hidden-invoice-pdf" className="fixed top-[-9999px] left-[-9999px] w-[800px] bg-white p-12 text-[#000000]">
-          <div className="flex justify-between items-start mb-8 pb-8 border-b border-[#000000]/10">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight uppercase mb-1">Revolt</h1>
-              <p className="text-[10px] tracking-[0.2em] uppercase text-[#000000]/50">Invoice</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm font-bold uppercase tracking-wider">Order #{selectedOrder.id.toString().substring(0,8).toUpperCase()}</p>
-              <p className="text-sm text-[#000000]/60 mt-1">{new Date(selectedOrder.createdAt || selectedOrder.date).toLocaleString()}</p>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-8 mb-12">
-            <div>
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Customer</h3>
-              <p className="text-sm font-medium">{selectedOrder.deliveryInfo?.customerName || 'Guest User'}</p>
-              <p className="text-sm text-[#000000]/70 mt-1">{selectedOrder.deliveryInfo?.customerEmail || 'Not provided'}</p>
-              <p className="text-sm text-[#000000]/70 mt-1">{selectedOrder.deliveryInfo?.customerPhone || 'Not provided'}</p>
-            </div>
-            {selectedOrder.deliveryInfo && (() => {
-              const addr = selectedOrder.deliveryInfo.address || selectedOrder.deliveryInfo;
-              if (!addr || (!addr.street && !addr.city)) return null;
-              return (
-                <div>
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Shipping Address</h3>
-                  <p className="text-sm text-[#000000]/70">
-                    {addr.street}<br/>
-                    {addr.apartment && <>{addr.apartment}<br/></>}
-                    {addr.city}{addr.zip ? `, ${addr.zip}` : ''}<br/>
-                    {addr.country || 'Kenya'}
-                  </p>
-                </div>
-              );
-            })()}
-          </div>
-
-          <div className="mb-12">
-            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Items</h3>
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-[#f9f9f9]">
-                <tr>
-                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 border-y border-[#000000]/10">Item</th>
-                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 border-y border-[#000000]/10">Variant</th>
-                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-center border-y border-[#000000]/10">Qty</th>
-                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-right border-y border-[#000000]/10">Unit Price</th>
-                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-right border-y border-[#000000]/10">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(selectedOrder.items || []).map((item, idx) => (
-                  <tr key={idx} className="border-b border-[#000000]/10">
-                    <td className="py-3 px-4 text-sm font-semibold">{item.name}</td>
-                    <td className="py-3 px-4 text-xs text-[#000000]/70">{item.size && item.color ? `${item.size} / ${item.color}` : (item.size || item.color || '-')}</td>
-                    <td className="py-3 px-4 text-sm text-center">{item.quantity || 1}</td>
-                    <td className="py-3 px-4 text-sm text-right">Ksh {(item.salePrice || item.originalPrice || item.price || 0).toLocaleString()}</td>
-                    <td className="py-3 px-4 text-sm text-right">Ksh {((item.salePrice || item.originalPrice || item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="flex justify-end">
-            <div className="w-1/2">
-              <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
-                <span className="text-[#000000]/60">Subtotal</span>
-                <span>Ksh {selectedOrder.subtotal?.toLocaleString() || selectedOrder.total.toLocaleString()}</span>
-              </div>
-              {selectedOrder.deliveryInfo?.appliedPromo && (
-                <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5 text-[#000000]">
-                  <span>Promo ({selectedOrder.deliveryInfo.appliedPromo.code})</span>
-                  <span>-Ksh {selectedOrder.deliveryInfo.discount?.toLocaleString() || 0}</span>
-                </div>
-              )}
-              {selectedOrder.deliveryFee !== undefined && (
-                <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
-                  <span className="text-[#000000]/60">Shipping</span>
-                  <span>Ksh {selectedOrder.deliveryFee.toLocaleString()}</span>
-                </div>
-              )}
-              <div className="flex justify-between py-3 text-base font-bold uppercase tracking-wider">
-                <span>Total</span>
-                <span>Ksh {(selectedOrder.total - (selectedOrder.tax || 0)).toLocaleString()}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Print Styles */}
       <style>{`
