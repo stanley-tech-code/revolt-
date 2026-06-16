@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCms } from '../../context/CmsContext';
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 export default function AdminOrders() {
   const { db, updateOrderStatus, processRefund } = useCms();
@@ -113,7 +113,7 @@ export default function AdminOrders() {
         ]);
       });
 
-      doc.autoTable({
+      autoTable(doc, {
         startY: 80,
         head: [tableColumn],
         body: tableRows,
