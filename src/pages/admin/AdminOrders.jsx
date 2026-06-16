@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useCms } from '../../context/CmsContext';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
+import html2pdf from 'html2pdf.js';
 
 export default function AdminOrders() {
   const { db, updateOrderStatus, processRefund } = useCms();
@@ -37,36 +36,38 @@ export default function AdminOrders() {
     if (!element) return;
     
     setDownloading(true);
-    html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      logging: false
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 210;
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      
+    
+    try {
       const orderNum = selectedOrder.id.toString().substring(0,8).toUpperCase();
-      pdf.save(`Invoice-${orderNum}.pdf`);
+      const opt = {
+        margin:       5,
+        filename:     `Invoice-${orderNum}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { 
+          scale: 2, 
+          useCORS: true, 
+          logging: false,
+          onclone: (clonedDoc) => {
+            // Strip out product images and external assets to prevent CORS hanging
+            const imgs = clonedDoc.querySelectorAll('img');
+            imgs.forEach(img => img.remove());
+          }
+        },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        setDownloading(false);
+      }).catch(err => {
+        console.error('Failed to generate PDF:', err);
+        alert('Download failed. Please check the console log for details.');
+        setDownloading(false);
+      });
+    } catch (e) {
+      console.error('Synchronous error during PDF generation:', e);
+      alert('An error occurred starting the download.');
       setDownloading(false);
-    }).catch(err => {
-      console.error('Failed to generate PDF:', err);
-      setDownloading(false);
-    });
+    }
   };
 
   const handleRefund = async (orderId, action) => {
