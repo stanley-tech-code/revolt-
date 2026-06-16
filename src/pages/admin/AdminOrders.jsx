@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useCms } from '../../context/CmsContext';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 export default function AdminOrders() {
   const { db, updateOrderStatus, processRefund } = useCms();
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [filterStatus, setFilterStatus] = useState('All');
+  const [downloading, setDownloading] = useState(false);
 
   // The db.orders array is populated from fetchDatabase
   const orders = db?.orders || [];
@@ -27,6 +30,43 @@ export default function AdminOrders() {
 
   const handlePrintInvoice = () => {
     window.print();
+  };
+
+  const handleDownloadInvoice = () => {
+    const element = document.getElementById('invoice-capture');
+    if (!element) return;
+    
+    setDownloading(true);
+    html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      logging: false
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      
+      const orderNum = selectedOrder.id.toString().substring(0,8).toUpperCase();
+      pdf.save(`Invoice-${orderNum}.pdf`);
+      setDownloading(false);
+    }).catch(err => {
+      console.error('Failed to generate PDF:', err);
+      setDownloading(false);
+    });
   };
 
   const handleRefund = async (orderId, action) => {
@@ -85,10 +125,16 @@ export default function AdminOrders() {
                   <td className="py-4 px-6 text-sm">{new Date(order.createdAt || order.date).toLocaleDateString()}</td>
                   <td className="py-4 px-6 text-sm">
                     <p className="font-medium">{order.deliveryInfo?.customerName || 'Guest User'}</p>
-                    {order.deliveryInfo && (
+                    {order.deliveryInfo?.address ? (
+                      <p className="text-[10px] text-[#000000]/60 mt-1 uppercase tracking-wider">
+                        {order.deliveryInfo.address.street}{order.deliveryInfo.address.city ? `, ${order.deliveryInfo.address.city}` : ''}
+                      </p>
+                    ) : order.deliveryInfo?.street ? (
                       <p className="text-[10px] text-[#000000]/60 mt-1 uppercase tracking-wider">
                         {order.deliveryInfo.street}{order.deliveryInfo.city ? `, ${order.deliveryInfo.city}` : ''}
                       </p>
+                    ) : (
+                      <p className="text-[10px] text-[#000000]/40 mt-1 uppercase tracking-wider italic">No address</p>
                     )}
                   </td>
                   <td className="py-4 px-6 text-sm font-semibold">Ksh {order.total.toLocaleString()}</td>
@@ -144,200 +190,222 @@ export default function AdminOrders() {
               </button>
             </div>
 
-            {/* Invoice Content (Printable Area) */}
-            <div className="p-8 printable-area">
-              <div className="flex justify-between items-start mb-8 pb-8 border-b border-[#000000]/10">
-                <div>
-                  <h1 className="text-2xl font-bold tracking-tight uppercase mb-1">Revolt</h1>
-                  <p className="text-[9px] tracking-[0.2em] uppercase text-[#000000]/50">Invoice / Packing Slip</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold uppercase tracking-wider">Order #{selectedOrder.id.toString().substring(0,8).toUpperCase()}</p>
-                  <p className="text-sm text-[#000000]/60 mt-1">{new Date(selectedOrder.createdAt || selectedOrder.date).toLocaleString()}</p>
-                  <div className="mt-2 inline-block">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/50 mr-2">Status:</span>
-                    <span className="px-2 py-1 bg-[#f5f5f5] text-[10px] font-bold uppercase tracking-wider text-[#000000]">
-                      {selectedOrder.status}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-8 mb-8">
-                <div>
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Customer Information</h3>
-                  <p className="text-sm font-medium">{selectedOrder.deliveryInfo?.customerName || 'Guest User'}</p>
-                  <p className="text-sm text-[#000000]/70 mt-1">Email: {selectedOrder.deliveryInfo?.customerEmail || 'Not provided'}</p>
-                  <p className="text-sm text-[#000000]/70 mt-1">Phone: {selectedOrder.deliveryInfo?.customerPhone || 'Not provided'}</p>
-                </div>
-                {selectedOrder.deliveryInfo && (
-                  <div>
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Shipping Address</h3>
-                    <p className="text-sm text-[#000000]/70">
-                      {selectedOrder.deliveryInfo.street}<br/>
-                      {selectedOrder.deliveryInfo.apartment && <>{selectedOrder.deliveryInfo.apartment}<br/></>}
-                      {selectedOrder.deliveryInfo.city}, {selectedOrder.deliveryInfo.zip}<br/>
-                      {selectedOrder.deliveryInfo.country}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Fit profile removed */}
-
-              <div className="mb-8">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Order Timeline</h3>
-                
-                {/* Timeline UI (Printable) */}
-                <div className="border border-[#000000]/10 p-4 mb-4 bg-[#f9f9f9]">
-                  {selectedOrder.deliveryInfo?.timeline && selectedOrder.deliveryInfo.timeline.length > 0 ? (
-                    <div className="relative border-l border-[#000000]/20 ml-3 pl-6 space-y-6">
-                      {selectedOrder.deliveryInfo.timeline.map((event, idx) => (
-                        <div key={idx} className="relative">
-                          <span className="absolute -left-[29px] top-1 w-2.5 h-2.5 rounded-full bg-[#000000] border-2 border-[#f9f9f9]"></span>
-                          <p className="font-bold uppercase tracking-wider text-xs text-[#000000]">{event.status}</p>
-                          <p className="text-[10px] text-[#000000]/50 uppercase tracking-widest mt-1">{new Date(event.timestamp).toLocaleString()}</p>
+            {/* Modal Body */}
+            {(() => {
+              const address = selectedOrder.deliveryInfo?.address;
+              const hasAddress = address && (address.street || address.city);
+              return (
+                <>
+                  <div className="p-8">
+                    {/* Invoice Content (Printable Area) */}
+                    <div id="invoice-capture" className="printable-area border border-[#000000]/10 p-8 bg-white mb-8 shadow-sm">
+                      <div className="flex justify-between items-start mb-8 pb-8 border-b border-[#000000]/10">
+                        <div className="flex items-center gap-4">
+                          <img 
+                            src={db.assets?.logo || "/images/logo.webp"} 
+                            alt="Revolt Logo" 
+                            className="h-12 w-auto object-contain brightness-0" 
+                            onError={(e) => { e.target.style.display = 'none'; }}
+                          />
+                          <div>
+                            <h1 className="text-2xl font-bold tracking-tight uppercase mb-1">Revolt</h1>
+                            <p className="text-[9px] tracking-[0.2em] uppercase text-[#000000]/50">Invoice / Packing Slip</p>
+                          </div>
                         </div>
-                      ))}
+                        <div className="text-right">
+                          <p className="text-sm font-bold uppercase tracking-wider">Order #{selectedOrder.id.toString().substring(0,8).toUpperCase()}</p>
+                          <p className="text-sm text-[#000000]/60 mt-1">{new Date(selectedOrder.createdAt || selectedOrder.date).toLocaleString()}</p>
+                          <div className="mt-2 inline-block">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-[#000000]/50 mr-2">Status:</span>
+                            <span className="px-2 py-1 bg-[#f5f5f5] text-[10px] font-bold uppercase tracking-wider text-[#000000]">
+                              {selectedOrder.status}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-8 mb-8">
+                        <div>
+                          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Customer Information</h3>
+                          <p className="text-sm font-medium">{selectedOrder.deliveryInfo?.customerName || 'Guest User'}</p>
+                          <p className="text-sm text-[#000000]/70 mt-1">Email: {selectedOrder.deliveryInfo?.customerEmail || 'Not provided'}</p>
+                          <p className="text-sm text-[#000000]/70 mt-1">Phone: {selectedOrder.deliveryInfo?.customerPhone || 'Not provided'}</p>
+                        </div>
+                        <div>
+                          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Shipping Address</h3>
+                          {hasAddress ? (
+                            <p className="text-sm text-[#000000]/70 leading-relaxed">
+                              {address.name || selectedOrder.deliveryInfo?.customerName || 'Guest User'}<br/>
+                              {address.street}<br/>
+                              {address.city || 'Nairobi'}{address.zip ? `, ${address.zip}` : ''}<br/>
+                              {address.country || 'Kenya'}
+                            </p>
+                          ) : (
+                            <p className="text-sm text-[#000000]/50 italic">No shipping address recorded</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mb-8">
+                        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Order Items</h3>
+                        <div className="border border-[#000000]/10 rounded-sm">
+                          {selectedOrder.items && Array.isArray(selectedOrder.items) ? (
+                            <table className="w-full text-left">
+                              <thead className="bg-[#f9f9f9]">
+                                <tr>
+                                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60">Item</th>
+                                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60">Price (Each)</th>
+                                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-center">Quantity</th>
+                                  <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-right">Total</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {selectedOrder.items.map((item, idx) => (
+                                  <tr key={idx} className="border-t border-[#000000]/10">
+                                    <td className="py-3 px-4 text-sm flex items-center gap-3">
+                                      {item.image && <img src={item.image} alt={item.name} className="w-10 h-12 object-cover" />}
+                                      <div>
+                                        <p className="font-semibold">{item.name}</p>
+                                        <p className="text-xs text-[#000000]/60">Size: {item.size} | Color: {item.color}</p>
+                                      </div>
+                                    </td>
+                                    <td className="py-3 px-4 text-sm">Ksh {(item.salePrice || item.originalPrice || item.price || 0).toLocaleString()}</td>
+                                    <td className="py-3 px-4 text-sm text-center">{item.quantity || 1}</td>
+                                    <td className="py-3 px-4 text-sm text-right">Ksh {((item.salePrice || item.originalPrice || item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          ) : (
+                            <div className="p-4 text-sm text-[#000000]/70">
+                              {selectedOrder.items || 'No item details available.'}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end">
+                        <div className="w-1/2">
+                          <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
+                            <span className="text-[#000000]/60">Subtotal</span>
+                            <span>Ksh {selectedOrder.subtotal?.toLocaleString() || selectedOrder.total.toLocaleString()}</span>
+                          </div>
+                          {selectedOrder.deliveryInfo?.appliedPromo && (
+                            <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5 text-green-600">
+                              <span>Promo ({selectedOrder.deliveryInfo.appliedPromo.code})</span>
+                              <span>-Ksh {selectedOrder.deliveryInfo.discount?.toLocaleString() || 0}</span>
+                            </div>
+                          )}
+                          {selectedOrder.deliveryFee !== undefined && (
+                            <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
+                              <span className="text-[#000000]/60">Shipping</span>
+                              <span>Ksh {selectedOrder.deliveryFee.toLocaleString()}</span>
+                            </div>
+                          )}
+                          <div className="flex justify-between py-3 text-base font-bold uppercase tracking-wider">
+                            <span>Total</span>
+                            <span>Ksh {(selectedOrder.total - (selectedOrder.tax || 0)).toLocaleString()}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  ) : (
-                    <p className="text-sm text-[#000000]/50 italic">No timeline history recorded.</p>
-                  )}
-                </div>
 
-                {/* Status Update Controls (No Print) */}
-                <div className="no-print">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-2">Update Status</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {['Pending', 'Processing', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].map(status => (
-                      <button
-                        key={status}
-                        onClick={() => {
-                          handleStatusChange(status, selectedOrder.id);
-                          setSelectedOrder(prev => {
-                            const newTimeline = [...(prev.deliveryInfo?.timeline || []), { status, timestamp: new Date().toISOString() }];
-                            return { ...prev, status, deliveryInfo: { ...prev.deliveryInfo, timeline: newTimeline } };
-                          });
-                        }}
-                        disabled={selectedOrder.status.toLowerCase() === status.toLowerCase()}
-                        className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest border transition-all duration-300 ${
-                          selectedOrder.status.toLowerCase() === status.toLowerCase()
-                            ? 'bg-[#000000] text-white border-[#000000] cursor-default shadow-md'
-                            : 'bg-white text-[#000000] border-[#000000]/20 hover:border-[#000000] hover:bg-[#f5f5f5]'
-                        }`}
-                      >
-                        {status}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-8">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Order Items</h3>
-                <div className="border border-[#000000]/10 rounded-sm">
-                  {selectedOrder.items && Array.isArray(selectedOrder.items) ? (
-                    <table className="w-full text-left">
-                      <thead className="bg-[#f9f9f9]">
-                        <tr>
-                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60">Item</th>
-                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60">Price (Each)</th>
-                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-center">Quantity</th>
-                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-right">Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selectedOrder.items.map((item, idx) => (
-                          <tr key={idx} className="border-t border-[#000000]/10">
-                            <td className="py-3 px-4 text-sm flex items-center gap-3">
-                              {item.image && <img src={item.image} alt={item.name} className="w-10 h-12 object-cover" />}
-                              <div>
-                                <p className="font-semibold">{item.name}</p>
-                                <p className="text-xs text-[#000000]/60">Size: {item.size} | Color: {item.color}</p>
+                    {/* Timeline & Status Updates (Outside Invoice Container, Not Printed) */}
+                    <div className="no-print border-t border-[#000000]/10 pt-6 mt-6">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Order Timeline</h3>
+                      <div className="border border-[#000000]/10 p-4 mb-4 bg-[#f9f9f9]">
+                        {selectedOrder.deliveryInfo?.timeline && selectedOrder.deliveryInfo.timeline.length > 0 ? (
+                          <div className="relative border-l border-[#000000]/20 ml-3 pl-6 space-y-6">
+                            {selectedOrder.deliveryInfo.timeline.map((event, idx) => (
+                              <div key={idx} className="relative">
+                                <span className="absolute -left-[29px] top-1 w-2.5 h-2.5 rounded-full bg-[#000000] border-2 border-[#f9f9f9]"></span>
+                                <p className="font-bold uppercase tracking-wider text-xs text-[#000000]">{event.status}</p>
+                                <p className="text-[10px] text-[#000000]/50 uppercase tracking-widest mt-1">{new Date(event.timestamp).toLocaleString()}</p>
                               </div>
-                            </td>
-                            <td className="py-3 px-4 text-sm">Ksh {(item.salePrice || item.originalPrice || item.price || 0).toLocaleString()}</td>
-                            <td className="py-3 px-4 text-sm text-center">{item.quantity || 1}</td>
-                            <td className="py-3 px-4 text-sm text-right">Ksh {((item.salePrice || item.originalPrice || item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
-                          </tr>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-[#000000]/50 italic">No timeline history recorded.</p>
+                        )}
+                      </div>
+
+                      <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-2">Update Status</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {['Pending', 'Processing', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].map(status => (
+                          <button
+                            key={status}
+                            onClick={() => {
+                              handleStatusChange(status, selectedOrder.id);
+                              setSelectedOrder(prev => {
+                                const newTimeline = [...(prev.deliveryInfo?.timeline || []), { status, timestamp: new Date().toISOString() }];
+                                return { ...prev, status, deliveryInfo: { ...prev.deliveryInfo, timeline: newTimeline } };
+                              });
+                            }}
+                            disabled={selectedOrder.status.toLowerCase() === status.toLowerCase()}
+                            className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest border transition-all duration-300 ${
+                              selectedOrder.status.toLowerCase() === status.toLowerCase()
+                                ? 'bg-[#000000] text-white border-[#000000] cursor-default shadow-md'
+                                : 'bg-white text-[#000000] border-[#000000]/20 hover:border-[#000000] hover:bg-[#f5f5f5]'
+                            }`}
+                          >
+                            {status}
+                          </button>
                         ))}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <div className="p-4 text-sm text-[#000000]/70">
-                      {selectedOrder.items || 'No item details available.'}
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <div className="w-1/2">
-                  <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
-                    <span className="text-[#000000]/60">Subtotal</span>
-                    <span>Ksh {selectedOrder.subtotal?.toLocaleString() || selectedOrder.total.toLocaleString()}</span>
                   </div>
-                  {selectedOrder.deliveryInfo?.appliedPromo && (
-                    <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5 text-green-600">
-                      <span>Promo ({selectedOrder.deliveryInfo.appliedPromo.code})</span>
-                      <span>-Ksh {selectedOrder.deliveryInfo.discount?.toLocaleString() || 0}</span>
-                    </div>
-                  )}
-                  {selectedOrder.deliveryFee !== undefined && (
-                    <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
-                      <span className="text-[#000000]/60">Shipping</span>
-                      <span>Ksh {selectedOrder.deliveryFee.toLocaleString()}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between py-3 text-base font-bold uppercase tracking-wider">
-                    <span>Total</span>
-                    <span>Ksh {(selectedOrder.total - (selectedOrder.tax || 0)).toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Modal Actions (No Print) */}
-            <div className="p-6 bg-[#f9f9f9] border-t border-[#000000]/10 flex justify-between items-center no-print">
-              <div className="flex gap-4">
-                {selectedOrder.refundStatus === 'Pending' ? (
-                  <>
-                    <button 
-                      onClick={() => handleRefund(selectedOrder.id, 'approve')}
-                      className="px-4 py-2 bg-green-600 text-white text-[10px] font-bold uppercase tracking-wider hover:bg-green-700 transition-colors"
-                    >
-                      Approve Refund
-                    </button>
-                    <button 
-                      onClick={() => handleRefund(selectedOrder.id, 'reject')}
-                      className="px-4 py-2 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider hover:bg-red-700 transition-colors"
-                    >
-                      Reject Refund
-                    </button>
-                  </>
-                ) : selectedOrder.refundStatus ? (
-                  <span className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-gray-200">
-                    Refund {selectedOrder.refundStatus}
-                  </span>
-                ) : (
-                  <span className="text-xs text-[#000000]/50 italic">No refund requested</span>
-                )}
-              </div>
-              <div className="flex gap-4">
-                <button 
-                  onClick={handlePrintInvoice}
-                  className="px-6 py-2 border border-[#000000] text-[#000000] text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-[#000000] hover:text-white transition-colors"
-                >
-                  Print Invoice
-                </button>
-                <button 
-                  onClick={() => setSelectedOrder(null)}
-                  className="px-6 py-2 bg-[#000000] text-white text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-[#000000]/80 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+                  {/* Modal Actions */}
+                  <div className="p-6 bg-[#f9f9f9] border-t border-[#000000]/10 flex justify-between items-center no-print">
+                    <div className="flex gap-4">
+                      {selectedOrder.refundStatus === 'Pending' ? (
+                        <>
+                          <button 
+                            onClick={() => handleRefund(selectedOrder.id, 'approve')}
+                            className="px-4 py-2 bg-green-600 text-white text-[10px] font-bold uppercase tracking-wider hover:bg-green-700 transition-colors"
+                          >
+                            Approve Refund
+                          </button>
+                          <button 
+                            onClick={() => handleRefund(selectedOrder.id, 'reject')}
+                            className="px-4 py-2 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider hover:bg-red-700 transition-colors"
+                          >
+                            Reject Refund
+                          </button>
+                        </>
+                      ) : selectedOrder.refundStatus ? (
+                        <span className="text-sm font-bold uppercase tracking-wider px-3 py-1 bg-gray-200">
+                          Refund {selectedOrder.refundStatus}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-[#000000]/50 italic">No refund requested</span>
+                      )}
+                    </div>
+                    <div className="flex gap-4">
+                      <button 
+                        onClick={handleDownloadInvoice}
+                        disabled={downloading}
+                        className="px-6 py-2 border border-[#000000] text-[#000000] text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-[#000000] hover:text-white transition-colors disabled:opacity-50"
+                      >
+                        {downloading ? 'Downloading...' : 'Download Invoice'}
+                      </button>
+                      <button 
+                        onClick={handlePrintInvoice}
+                        className="px-6 py-2 border border-[#000000]/40 text-[#000000] text-[10px] font-bold uppercase tracking-[0.1em] hover:border-[#000000] hover:bg-[#f5f5f5] transition-colors"
+                      >
+                        Print Invoice
+                      </button>
+                      <button 
+                        onClick={() => setSelectedOrder(null)}
+                        className="px-6 py-2 bg-[#000000] text-white text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-[#000000]/80 transition-colors"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
 
           </div>
         </div>
