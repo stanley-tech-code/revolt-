@@ -22,9 +22,12 @@ export default function CollectionPage() {
   // Filter products based on URL parameters
   let filteredProducts = db.products.filter(p => {
     if (mainCategory === 'new-in') {
+      if (subCategory && !subCategory.startsWith('all-')) {
+        return p.isNewArrival === true && (p.subCategory === subCategory || p.mainCategory === subCategory);
+      }
       return p.isNewArrival === true;
     }
-    if (subCategory) {
+    if (subCategory && !subCategory.startsWith('all-')) {
       return p.subCategory === subCategory || p.mainCategory === subCategory;
     }
     if (mainCategory) {
