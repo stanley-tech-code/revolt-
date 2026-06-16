@@ -230,14 +230,6 @@ export default function AdminOrders() {
                             <span className="text-xs text-[#000000]/50 italic">Instructions: {addr.instructions}</span>
                           </>
                         )}
-                        {addr.mapsPin && (
-                          <>
-                            <br />
-                            <a href={addr.mapsPin} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 underline no-print">
-                              📍 View Map Pin
-                            </a>
-                          </>
-                        )}
                       </p>
                     </div>
                   );
