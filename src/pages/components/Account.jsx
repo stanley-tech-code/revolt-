@@ -10,12 +10,8 @@ export default function Account() {
   const [activeTab, setActiveTab] = useState('profile');
   const [isUpdating, setIsUpdating] = useState(false);
   
-  // Address Book state
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [editingAddressIdx, setEditingAddressIdx] = useState(null);
-  const [addressData, setAddressData] = useState({
-    name: '', street: '', city: '', zip: '', country: '', phone: '', directions: '', pinLink: ''
-  });
+  // Address Book state (read-only except delete, no form states needed)
+
   
   // Orders state
   const [orders, setOrders] = useState([]);
@@ -42,35 +38,11 @@ export default function Account() {
     alert("Profile updated successfully!");
   };
 
-  const handleSaveAddress = async (e) => {
-    e.preventDefault();
-    
-    const currentAddresses = [...(currentUser?.addresses || [])];
-    
-    if (editingAddressIdx !== null) {
-      currentAddresses[editingAddressIdx] = addressData;
-    } else {
-      currentAddresses.push(addressData);
-    }
-    
-    await updateAddresses(currentAddresses);
-    setShowAddressForm(false);
-    setEditingAddressIdx(null);
-    setAddressData({ name: '', street: '', city: '', zip: '', country: '', phone: '', directions: '', pinLink: '' });
-  };
-
   const handleDeleteAddress = async (idx) => {
     if (!confirm('Are you sure you want to delete this address?')) return;
     const currentAddresses = [...(currentUser?.addresses || [])];
     currentAddresses.splice(idx, 1);
     await updateAddresses(currentAddresses);
-  };
-
-  const handleEditAddress = (idx) => {
-    const addr = currentUser.addresses[idx];
-    setAddressData(addr);
-    setEditingAddressIdx(idx);
-    setShowAddressForm(true);
   };
 
   const tabs = [
@@ -325,67 +297,9 @@ export default function Account() {
             <div className="animate-fade-in">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold uppercase tracking-wider">Address Book</h2>
-                {!showAddressForm && (
-                  <button 
-                    onClick={() => {
-                      setAddressData({ name: '', street: '', city: '', zip: '', country: '', phone: '', directions: '', pinLink: '' });
-                      setEditingAddressIdx(null);
-                      setShowAddressForm(true);
-                    }}
-                    className="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5"
-                  >
-                    Add New Address
-                  </button>
-                )}
               </div>
               
-              {showAddressForm ? (
-                <form onSubmit={handleSaveAddress} className="space-y-6 max-w-lg border border-gray-200 p-6 bg-gray-50">
-                  <h3 className="text-sm font-bold uppercase tracking-wider mb-4">{editingAddressIdx !== null ? 'Edit Address' : 'New Address'}</h3>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Address Name / Label</label>
-                    <input type="text" required placeholder="e.g., Home, Office" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={addressData.name} onChange={e => setAddressData({...addressData, name: e.target.value})} />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Street Address & Apartment</label>
-                    <input type="text" required placeholder="e.g., 123 Main St, Apt 4B" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={addressData.street} onChange={e => setAddressData({...addressData, street: e.target.value})} />
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">City</label>
-                      <input type="text" required className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={addressData.city} onChange={e => setAddressData({...addressData, city: e.target.value})} />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Postal Code / Zip</label>
-                      <input type="text" required className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={addressData.zip} onChange={e => setAddressData({...addressData, zip: e.target.value})} />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Country</label>
-                    <input type="text" required className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={addressData.country} onChange={e => setAddressData({...addressData, country: e.target.value})} />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Delivery Phone Number</label>
-                    <input type="tel" required placeholder="e.g., +254..." className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={addressData.phone} onChange={e => setAddressData({...addressData, phone: e.target.value})} />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Delivery Directions (Optional)</label>
-                    <textarea placeholder="Write specific directions on how to find your place, gate codes, etc." rows="2" className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent resize-none" value={addressData.directions} onChange={e => setAddressData({...addressData, directions: e.target.value})} />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-2">Location Pin Link (Optional)</label>
-                    <input type="url" placeholder="e.g., https://goo.gl/maps/..." className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black bg-transparent" value={addressData.pinLink} onChange={e => setAddressData({...addressData, pinLink: e.target.value})} />
-                  </div>
-                  <div className="flex gap-4 pt-4">
-                    <button type="submit" className="bg-[#1a1a1a] text-white px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-black transition-colors">
-                      Save Address
-                    </button>
-                    <button type="button" onClick={() => setShowAddressForm(false)} className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-black">
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              ) : currentUser?.addresses?.length > 0 ? (
+              {currentUser?.addresses?.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {currentUser.addresses.map((addr, idx) => (
                     <div key={idx} className="border border-gray-200 p-4 relative group">
@@ -407,7 +321,6 @@ export default function Account() {
                       )}
 
                       <div className="mt-5 flex gap-3 text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                        <button onClick={() => handleEditAddress(idx)} className="hover:text-black">Edit</button>
                         <button onClick={() => handleDeleteAddress(idx)} className="hover:text-red-600">Delete</button>
                       </div>
                     </div>
@@ -415,7 +328,7 @@ export default function Account() {
                 </div>
               ) : (
                 <div className="text-center py-12 bg-gray-50 border border-gray-100">
-                  <p className="text-sm text-gray-500">You have no saved addresses.</p>
+                  <p className="text-sm text-gray-500">You have no saved addresses. Addresses entered at checkout are automatically saved here.</p>
                 </div>
               )}
             </div>

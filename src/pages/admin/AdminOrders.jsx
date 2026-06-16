@@ -83,7 +83,14 @@ export default function AdminOrders() {
                 <tr key={order.id} className="border-b border-[#000000]/5 hover:bg-[#fafafa] transition-colors">
                   <td className="py-4 px-6 text-sm font-medium">#{order.id.toString().substring(0,8).toUpperCase()}</td>
                   <td className="py-4 px-6 text-sm">{new Date(order.createdAt || order.date).toLocaleDateString()}</td>
-                  <td className="py-4 px-6 text-sm">{order.deliveryInfo?.customerName || 'Guest User'}</td>
+                  <td className="py-4 px-6 text-sm">
+                    <p className="font-medium">{order.deliveryInfo?.customerName || 'Guest User'}</p>
+                    {order.deliveryInfo && (
+                      <p className="text-[10px] text-[#000000]/60 mt-1 uppercase tracking-wider">
+                        {order.deliveryInfo.street}{order.deliveryInfo.city ? `, ${order.deliveryInfo.city}` : ''}
+                      </p>
+                    )}
+                  </td>
                   <td className="py-4 px-6 text-sm font-semibold">Ksh {order.total.toLocaleString()}</td>
                   <td className="py-4 px-6">
                     <select 
@@ -234,8 +241,9 @@ export default function AdminOrders() {
                       <thead className="bg-[#f9f9f9]">
                         <tr>
                           <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60">Item</th>
-                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60">Quantity</th>
-                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-right">Price</th>
+                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60">Price (Each)</th>
+                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-center">Quantity</th>
+                          <th className="py-3 px-4 text-[10px] font-bold uppercase tracking-wider text-[#000000]/60 text-right">Total</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -248,8 +256,9 @@ export default function AdminOrders() {
                                 <p className="text-xs text-[#000000]/60">Size: {item.size} | Color: {item.color}</p>
                               </div>
                             </td>
-                            <td className="py-3 px-4 text-sm">{item.quantity || 1}</td>
-                            <td className="py-3 px-4 text-sm text-right">Ksh {((item.salePrice || item.originalPrice || item.price) * (item.quantity || 1)).toLocaleString()}</td>
+                            <td className="py-3 px-4 text-sm">Ksh {(item.salePrice || item.originalPrice || item.price || 0).toLocaleString()}</td>
+                            <td className="py-3 px-4 text-sm text-center">{item.quantity || 1}</td>
+                            <td className="py-3 px-4 text-sm text-right">Ksh {((item.salePrice || item.originalPrice || item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -280,15 +289,9 @@ export default function AdminOrders() {
                       <span>Ksh {selectedOrder.deliveryFee.toLocaleString()}</span>
                     </div>
                   )}
-                  {selectedOrder.tax !== undefined && (
-                    <div className="flex justify-between py-2 text-sm border-b border-[#000000]/5">
-                      <span className="text-[#000000]/60">Tax</span>
-                      <span>Ksh {selectedOrder.tax.toLocaleString()}</span>
-                    </div>
-                  )}
                   <div className="flex justify-between py-3 text-base font-bold uppercase tracking-wider">
                     <span>Total</span>
-                    <span>Ksh {selectedOrder.total.toLocaleString()}</span>
+                    <span>Ksh {(selectedOrder.total - (selectedOrder.tax || 0)).toLocaleString()}</span>
                   </div>
                 </div>
               </div>

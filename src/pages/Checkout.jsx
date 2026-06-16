@@ -9,7 +9,7 @@ import { kenyaGeoData } from '../data/kenyaGeoData';
 
 export default function Checkout() {
   const { cartItems, removeFromCart, clearCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
-  const { currentUser } = useAuth();
+  const { currentUser, updateProfile } = useAuth();
   const { db } = useCms();
   const { trackEvent } = useAnalytics();
   const navigate = useNavigate();
@@ -48,14 +48,22 @@ export default function Checkout() {
     mapsPin: { lat: -1.2921, lng: 36.8219 } // Default Nairobi
   });
 
+  const [selectedSavedAddressIdx, setSelectedSavedAddressIdx] = useState(currentUser?.addresses?.length > 0 ? 0 : 'new');
+
   // Dynamic Delivery Fee
   const deliveryFee = React.useMemo(() => {
     if (!db.settings?.shipping?.zones || db.settings.shipping.zones.length === 0) return 500;
+    
+    let countyToCheck = addressData.county || '';
+    if (selectedSavedAddressIdx !== null && selectedSavedAddressIdx !== 'new' && currentUser?.addresses) {
+      countyToCheck = currentUser.addresses[selectedSavedAddressIdx].city || '';
+    }
+
     const matchedZone = db.settings.shipping.zones.find(z => 
-      z.name.toLowerCase() === (addressData.county || '').toLowerCase()
+      z.name.toLowerCase() === (countyToCheck || '').toLowerCase()
     );
     return matchedZone ? Number(matchedZone.fee) : 500;
-  }, [db.settings?.shipping?.zones, addressData.county]);
+  }, [db.settings?.shipping?.zones, addressData.county, selectedSavedAddressIdx, currentUser]);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -155,9 +163,54 @@ export default function Checkout() {
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const fullAddress = locationMode === 'manual' 
-        ? `${addressData.building ? addressData.building + ', ' : ''}${addressData.houseNo ? addressData.houseNo + ', ' : ''}${addressData.area ? addressData.area + ', ' : ''}${addressData.county}`
-        : 'GPS Location Pin';
+      let finalDeliveryInfo = {
+        method: 'deliver',
+        address: {},
+        appliedPromo: appliedPromo || null,
+        discount: discount || 0
+      };
+
+      if (selectedSavedAddressIdx !== null && selectedSavedAddressIdx !== 'new' && currentUser?.addresses) {
+        const savedAddr = currentUser.addresses[selectedSavedAddressIdx];
+        finalDeliveryInfo.address = {
+          name: contactInfo.fullName,
+          phone: contactInfo.phone,
+          street: savedAddr.street,
+          city: savedAddr.city,
+          country: savedAddr.country || 'Kenya',
+          instructions: savedAddr.directions
+        };
+      } else {
+        const fullAddress = locationMode === 'manual' 
+          ? `${addressData.building ? addressData.building + ', ' : ''}${addressData.houseNo ? addressData.houseNo + ', ' : ''}${addressData.area ? addressData.area + ', ' : ''}${addressData.county}`
+          : 'GPS Location Pin';
+
+        finalDeliveryInfo.address = {
+          name: contactInfo.fullName,
+          phone: contactInfo.phone,
+          street: fullAddress,
+          city: addressData.county || 'Nairobi',
+          country: 'Kenya',
+          mapsPin: addressData.mapsPin,
+          instructions: addressData.instructions
+        };
+
+        // AUTO SAVE NEW ADDRESS silently
+        if (currentUser) {
+          const newSavedAddr = {
+            name: `Address ${currentUser.addresses ? currentUser.addresses.length + 1 : 1}`,
+            street: fullAddress,
+            city: addressData.county || 'Nairobi',
+            zip: '',
+            country: 'Kenya',
+            phone: contactInfo.phone,
+            directions: addressData.instructions,
+            pinLink: ''
+          };
+          const updatedAddresses = [...(currentUser.addresses || []), newSavedAddr];
+          updateProfile({ addresses: updatedAddresses }).catch(console.error);
+        }
+      }
 
       const res = await fetch('/api/checkout/create-order', {
         method: 'POST',
@@ -169,20 +222,7 @@ export default function Checkout() {
           deliveryFee,
           total,
           paymentMethod,
-          deliveryInfo: {
-            method: 'deliver',
-            address: {
-              name: contactInfo.fullName,
-              phone: contactInfo.phone,
-              street: fullAddress,
-              city: addressData.county || 'Nairobi',
-              country: 'Kenya',
-              mapsPin: addressData.mapsPin,
-              instructions: addressData.instructions
-            },
-            appliedPromo: appliedPromo || null,
-            discount: discount || 0
-          }
+          deliveryInfo: finalDeliveryInfo
         })
       });
 
@@ -215,6 +255,7 @@ export default function Checkout() {
   };
 
   const isStep1Valid = () => {
+    if (selectedSavedAddressIdx !== null && selectedSavedAddressIdx !== 'new') return true;
     if (locationMode === 'current' && locationDetected) return true;
     if (locationMode === 'manual' && addressData.county && addressData.subCounty && addressData.constituency && addressData.area) return true;
     return false;
@@ -314,25 +355,52 @@ export default function Checkout() {
             <div className="animate-fade-in">
               <h2 className="text-sm font-bold uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">Delivery Address</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <button 
-                  onClick={() => setLocationMode('manual')}
-                  className={`p-6 border-2 transition-colors text-center ${locationMode === 'manual' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
-                >
-                  <span className="text-2xl block mb-2">✍️</span>
-                  <span className="block font-bold text-sm uppercase tracking-wider">Enter Manually</span>
-                  <span className="block text-[10px] text-gray-500 mt-1">Type your address details</span>
-                </button>
+              {currentUser?.addresses?.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-[10px] font-bold uppercase tracking-widest mb-4 text-gray-500">Saved Addresses</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {currentUser.addresses.map((addr, idx) => (
+                      <div 
+                        key={idx}
+                        onClick={() => setSelectedSavedAddressIdx(idx)}
+                        className={`p-4 border cursor-pointer transition-colors ${selectedSavedAddressIdx === idx ? 'border-black bg-gray-50 ring-1 ring-black' : 'border-gray-200 hover:border-gray-400'}`}
+                      >
+                        <p className="font-bold text-sm uppercase tracking-wider mb-1">{addr.name || `Address ${idx + 1}`}</p>
+                        <p className="text-xs text-gray-600">{addr.street}</p>
+                        <p className="text-xs text-gray-600">{addr.city}{addr.zip ? `, ${addr.zip}` : ''}</p>
+                      </div>
+                    ))}
+                    <div 
+                      onClick={() => setSelectedSavedAddressIdx('new')}
+                      className={`p-4 border cursor-pointer transition-colors flex items-center justify-center ${selectedSavedAddressIdx === 'new' ? 'border-black bg-gray-50 ring-1 ring-black' : 'border-gray-200 hover:border-gray-400'}`}
+                    >
+                      <span className="text-xs font-bold uppercase tracking-wider">+ Add New Address</span>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-                <button 
-                  onClick={handleUseCurrentLocation}
-                  className={`p-6 border-2 transition-colors text-center ${locationMode === 'current' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
-                >
-                  <span className="text-2xl block mb-2">📍</span>
-                  <span className="block font-bold text-sm uppercase tracking-wider">Use Current Location</span>
-                  <span className="block text-[10px] text-gray-500 mt-1">Recommended for accuracy</span>
-                </button>
-              </div>
+              {(selectedSavedAddressIdx === 'new' || !currentUser?.addresses?.length) && (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 animate-fade-in">
+                    <button 
+                      onClick={() => setLocationMode('manual')}
+                      className={`p-6 border-2 transition-colors text-center ${locationMode === 'manual' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
+                    >
+                      <span className="text-2xl block mb-2">✍️</span>
+                      <span className="block font-bold text-sm uppercase tracking-wider">Enter Manually</span>
+                      <span className="block text-[10px] text-gray-500 mt-1">Type your address details</span>
+                    </button>
+
+                    <button 
+                      onClick={handleUseCurrentLocation}
+                      className={`p-6 border-2 transition-colors text-center ${locationMode === 'current' ? 'border-black bg-gray-50' : 'border-gray-200 hover:border-gray-400'}`}
+                    >
+                      <span className="text-2xl block mb-2">📍</span>
+                      <span className="block font-bold text-sm uppercase tracking-wider">Use Current Location</span>
+                      <span className="block text-[10px] text-gray-500 mt-1">Recommended for accuracy</span>
+                    </button>
+                  </div>
 
               {locationMode === 'current' && (
                 <div className="animate-fade-in mb-8">
@@ -433,6 +501,8 @@ export default function Checkout() {
                     <textarea value={addressData.instructions} onChange={e => setAddressData({...addressData, instructions: e.target.value})} placeholder="e.g. Leave at reception" className="w-full border border-gray-300 p-3 text-sm focus:border-black outline-none min-h-[80px]" />
                   </div>
                 </div>
+              )}
+                </>
               )}
             </div>
           )}
