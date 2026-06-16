@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCms } from '../../context/CmsContext';
-import html2pdf from 'html2pdf.js';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 export default function AdminOrders() {
   const { db, updateOrderStatus, processRefund } = useCms();
@@ -32,40 +33,151 @@ export default function AdminOrders() {
   };
 
   const handleDownloadInvoice = () => {
-    const element = document.getElementById('invoice-capture');
-    if (!element) return;
-    
-    setDownloading(true);
-    
     try {
+      setDownloading(true);
+      const doc = new jsPDF('p', 'mm', 'a4');
       const orderNum = selectedOrder.id.toString().substring(0,8).toUpperCase();
-      const opt = {
-        margin:       5,
-        filename:     `Invoice-${orderNum}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { 
-          scale: 2, 
-          useCORS: true, 
-          logging: false,
-          onclone: (clonedDoc) => {
-            // Strip out product images and external assets to prevent CORS hanging
-            const imgs = clonedDoc.querySelectorAll('img');
-            imgs.forEach(img => img.remove());
-          }
-        },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
 
-      html2pdf().set(opt).from(element).save().then(() => {
-        setDownloading(false);
-      }).catch(err => {
-        console.error('Failed to generate PDF:', err);
-        alert('Download failed. Please check the console log for details.');
-        setDownloading(false);
+      // Brand Header
+      doc.setFontSize(24);
+      doc.setFont("helvetica", "bold");
+      doc.text("REVOLT", 14, 20);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(150, 150, 150);
+      doc.text("INVOICE / PACKING SLIP", 14, 28);
+
+      // Order Info
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text(`Order #${orderNum}`, 196, 20, { align: "right" });
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(100, 100, 100);
+      doc.text(`${new Date(selectedOrder.createdAt || selectedOrder.date).toLocaleString()}`, 196, 26, { align: "right" });
+
+      // Line separator
+      doc.setDrawColor(200, 200, 200);
+      doc.line(14, 35, 196, 35);
+
+      // Customer Info
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(150, 150, 150);
+      doc.text("CUSTOMER INFORMATION", 14, 45);
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(selectedOrder.deliveryInfo?.customerName || 'Guest User', 14, 52);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(80, 80, 80);
+      doc.text(`Email: ${selectedOrder.deliveryInfo?.customerEmail || 'Not provided'}`, 14, 58);
+      doc.text(`Phone: ${selectedOrder.deliveryInfo?.customerPhone || 'Not provided'}`, 14, 64);
+
+      // Shipping Address
+      const addr = selectedOrder.deliveryInfo?.address || selectedOrder.deliveryInfo;
+      if (addr && (addr.street || addr.city)) {
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(150, 150, 150);
+        doc.text("SHIPPING ADDRESS", 100, 45);
+
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(80, 80, 80);
+        let addrLines = [addr.street];
+        if (addr.apartment) addrLines.push(addr.apartment);
+        addrLines.push(`${addr.city}${addr.zip ? `, ${addr.zip}` : ''}`);
+        addrLines.push(addr.country || 'Kenya');
+
+        doc.text(addrLines, 100, 52);
+      }
+
+      // Items Table
+      const tableColumn = ["Item", "Variant", "Quantity", "Unit Price", "Total"];
+      const tableRows = [];
+
+      (selectedOrder.items || []).forEach(item => {
+        const variant = item.size && item.color ? `${item.size} / ${item.color}` : (item.size || item.color || '-');
+        const qty = item.quantity || 1;
+        const price = item.salePrice || item.originalPrice || item.price || 0;
+        const total = price * qty;
+        
+        tableRows.push([
+          item.name,
+          variant,
+          qty.toString(),
+          `Ksh ${price.toLocaleString()}`,
+          `Ksh ${total.toLocaleString()}`
+        ]);
       });
+
+      doc.autoTable({
+        startY: 80,
+        head: [tableColumn],
+        body: tableRows,
+        theme: 'plain',
+        headStyles: { fillColor: [245, 245, 245], textColor: [100, 100, 100], fontStyle: 'bold', fontSize: 9 },
+        bodyStyles: { textColor: [50, 50, 50], fontSize: 10 },
+        alternateRowStyles: { fillColor: [255, 255, 255] },
+        styles: { cellPadding: 4, lineColor: [220, 220, 220], lineWidth: 0.1 },
+        columnStyles: {
+          2: { halign: 'center' },
+          3: { halign: 'right' },
+          4: { halign: 'right' }
+        }
+      });
+
+      let finalY = doc.lastAutoTable.finalY || 80;
+
+      // Totals block
+      const rightColX = 140;
+      const alignRightX = 196;
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+
+      // Subtotal
+      doc.setTextColor(100, 100, 100);
+      doc.text("Subtotal", rightColX, finalY + 15);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`Ksh ${selectedOrder.subtotal?.toLocaleString() || selectedOrder.total.toLocaleString()}`, alignRightX, finalY + 15, { align: "right" });
+
+      let currentY = finalY + 22;
+
+      // Promo
+      if (selectedOrder.deliveryInfo?.appliedPromo) {
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Promo (${selectedOrder.deliveryInfo.appliedPromo.code})`, rightColX, currentY);
+        doc.setTextColor(0, 0, 0);
+        doc.text(`-Ksh ${selectedOrder.deliveryInfo.discount?.toLocaleString() || 0}`, alignRightX, currentY, { align: "right" });
+        currentY += 7;
+      }
+
+      // Shipping
+      if (selectedOrder.deliveryFee !== undefined) {
+        doc.setTextColor(100, 100, 100);
+        doc.text("Shipping", rightColX, currentY);
+        doc.setTextColor(0, 0, 0);
+        doc.text(`Ksh ${selectedOrder.deliveryFee.toLocaleString()}`, alignRightX, currentY, { align: "right" });
+        currentY += 7;
+      }
+
+      doc.setDrawColor(200, 200, 200);
+      doc.line(rightColX, currentY - 3, alignRightX, currentY - 3);
+
+      // Final Total
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("Total", rightColX, currentY + 5);
+      doc.text(`Ksh ${(selectedOrder.total - (selectedOrder.tax || 0)).toLocaleString()}`, alignRightX, currentY + 5, { align: "right" });
+
+      doc.save(`Invoice-${orderNum}.pdf`);
+      setDownloading(false);
     } catch (e) {
       console.error('Synchronous error during PDF generation:', e);
-      alert('An error occurred starting the download.');
+      alert('An error occurred starting the download. ' + e.message);
       setDownloading(false);
     }
   };
