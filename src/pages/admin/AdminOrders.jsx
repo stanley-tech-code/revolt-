@@ -125,11 +125,14 @@ export default function AdminOrders() {
                   <td className="py-4 px-6 text-sm">{new Date(order.createdAt || order.date).toLocaleDateString()}</td>
                   <td className="py-4 px-6 text-sm">
                     <p className="font-medium">{order.deliveryInfo?.customerName || 'Guest User'}</p>
-                    {order.deliveryInfo && (
-                      <p className="text-[10px] text-[#000000]/60 mt-1 uppercase tracking-wider">
-                        {order.deliveryInfo.street}{order.deliveryInfo.city ? `, ${order.deliveryInfo.city}` : ''}
-                      </p>
-                    )}
+                    {order.deliveryInfo && (() => {
+                      const addr = order.deliveryInfo.address || order.deliveryInfo;
+                      return (
+                        <p className="text-[10px] text-[#000000]/60 mt-1 uppercase tracking-wider">
+                          {addr.street}{addr.city ? `, ${addr.city}` : ''}
+                        </p>
+                      );
+                    })()}
                   </td>
                   <td className="py-4 px-6 text-sm font-semibold">Ksh {order.total.toLocaleString()}</td>
                   <td className="py-4 px-6">
@@ -210,17 +213,35 @@ export default function AdminOrders() {
                   <p className="text-sm text-[#000000]/70 mt-1">Email: {selectedOrder.deliveryInfo?.customerEmail || 'Not provided'}</p>
                   <p className="text-sm text-[#000000]/70 mt-1">Phone: {selectedOrder.deliveryInfo?.customerPhone || 'Not provided'}</p>
                 </div>
-                {selectedOrder.deliveryInfo && (
-                  <div>
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Shipping Address</h3>
-                    <p className="text-sm text-[#000000]/70">
-                      {selectedOrder.deliveryInfo.street}<br/>
-                      {selectedOrder.deliveryInfo.apartment && <>{selectedOrder.deliveryInfo.apartment}<br/></>}
-                      {selectedOrder.deliveryInfo.city}, {selectedOrder.deliveryInfo.zip}<br/>
-                      {selectedOrder.deliveryInfo.country}
-                    </p>
-                  </div>
-                )}
+                {selectedOrder.deliveryInfo && (() => {
+                  const addr = selectedOrder.deliveryInfo.address || selectedOrder.deliveryInfo;
+                  if (!addr || (!addr.street && !addr.city)) return null;
+                  return (
+                    <div>
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000000]/50 mb-3">Shipping Address</h3>
+                      <p className="text-sm text-[#000000]/70">
+                        {addr.street}<br/>
+                        {addr.apartment && <>{addr.apartment}<br/></>}
+                        {addr.city}{addr.zip ? `, ${addr.zip}` : ''}<br/>
+                        {addr.country || 'Kenya'}
+                        {addr.instructions && (
+                          <>
+                            <br />
+                            <span className="text-xs text-[#000000]/50 italic">Instructions: {addr.instructions}</span>
+                          </>
+                        )}
+                        {addr.mapsPin && (
+                          <>
+                            <br />
+                            <a href={addr.mapsPin} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 underline no-print">
+                              📍 View Map Pin
+                            </a>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Fit profile removed */}
