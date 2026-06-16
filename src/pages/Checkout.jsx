@@ -9,7 +9,7 @@ import { kenyaGeoData } from '../data/kenyaGeoData';
 
 export default function Checkout() {
   const { cartItems, removeFromCart, clearCart, getCartTotal, appliedPromo, applyPromo, removePromo } = useStore();
-  const { currentUser, updateProfile } = useAuth();
+  const { currentUser, updateProfile, updateAddresses } = useAuth();
   const { db } = useCms();
   const { trackEvent } = useAnalytics();
   const navigate = useNavigate();
@@ -208,7 +208,7 @@ export default function Checkout() {
             pinLink: ''
           };
           const updatedAddresses = [...(currentUser.addresses || []), newSavedAddr];
-          updateProfile({ addresses: updatedAddresses }).catch(console.error);
+          updateAddresses(updatedAddresses).catch(console.error);
         }
       }
 
